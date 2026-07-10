@@ -1,0 +1,635 @@
+<!doctype html>
+<!--
+  AMC FEATURE LANDING PAGE — Snooze a session (manual)
+  Variation: Developer · "Own the block" · D2-F functional (PAS · Power)
+  Brief: briefs/manual-snooze.md · v2 · 2026-07-08 (corrected mechanism — ask-waits)
+  ANIMATION OPTION USED: [C — live DOM/CSS mock]
+  Segments: 1 Hook · 2 Sell · 3 Educate · 4 CTA
+  rev+1 · 2026-07-09 — global-standards pass: one-message h1, hero hotkey strip, invocation honesty
+  rev+2 · 2026-07-09 — snooze key verified live (GET /keybindings): strip + educate upgraded to H
+  rev+3 · 2026-07-09 — HERO REBUILD (Dilan pick, concept C "The attention race"): haFilm without→with race
+  rev+4 · 2026-07-10 — TYPED NATURAL LANGUAGE carried as fact (showcase lives on D1-E's hero)
+  rev+5 · 2026-07-10 — DILAN COPY DIRECTION (this session):
+    · h1 → "Own the block" single line + plain-words sub; em-dashes removed page-wide; fluff cut
+    · hero hotkey strip enlarged (real keycap look)
+    · HERO RACE CLARITY (Dilan: "not so understandable that they are side by side, different
+      things"): panes now introduce themselves one at a time with WITHOUT SNOOZE / WITH SNOOZE
+      label chips (amber vs green) + a center "vs" badge before the ask lands.
+    · NOTE REMOVED everywhere: source-verified (SnoozePalette.tsx) — note field gated behind
+      snoozeNoteEnabled, OFF by default.
+    · Presets corrected to source (snooze-presets.ts): 2:14 PM depiction = 2 Hours From Now ·
+      This Evening · Tomorrow Morning · Tomorrow Afternoon (there is no "Tomorrow Evening").
+      Rows show resolved times right-side (real palette anatomy).
+    · Educate = ONE full walkthrough film (right-click → menu → palette → 2 Hours From Now →
+      hidden → returns at 4:14) with film-synced step highlighting; steps cut to 3.
+    · CTA = future Education Hub / Snooze trainer button ("Teach me snooze") per Dilan;
+      placeholder below, scrolls to #try until the hub exists.
+    · Duplicated CSS blocks from rev+4 (mf-row / mf-cap / caret) deduped.
+  ALT HERO · 2026-07-10 — PAUSE THE LOOP (Dilan round-2 replacement for "cut the loop": the
+  loop is the RESPOND cycle — a pulse each time you answer; snooze PAUSES the loop, and the
+  saved attention visibly swings to the higher-priority ask). Ask/reply pulses circulate
+  between YOU and Dep sweep with a rounds counter while Fix payment webhook sits starved on
+  a thin line; H + 2 Hours From Now pauses the loop with a badge; a thick green lane swings
+  to the priority ask and it gets answered; at 4:14 the loop resumes for one round. Copy =
+  canonical rev+5; sell/educate films unchanged.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Snooze · Agent Mission Control</title>
+<style>
+:root{
+  --bg:#030712; --glass:rgba(3,7,18,.7); --glass-strong:rgba(3,7,18,.92);
+  --line:rgba(255,255,255,.08);
+  --text:#fff; --text-2:rgba(255,255,255,.85); --body:#9ca3af;
+  --faint:rgba(255,255,255,.45); --fine:rgba(255,255,255,.25);
+  --accent:#4ade80; --info:#60a5fa; --warn:#fbbf24; --error:#f87171;
+  --on-accent:#030712;
+  --radius:12px; --radius-pill:20px; --maxw:1100px;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1); --t-hover:.15s; --t-small:.25s; --t-reveal:.45s;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{overflow:hidden;height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hidden;height:100%;line-height:1.65}
+.lp-scroll{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+.lp-section{position:relative;z-index:1;height:100vh;display:flex;align-items:center;justify-content:center;padding:0 24px;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
+.lp-inner{display:flex;align-items:center;gap:64px;max-width:var(--maxw);width:100%;opacity:0;transform:translateY(16px);transition:opacity var(--t-reveal) var(--ease),transform var(--t-reveal) var(--ease)}
+.lp-inner.visible{opacity:1;transform:translateY(0)}
+.text-col{flex:0 0 50%;display:flex;flex-direction:column;gap:24px;min-width:0}
+.demo-col{flex:1;display:flex;align-items:center;justify-content:center;min-width:0}
+.bg-effects{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.12;animation:orbFloat 20s ease-in-out infinite}
+.bg-orb-1{width:600px;height:600px;background:var(--accent);top:-240px;right:-120px}
+.bg-orb-2{width:500px;height:500px;background:var(--info);top:38%;left:-160px;animation-delay:-7s}
+.bg-orb-3{width:550px;height:550px;background:var(--warn);bottom:-220px;right:28%;animation-delay:-14s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0)}33%{transform:translate(30px,-40px)}66%{transform:translate(-20px,30px)}}
+.bg-grid{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px);background-size:32px 32px}
+.kbd{display:inline-block;font-family:ui-monospace,Consolas,monospace;font-size:12px;font-weight:600;color:var(--text-2);background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:6px;padding:2px 7px;line-height:1.4;vertical-align:middle}
+/* Hero hotkey strip — enlarged per Dilan 2026-07-10 */
+.hk-strip{display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.hk-cap{display:flex;align-items:center;justify-content:center;min-width:48px;height:48px;padding:0 14px;border-radius:11px;background:linear-gradient(180deg,#1c1f2e,#12141f);border:1px solid rgba(255,255,255,.2);border-bottom-width:4px;color:#eef;font:800 1.35rem/1 ui-monospace,Consolas,monospace;box-shadow:0 10px 26px rgba(0,0,0,.5)}
+.hk-label{font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint)}
+.hero-line{display:block;opacity:0;transform:translateY(12px);transition:opacity var(--t-reveal) var(--ease),transform var(--t-reveal) var(--ease);font-weight:700;font-size:clamp(2rem,5vw,3rem);line-height:1.14;letter-spacing:-.02em}
+.hero-line.visible{opacity:1;transform:translateY(0)}
+.hero-line.accent{color:var(--warn)}
+.hero-desc{opacity:0;transition:opacity var(--t-reveal) var(--ease);font-size:1.05rem;color:var(--body);max-width:580px;margin-top:6px}
+.hero-desc.visible{opacity:1}
+.seg-h{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700}
+.seg-p{color:var(--body);font-size:1.05rem;max-width:580px}
+.seg-list{list-style:none;display:flex;flex-direction:column;gap:16px;counter-reset:step}
+.seg-list li{display:flex;gap:14px;align-items:flex-start;color:var(--body);transition:opacity .35s var(--ease)}
+.seg-list li::before{counter-increment:step;content:counter(step);flex:0 0 28px;height:28px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--text);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;transition:background .3s,border-color .3s,color .3s}
+.seg-list.sync li{opacity:.45}
+.seg-list.sync li.on{opacity:1}
+.seg-list.sync li.on::before{background:rgba(74,222,128,.14);border-color:rgba(74,222,128,.6);color:var(--accent)}
+.seg-list b{color:var(--text)}
+.seg-aside{font-size:.92rem;color:var(--body);max-width:580px}
+.demo-panel{width:100%;max-width:460px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.demo-title{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:600;padding:10px 14px;border-bottom:1px solid var(--line);color:var(--text-2)}
+.demo-body{padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-height:300px;position:relative}
+.demo-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.skeleton{height:8px;border-radius:4px;background:rgba(255,255,255,.07);flex:1}
+.palette{border:1px solid var(--line);border-radius:8px;background:var(--glass-strong);padding:8px;display:flex;flex-direction:column;gap:6px}
+.palette-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--body);border:1px solid transparent;border-radius:6px;padding:6px 10px;transition:background .2s,border-color .2s,color .2s}
+.palette-row.sel{background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.5);color:var(--text)}
+.pr-when{margin-left:auto;font-size:10px;font-weight:600;color:var(--faint);font-variant-numeric:tabular-nums}
+/* ═══ HERO FILM KIT (concept C "The attention race") ═══ */
+.ha-stage{position:relative;width:100%;max-width:560px;height:360px;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#05070f}
+.ha-vig{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 0%,rgba(96,165,250,.06),transparent 60%)}
+.ha-clock{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:6;display:inline-flex;align-items:center;gap:6px;background:rgba(3,7,18,.75);border:1px solid var(--line);border-radius:var(--radius-pill);padding:4px 12px;font-size:12px;font-weight:700;color:var(--text-2);backdrop-filter:blur(8px);font-variant-numeric:tabular-nums}
+.ha-clock.tick{animation:haPop .22s cubic-bezier(.34,1.56,.64,1)}
+.ha-clock.landed{border-color:rgba(74,222,128,.6);color:var(--accent);box-shadow:0 0 16px rgba(74,222,128,.25)}
+@keyframes haPop{50%{transform:scale(1.12)}}
+.ha-race{position:absolute;inset:48px 14px 44px;display:grid;grid-template-columns:1fr 1fr;gap:14px;z-index:2}
+.ha-pane{position:relative;background:rgba(9,11,20,.92);border:1px solid rgba(255,255,255,.1);border-radius:14px;box-shadow:0 18px 44px rgba(0,0,0,.5);padding:12px;display:flex;flex-direction:column;gap:9px;transition:border-color .35s,box-shadow .35s,opacity .35s,transform .35s var(--ease)}
+.ha-pane.intro{opacity:.18;transform:scale(.95)}
+.ha-pane.win{border-color:rgba(74,222,128,.55);box-shadow:0 0 0 3px rgba(74,222,128,.12),0 18px 44px rgba(0,0,0,.5)}
+.ha-phead{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.ha-plabel{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:4px 9px;border-radius:var(--radius-pill);border:1px solid;transition:box-shadow .3s}
+.ha-plabel.wo{color:#fcd34d;background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.4)}
+.ha-plabel.wi{color:#86efac;background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.4)}
+.ha-plabel.pop{animation:haPop .3s cubic-bezier(.34,1.56,.64,1)}
+.ha-meter{font-size:10px;font-weight:700;color:var(--faint);font-variant-numeric:tabular-nums;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.ha-meter b{color:var(--warn);font-size:14px;font-weight:800}
+.ha-pane.win .ha-meter b{color:var(--accent)}
+.ha-vs{position:absolute;left:50%;top:64px;transform:translate(-50%,0) scale(.6);z-index:5;width:30px;height:30px;border-radius:50%;background:#12141f;border:1px solid rgba(255,255,255,.22);box-shadow:0 10px 26px rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--text-2);text-transform:uppercase;opacity:0;transition:transform .25s cubic-bezier(.34,1.56,.64,1),opacity .2s}
+.ha-vs.in{opacity:1;transform:translate(-50%,0) scale(1)}
+.ha-row{position:relative;display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:9px;background:rgba(255,255,255,.03);border:1px solid transparent;font-size:11px;font-weight:600;color:var(--text-2);max-height:32px;transition:transform .3s cubic-bezier(.5,0,.15,1),opacity .28s,max-height .3s cubic-bezier(.5,0,.15,1),padding .3s cubic-bezier(.5,0,.15,1),margin .3s cubic-bezier(.5,0,.15,1),border-color .25s,box-shadow .25s}
+.ha-row.pre{opacity:0}
+.ha-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.ha-dot.amber{background:var(--warn)}
+.ha-when{margin-left:auto;font-size:9.5px;font-weight:600;color:var(--faint)}
+.ha-row.shout{border-color:rgba(251,191,36,.55);box-shadow:0 0 0 3px rgba(251,191,36,.12)}
+.ha-row.gone{transform:translateX(120%) rotate(2deg);opacity:0;max-height:0;padding-top:0;padding-bottom:0;margin-top:-9px}
+.ha-row.back{animation:haDropIn .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes haDropIn{0%{transform:translateY(-12px) scale(.96);opacity:0}60%{transform:translateY(2px) scale(1.01);opacity:1}100%{transform:none;opacity:1}}
+.ha-row.ontime{border-color:rgba(251,191,36,.5)}
+.ha-rtag{display:none;margin-left:auto;font-size:8.5px;font-weight:800;letter-spacing:.02em;color:var(--warn);align-items:center;gap:3px;text-transform:uppercase;white-space:nowrap}
+.ha-row.ontime .ha-rtag{display:inline-flex}
+.ha-row.ontime .ha-when{display:none}
+.ha-status{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;border-radius:var(--radius-pill);padding:3px 10px;background:rgba(251,191,36,.12);color:var(--warn);width:fit-content;transition:background .3s,color .3s,opacity .25s;opacity:0}
+.ha-status.show{opacity:1}
+.ha-status.go{background:rgba(74,222,128,.12);color:var(--accent)}
+.ha-flow{margin-top:auto}
+.ha-flabel{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:5px;display:flex;justify-content:space-between}
+.ha-track{height:8px;border-radius:5px;background:rgba(255,255,255,.06);overflow:hidden;position:relative}
+.ha-fill{position:absolute;inset:0;transform-origin:left;transform:scaleX(0);background:linear-gradient(90deg,#22c55e,#4ade80);border-radius:5px;transition:background .2s}
+.ha-pane.jolt .ha-fill{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.ha-keys{position:absolute;left:75.5%;top:58px;transform:translateX(-50%) translateY(16px) scale(.7);z-index:8;opacity:0;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .2s;display:flex;gap:10px;align-items:flex-end}
+.ha-keys.in{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}
+.ha-keys.out{opacity:0;transform:translateX(-50%) translateY(16px) scale(.8);transition:transform .25s var(--ease),opacity .2s}
+.ha-key{display:flex;flex-direction:column;align-items:center;gap:6px}
+.ha-cap{display:flex;align-items:center;justify-content:center;min-width:44px;height:44px;padding:0 11px;border-radius:10px;background:linear-gradient(180deg,#1c1f2e,#12141f);border:1px solid rgba(255,255,255,.18);border-bottom-width:4px;color:#eef;font:800 1.05rem/1 ui-monospace,Consolas,monospace;box-shadow:0 14px 34px rgba(0,0,0,.6);position:relative;transition:transform .1s ease,border-bottom-width .1s}
+.ha-keys.pressed .ha-cap{transform:translateY(3px);border-bottom-width:1px;box-shadow:0 6px 18px rgba(0,0,0,.5)}
+.ha-cap::after{content:"";position:absolute;inset:-7px;border-radius:14px;border:2px solid rgba(74,222,128,.6);opacity:0}
+.ha-keys.pressed .ha-cap::after{animation:haRing .45s var(--ease)}
+@keyframes haRing{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.06)}}
+.ha-klabel{font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--faint);text-transform:uppercase}
+.ha-modal{position:absolute;left:75.5%;top:106px;width:200px;transform:translateX(-50%) scale(.9);opacity:0;z-index:7;background:#12141f;border:1px solid rgba(255,255,255,.14);border-radius:13px;box-shadow:0 26px 70px rgba(0,0,0,.65);padding:11px;transition:transform .26s cubic-bezier(.34,1.56,.64,1),opacity .2s;pointer-events:none}
+.ha-modal.in{opacity:1;transform:translateX(-50%) scale(1)}
+.ha-modal.commit{border-color:rgba(74,222,128,.7);box-shadow:0 0 0 3px rgba(74,222,128,.2),0 26px 70px rgba(0,0,0,.65)}
+.ha-mtitle{display:flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:var(--text-2);margin:0 1px 8px}
+.ha-mtitle svg{color:var(--faint)}
+.ha-presets{display:flex;flex-direction:column;gap:4px}
+.ha-preset{display:flex;align-items:center;gap:7px;padding:5px 9px;border-radius:8px;font-size:10.5px;font-weight:600;color:var(--text-2);background:rgba(255,255,255,.04);border:1px solid transparent;transition:background .15s,border-color .15s,color .15s}
+.ha-preset.sel{background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.55);color:#d9ffe6}
+.ha-preset .ok{margin-left:auto;font-size:10px;color:var(--accent);font-weight:800;opacity:0;transition:opacity .15s}
+.ha-preset.sel .ok{opacity:1}
+.ha-input{display:flex;align-items:center;border:1px solid rgba(255,255,255,.14);border-radius:8px;background:rgba(255,255,255,.05);padding:6px 9px;font:600 10.5px/1.3 ui-monospace,Consolas,monospace;color:#eef;min-height:28px;margin-bottom:6px}
+.ha-input .ph{color:var(--fine);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ha-caret{width:2px;height:12px;background:var(--accent);margin-left:1px;animation:haCaret 1s steps(1) infinite;flex-shrink:0}
+@keyframes haCaret{50%{opacity:0}}
+/* ── PAUSE-THE-LOOP hero (alt) ── */
+.pl-all{position:absolute;inset:0;transition:opacity .3s}
+.pl-svg{position:absolute;inset:0;width:100%;height:100%}
+.pl-arc{stroke:rgba(251,191,36,.5);stroke-width:1.8;fill:none;stroke-dasharray:7 6;animation:plFlow 1s linear infinite;opacity:0;transition:opacity .5s}
+.pl-arc.on{opacity:1}
+.pl-arc.rev{animation-direction:reverse}
+.pl-arc.paused{animation-play-state:paused;opacity:.3}
+@keyframes plFlow{to{stroke-dashoffset:-13}}
+.pl-thin{stroke:rgba(251,191,36,.22);stroke-width:1.2;fill:none;stroke-dasharray:3 6;opacity:0;transition:opacity .5s}
+.pl-thin.on{opacity:1}
+.pl-lane{stroke:#4ade80;stroke-width:3;fill:none;opacity:0;transition:opacity .45s;filter:drop-shadow(0 0 6px rgba(74,222,128,.5))}
+.pl-lane.on{opacity:1}
+.pl-you{position:absolute;left:14%;top:32%;width:52px;height:52px;border-radius:50%;background:rgba(9,11,20,.95);border:1px solid rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--text-2);z-index:3;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.pl-you.jit{animation:plJit .35s ease-in-out}
+@keyframes plJit{25%{transform:translate(1.5px,-1.5px)}75%{transform:translate(-1.5px,1.5px)}}
+.pl-node{position:absolute;display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--text-2);background:rgba(9,11,20,.92);border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:6px 10px;z-index:3;box-shadow:0 10px 26px rgba(0,0,0,.45);white-space:nowrap;transition:border-color .3s,box-shadow .3s}
+.pl-node.focus{border-color:rgba(74,222,128,.55);box-shadow:0 0 0 3px rgba(74,222,128,.12)}
+.pl-node .rt{display:none;font-size:8.5px;font-weight:800;color:var(--warn);text-transform:uppercase;margin-left:2px;letter-spacing:.03em}
+.pl-node.ret .rt{display:inline}
+.pl-bt{margin-left:6px;font-size:8.5px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:var(--warn);background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.45);border-radius:var(--radius-pill);padding:2px 7px;animation:plHot 1.1s ease-in-out infinite;white-space:nowrap}
+@keyframes plHot{50%{box-shadow:0 0 0 3px rgba(251,191,36,.15)}}
+.pl-bt.go{color:#86efac;background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.5);animation:none}
+.pl-rounds{position:absolute;left:14px;top:12px;display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;color:var(--warn);background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.4);border-radius:var(--radius-pill);padding:4px 10px;z-index:6}
+.pl-rounds b{font-variant-numeric:tabular-nums}
+.pl-rounds b.pop{animation:haPop .25s cubic-bezier(.34,1.56,.64,1);display:inline-block}
+.pl-pause{position:absolute;left:41%;top:22%;transform:translateX(-50%) scale(.8);display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;color:var(--warn);background:rgba(9,11,20,.95);border:1px solid rgba(251,191,36,.5);border-radius:var(--radius-pill);padding:5px 11px;z-index:6;opacity:0;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .22s,border-color .3s,color .3s;white-space:nowrap}
+.pl-pause.in{opacity:1;transform:translateX(-50%) scale(1)}
+.pl-pause.res{color:#86efac;border-color:rgba(74,222,128,.55)}
+.pl-pause .pi{display:inline-flex;gap:2px}
+.pl-pause .pi i{width:3px;height:9px;background:currentColor;border-radius:1px}
+/* seg + educate mini-films */
+.mf-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-2);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:8px;padding:8px 10px;transition:opacity .3s,border-color .3s,box-shadow .3s,transform .35s var(--ease)}
+.mf-row.ghost{opacity:.38}
+.mf-row.shout{border-color:rgba(251,191,36,.55);box-shadow:0 0 0 3px rgba(251,191,36,.12)}
+.mf-row.out{transform:translateX(115%);opacity:0}
+.mf-row.back{animation:haDropIn .5s cubic-bezier(.34,1.56,.64,1)}
+.mf-rtag{display:none;margin-left:auto;font-size:9px;font-weight:800;letter-spacing:.02em;color:var(--warn);align-items:center;gap:3px;text-transform:uppercase;white-space:nowrap}
+.mf-row.ontime .mf-rtag{display:inline-flex}
+.mf-clock{margin-left:auto;font-size:10px;font-weight:700;color:var(--faint);font-variant-numeric:tabular-nums;transition:color .3s}
+.mf-clock.landed{color:var(--accent)}
+.mf-state{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;border-radius:var(--radius-pill);padding:3px 10px;background:rgba(251,191,36,.12);color:var(--warn);width:fit-content;transition:background .3s,color .3s,opacity .25s}
+.mf-state.go{background:rgba(74,222,128,.12);color:var(--accent)}
+.mf-cap{border-top:1px solid var(--line);margin-top:auto;padding-top:9px;font-size:11.5px;color:var(--body);min-height:38px;position:relative}
+.mf-cap span{position:absolute;left:0;right:0;top:9px;opacity:0;transition:opacity .25s var(--ease)}
+.mf-cap span.on{opacity:1}
+.mf-cap b{color:var(--warn);font-weight:600}
+.mf-typed{font:600 12px/1.3 ui-monospace,Consolas,monospace;color:#eef}
+/* educate walkthrough overlays */
+.ed-ctx{position:absolute;left:44%;top:44px;width:158px;background:#12141f;border:1px solid rgba(255,255,255,.14);border-radius:10px;box-shadow:0 20px 55px rgba(0,0,0,.6);padding:6px;opacity:0;transform:scale(.92);transition:transform .22s cubic-bezier(.34,1.56,.64,1),opacity .18s;z-index:6}
+.ed-ctx.in{opacity:1;transform:scale(1)}
+.ed-ctx .ci{display:flex;align-items:center;gap:7px;padding:6px 9px;border-radius:7px;font-size:11px;font-weight:600;color:var(--text-2);border:1px solid transparent;transition:background .15s,border-color .15s}
+.ed-ctx .ci.hot{background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.5)}
+.ed-pal{position:absolute;left:50%;top:34px;transform:translateX(-50%) scale(.94);width:90%;opacity:0;z-index:7;transition:transform .24s cubic-bezier(.34,1.56,.64,1),opacity .2s;pointer-events:none}
+.ed-pal.in{opacity:1;transform:translateX(-50%) scale(1)}
+.ed-pal .palette{box-shadow:0 24px 64px rgba(0,0,0,.65)}
+.ed-pal.commit .palette{border-color:rgba(74,222,128,.6);box-shadow:0 0 0 3px rgba(74,222,128,.18),0 24px 64px rgba(0,0,0,.65)}
+.ed-dim{position:absolute;inset:0;background:rgba(3,7,18,.55);opacity:0;transition:opacity .3s;z-index:5;pointer-events:none}
+.ed-dim.on{opacity:1}
+.ha-cursor{position:absolute;z-index:9;opacity:0;transition:left .5s cubic-bezier(.5,0,.15,1),top .5s cubic-bezier(.5,0,.15,1),opacity .25s;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.7))}
+.ha-cursor.in{opacity:1}
+.ha-cursor svg{display:block}
+.ha-cursor .rip{position:absolute;left:-8px;top:-8px;width:28px;height:28px;border-radius:50%;border:2px solid rgba(74,222,128,.65);opacity:0}
+.ha-cursor.click .rip{animation:haRing .4s var(--ease)}
+.ha-cursor.click svg{animation:haClickDip .18s ease}
+@keyframes haClickDip{50%{transform:scale(.8)}}
+.ha-score{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.85);opacity:0;z-index:9;background:rgba(9,11,20,.95);border:1px solid rgba(74,222,128,.4);border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,.7);padding:16px 26px;text-align:center;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .22s;pointer-events:none}
+.ha-score.in{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.ha-score .big{font-size:22px;font-weight:800;letter-spacing:-.01em}
+.ha-score .big b{color:var(--accent)}
+.ha-score .big .bad{color:var(--warn)}
+.ha-score .small{font-size:11px;color:var(--body);margin-top:3px;font-weight:600}
+.ha-caps{position:absolute;left:12px;right:12px;bottom:0;height:40px;z-index:6;pointer-events:none}
+.ha-cap-line{position:absolute;left:0;right:0;bottom:17px;text-align:center;font-size:11px;font-weight:600;color:var(--body);opacity:0;transition:opacity .25s var(--ease)}
+.ha-cap-line.on{opacity:1}
+.ha-cap-line b{color:var(--text-2)}
+.ha-dots{position:absolute;left:50%;transform:translateX(-50%);bottom:6px;display:inline-flex;gap:5px}
+.ha-dots i{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.18);transition:background .2s}
+.ha-dots i.on{background:var(--accent)}
+.ha-board{display:none}
+@media(max-width:640px){.ha-race{inset:44px 10px 42px;gap:8px}}
+.lp-cta-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:var(--radius);background:var(--accent);color:var(--on-accent);font-weight:600;font-size:15px;text-decoration:none;border:none;cursor:pointer;transition:transform var(--t-hover),box-shadow var(--t-hover);width:fit-content}
+.lp-cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(74,222,128,.25)}
+.lp-cta-btn:focus-visible{outline:2px solid var(--info);outline-offset:3px}
+.lp-cta{flex-direction:column;text-align:center}
+.lp-cta .seg-p{margin:16px auto 40px}
+.lp-cta-sub{margin-top:16px;color:var(--body);font-size:14px}
+.lp-cta-sub.flash{animation:subFlash 1.4s var(--ease)}
+@keyframes subFlash{0%,25%{color:var(--warn)}100%{color:var(--body)}}
+.scroll-hint{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:200;color:var(--fine);font-size:11px;display:flex;flex-direction:column;align-items:center;gap:4px;transition:opacity .4s;pointer-events:none}
+.scroll-hint.hidden{opacity:0}
+.scroll-hint-arrow{width:20px;height:20px;border-right:2px solid rgba(255,255,255,.2);border-bottom:2px solid rgba(255,255,255,.2);transform:rotate(45deg);animation:scrollBounce 1.5s ease-in-out infinite}
+@keyframes scrollBounce{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(3px,3px)}}
+@media(max-width:800px){
+  .lp-scroll{height:100vh;height:100dvh;scroll-snap-type:y proximity}
+  .lp-section{height:auto;min-height:100vh;min-height:100svh;padding:48px 24px;overflow:visible}
+  .lp-inner{flex-direction:column;gap:40px;text-align:center}
+  .text-col{align-items:center}
+  .hero-line{font-size:clamp(1.65rem,7vw,2.1rem)}
+  .hero-desc{max-width:100%}
+  .hk-strip{justify-content:center}
+  .seg-list li{text-align:left}
+  .scroll-hint{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.1s!important}
+  .bg-orb,.scroll-hint-arrow{animation:none!important}
+  .seg-list.sync li{opacity:1}
+  /* hero film: stage hides, static 3-still storyboard tells the story */
+  .ha-stage{display:none}
+  .ha-board{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:560px;margin:0 auto;text-align:left}
+  .ha-bcard{background:rgba(9,11,20,.92);border:1px solid var(--line);border-radius:12px;padding:12px}
+  .ha-brow{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--text-2);background:rgba(255,255,255,.04);border-radius:7px;padding:6px 9px;margin-bottom:6px}
+  .ha-bcap{font-size:11px;color:var(--body);margin-top:8px}
+  .lp-scroll{scroll-behavior:auto}
+  .lp-inner,.hero-line,.hero-desc{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-effects" aria-hidden="true">
+  <div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-2"></div><div class="bg-orb bg-orb-3"></div>
+  <div class="bg-grid"></div>
+</div>
+
+<main class="lp-scroll" id="scroll" tabindex="0">
+
+  <!-- ════ SEGMENT 1 — HOOK ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <div class="hk-strip">
+          <span class="hk-cap" aria-label="H key">H</span>
+          <span class="hk-label">Snooze &middot; press H</span>
+        </div>
+        <h1>
+          <span class="hero-line accent">Own the block</span>
+        </h1>
+        <p class="hero-desc">Checking every few minutes is what kills a block. Snooze what can wait for 2 hours. It comes back on its own, and the block stays whole.</p>
+        <!-- PLACEHOLDER: agentmc:// deep link to the Education Hub Snooze trainer (Dilan 2026-07-10). Hub not built yet; scrolls to #try until wired. -->
+        <a class="lp-cta-btn hero-cta" href="#try" data-goto="3">Teach me snooze</a>
+      </div>
+      <div class="demo-col">
+        <div class="ha-stage" id="haStage" role="img"
+             aria-label="A diagram of the respond loop. Ask and reply pulses circulate between a node labeled you and the Dep sweep session while a rounds counter climbs to three. Below, Fix payment webhook is marked needs you now on a thin starved line. H is pressed and 2 Hours From Now picked: the loop pauses with a badge reading paused, resumes 4:14. A thick green lane swings to the priority ask, which gets answered. At 4:14 the badge flips to resuming, the loop warms back up, and Dep sweep returns for one round.">
+          <div class="ha-vig" aria-hidden="true"></div>
+          <div class="pl-all" id="plAll">
+            <svg class="pl-svg" viewBox="0 0 560 360" preserveAspectRatio="none" aria-hidden="true">
+              <path id="plTop" class="pl-arc" d="M142,135 C190,84 270,80 318,116"/>
+              <path id="plBot" class="pl-arc rev" d="M318,130 C270,168 190,172 142,147"/>
+              <path id="plThin" class="pl-thin" d="M142,152 C185,218 230,250 268,260"/>
+              <path id="plLane" class="pl-lane" d="M142,152 C185,218 230,250 268,260"/>
+              <g id="plPulses" style="opacity:0;transition:opacity .4s">
+                <circle r="4" fill="#fbbf24"><animateMotion dur="1.15s" repeatCount="indefinite" path="M318,116 C270,80 190,84 142,135"/></circle>
+                <circle r="4" fill="#4ade80"><animateMotion dur="1.15s" begin="0.575s" repeatCount="indefinite" path="M142,147 C190,172 270,168 318,130"/></circle>
+              </g>
+              <g id="plLaneDot" style="opacity:0;transition:opacity .4s">
+                <circle r="3.5" fill="#4ade80"><animateMotion dur="1.2s" repeatCount="indefinite" path="M142,152 C185,218 230,250 268,260"/></circle>
+              </g>
+            </svg>
+            <div class="pl-rounds"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>rounds <b id="plRounds">0</b></div>
+            <div class="pl-you" id="plYou"><span>you</span></div>
+            <div class="pl-node" id="plA" style="left:56%;top:29%"><span class="ha-dot amber"></span>Dep sweep<span class="rt">&middot; returned</span></div>
+            <div class="pl-node" id="plB" style="left:40%;top:70%"><span class="ha-dot amber"></span>Fix payment webhook<span class="pl-bt" id="plBt">needs you now</span></div>
+            <div class="pl-pause" id="plPause"><span class="pi" aria-hidden="true"><i></i><i></i></span><span id="plPauseTxt">paused &middot; resumes 4:14</span></div>
+            <div class="ha-keys" id="plKeys" style="left:auto;right:18px;top:14px;transform:translateY(0) scale(.75)"><span class="ha-key"><span class="ha-cap">H</span><span class="ha-klabel">snooze</span></span></div>
+            <div class="ha-modal" id="plModal" style="left:40%;top:92px">
+              <div class="ha-mtitle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/></svg>Snooze until&hellip;</div>
+              <div class="ha-input"><span class="ph">e.g. 2h, Friday, tomorrow 5pm&hellip;</span><span class="ha-caret" aria-hidden="true"></span></div>
+              <div class="ha-presets">
+                <div class="ha-preset" id="plP0">2 Hours From Now<span class="ok">&#10003;</span></div>
+                <div class="ha-preset">This Evening<span class="ok">&#10003;</span></div>
+                <div class="ha-preset">Tomorrow Morning<span class="ok">&#10003;</span></div>
+                <div class="ha-preset">Tomorrow Afternoon<span class="ok">&#10003;</span></div>
+              </div>
+            </div>
+            <div class="ha-cursor" id="plCur"><svg width="15" height="15" viewBox="0 0 24 24" fill="#eef" stroke="#05070f" stroke-width="1.4"><path d="M4 2l16 11.5-7 .8L9.6 22z"/></svg><span class="rip" aria-hidden="true"></span></div>
+          </div>
+          <div class="ha-clock" id="haClock"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span id="haClockTxt">2:14 PM</span></div>
+          <div class="ha-caps" aria-hidden="true">
+            <div class="ha-cap-line" data-s="0">You keep answering <b>the same session</b>.</div>
+            <div class="ha-cap-line" data-s="1"><b>Snooze.</b> The loop pauses until 4:14.</div>
+            <div class="ha-cap-line" data-s="2">Your attention goes <b>where it matters now</b>.</div>
+            <div class="ha-cap-line" data-s="3">4:14. It resumes. <b>One round, done.</b></div>
+            <div class="ha-dots"><i data-d="0"></i><i data-d="1"></i><i data-d="2"></i><i data-d="3"></i></div>
+          </div>
+        </div>
+        <div class="ha-board" aria-label="Pause the loop, in three panels">
+          <div class="ha-bcard"><div class="ha-brow"><span class="ha-dot amber"></span>you &#8646; Dep sweep &middot; round 3</div><div class="ha-bcap">The respond loop spins while the urgent ask sits starved.</div></div>
+          <div class="ha-bcard"><div class="ha-brow" style="border:1px solid rgba(251,191,36,.4)">&#9208; paused &middot; resumes 4:14</div><div class="ha-bcap"><b>H</b> pauses the loop. Your attention swings to what matters now.</div></div>
+          <div class="ha-bcard"><div class="ha-brow" style="border:1px solid rgba(74,222,128,.45)">Fix payment webhook &middot; Answered ✓</div><div class="ha-bcap">At 4:14 the loop resumes for one round. <b>Own the block.</b></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ SEGMENT 2 — SELL: the checking is the interruption ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <h2 class="seg-h">The checking is the interruption</h2>
+        <p class="seg-p">You peek so you won't miss the moment it needs you. Five peeks later the block is gone, and the ask still wasn't ready.</p>
+        <p class="seg-p"><b style="color:var(--text)">Snooze it for 2 hours and stop checking.</b> One return, on schedule. Even a question that lands mid-block waits for you. Presets not right? Type the time in your own words: "in 2 hours", "530p", even "tomorow 5pm" with the typo.</p>
+      </div>
+      <div class="demo-col">
+        <div class="demo-panel" style="max-width:400px" role="img" aria-label="Three asks parked to a single return. The clock sweeps two hours; at 4:14 all three come back together. One sitting instead of five peeks.">
+          <div class="demo-title">One return, not five peeks <span class="mf-clock" id="bkClock">2:14 PM</span></div>
+          <div class="demo-body" style="min-height:216px" id="bkBody">
+            <span class="mf-state" id="bkState">Snoozed &middot; return in 2 hours</span>
+            <div class="mf-row ghost" id="bkR1"><span class="demo-dot" style="background:var(--warn)"></span>Dep sweep</div>
+            <div class="mf-row ghost" id="bkR2"><span class="demo-dot" style="background:var(--warn)"></span>Docs regen</div>
+            <div class="mf-row ghost" id="bkR3"><span class="demo-dot" style="background:var(--warn)"></span>Bug triage batch</div>
+            <div class="mf-cap">
+              <span data-s="0" class="on">Parked. <b>Your block runs clean.</b></span>
+              <span data-s="1">4:14. <b>All three back at once.</b> One sitting, not five peeks.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ SEGMENT 3 — EDUCATE: one full snooze, start to finish ════ -->
+  <section class="lp-section" id="try">
+    <div class="lp-inner">
+      <div class="text-col">
+        <h2 class="seg-h">How it works</h2>
+        <ol class="seg-list" id="edSteps">
+          <li id="edLi1"><span><b>Right-click the session and pick Snooze.</b> Or press <kbd class="kbd">H</kbd> with the session active. Two clicks either way.</span></li>
+          <li id="edLi2"><span><b>Pick a return time, or type one in your words.</b> The palette offers 2 Hours From Now plus the three natural times coming up next. Typing works too: "in 2 hours", "530p", even "tomorow 5pm" with the typo. AMC shows what it understood before you press Enter.</span></li>
+          <li id="edLi3"><span><b>Done. It leaves the sidebar and inbox until your time.</b> Then it returns on its own. A message wakes it early, and the amber badge edits or ends the snooze.</span></li>
+        </ol>
+        <p class="seg-aside">Shift-select first and one snooze parks the whole batch.</p>
+      </div>
+      <div class="demo-col">
+        <div class="demo-panel" style="max-width:400px" role="img" aria-label="One full snooze, start to finish: right-click a session, pick Snooze from the menu, the palette opens, 2 Hours From Now is clicked, the session leaves the list, the clock sweeps to 4:14, and it returns on its own.">
+          <div class="demo-title">One snooze, start to finish <span class="mf-clock" id="edClock">2:14 PM</span></div>
+          <div class="demo-body" style="min-height:236px" id="edBody">
+            <div class="mf-row" id="edR1"><span class="demo-dot" style="background:var(--warn)"></span>Dep sweep<span class="mf-clock">needs you</span><span class="mf-rtag"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/></svg>returned</span></div>
+            <div class="mf-row" id="edR2"><span class="demo-dot" style="background:var(--accent)"></span>Perf profiling run<span class="mf-clock">running</span></div>
+            <div class="mf-row" id="edR3"><span class="demo-dot" style="background:var(--accent)"></span>Docs regen<span class="mf-clock">running</span></div>
+            <span class="mf-state" id="edState" style="opacity:0">Snoozed until 4:14 PM</span>
+            <div class="ed-dim" id="edDim"></div>
+            <div class="ed-ctx" id="edCtx">
+              <div class="ci"><span class="skeleton" style="max-width:70%"></span></div>
+              <div class="ci hot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/></svg>Snooze</div>
+              <div class="ci"><span class="skeleton" style="max-width:55%"></span></div>
+            </div>
+            <div class="ed-pal" id="edPal">
+              <div class="palette">
+                <div class="ha-input" style="margin-bottom:0"><span class="ph">e.g. 2h, Friday, tomorrow 5pm&hellip;</span><span class="ha-caret" aria-hidden="true"></span></div>
+                <div class="palette-row" id="edPick">2 Hours From Now<span class="pr-when">4:14 PM</span></div>
+                <div class="palette-row">This Evening<span class="pr-when">6:00 PM</span></div>
+                <div class="palette-row">Tomorrow Morning<span class="pr-when">8:00 AM</span></div>
+                <div class="palette-row">Tomorrow Afternoon<span class="pr-when">1:00 PM</span></div>
+              </div>
+            </div>
+            <div class="ha-cursor" id="edCur"><svg width="15" height="15" viewBox="0 0 24 24" fill="#eef" stroke="#05070f" stroke-width="1.4"><path d="M4 2l16 11.5-7 .8L9.6 22z"/></svg><span class="rip" aria-hidden="true"></span></div>
+            <div class="mf-cap">
+              <span data-s="0" class="on"><b>Right-click.</b> Pick Snooze.</span>
+              <span data-s="1">Pick a time. <b>Or type one.</b></span>
+              <span data-s="2">Gone for 2 hours. <b>Back on its own.</b></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ SEGMENT 4 — CTA: the trainer ════ -->
+  <section class="lp-section lp-cta">
+    <div class="lp-inner" style="flex-direction:column">
+      <h2 class="seg-h">Take the next two hours back</h2>
+      <p class="seg-p">The Snooze trainer walks you through a 2-hour snooze on a practice session. Nothing to install, nothing to set up.</p>
+      <!-- PLACEHOLDER: agentmc:// deep link to the Education Hub Snooze trainer (Dilan 2026-07-10). Hub not built yet; scrolls to #try until wired. -->
+      <a class="lp-cta-btn" href="#try" id="finale-cta">Teach me snooze</a>
+      <p class="lp-cta-sub" id="finale-sub">Or right now: right-click a session, pick Snooze, choose 2 Hours From Now.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="scroll-hint" id="hint"><span>Scroll</span><div class="scroll-hint-arrow"></div></div>
+
+<script>
+(function(){
+  var scroller=document.getElementById('scroll');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  console.log('[snooze-dev-block] init',{segments:document.querySelectorAll('.lp-section').length,reduce:reduce});
+  function staged(inner){
+    var steps=inner.querySelectorAll('.hero-line,.hero-desc');
+    steps.forEach(function(el,i){setTimeout(function(){el.classList.add('visible');},reduce?0:180*i+120);});
+  }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');staged(e.target);io.unobserve(e.target);}
+    });
+  },{root:scroller,threshold:.35});
+  document.querySelectorAll('.lp-inner').forEach(function(el){io.observe(el)});
+  document.querySelectorAll('[data-goto]').forEach(function(a){
+    a.addEventListener('click',function(ev){
+      ev.preventDefault();
+      var target=document.querySelectorAll('.lp-section')[Number(a.getAttribute('data-goto'))-1];
+      if(target){target.scrollIntoView({behavior:reduce?'auto':'smooth'});}
+    });
+  });
+  var finale=document.getElementById('finale-cta'),finaleSub=document.getElementById('finale-sub');
+  if(finale&&finaleSub){
+    finale.addEventListener('click',function(){
+      /* no preventDefault - href=#try scrolls to the how-to while the path flashes */
+      finaleSub.classList.remove('flash');void finaleSub.offsetWidth;finaleSub.classList.add('flash');
+    });
+  }
+  var hint=document.getElementById('hint');
+  scroller.addEventListener('scroll',function(){hint.classList.add('hidden');},{once:true,passive:true});
+  scroller.focus({preventScroll:true});
+})();
+</script>
+<script>
+/* ═══ HERO FILM — ALT "Pause the loop" (haFilm engine; ALT variant) ═══ */
+function haFilm(stageEl,DUR,def){
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){def.reset();if(def.final)def.final();console.log('[snooze-dev-block] film: reduced motion, final frame shown');return}
+  var start=null,idx=0;
+  function loop(ts){
+    if(start===null){start=ts;idx=0;def.reset();}
+    var t=(ts-start)/1000;
+    while(idx<def.cues.length&&def.cues[idx].at<=t){def.cues[idx].do();idx++;}
+    if(def.tick)def.tick(t);
+    if(t>=DUR)start=null;
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+}
+function haClock(clockEl,txtEl,txt,landed){txtEl.textContent=txt;clockEl.classList.remove('tick');void clockEl.offsetWidth;clockEl.classList.add('tick');clockEl.classList.toggle('landed',!!landed)}
+function haCap(root,n){root.querySelectorAll('.ha-cap-line').forEach(function(c){c.classList.toggle('on',+c.dataset.s===n)});root.querySelectorAll('.ha-dots i').forEach(function(d){d.classList.toggle('on',+d.dataset.d<=n)})}
+function haCur(cur,x,y){cur.style.left=x;cur.style.top=y}
+function haCurClick(cur){cur.classList.remove('click');void cur.offsetWidth;cur.classList.add('click')}
+function haType(node,text,t0,t1,t){var k=Math.max(0,Math.min(1,(t-t0)/(t1-t0)));node.textContent=text.slice(0,Math.round(k*text.length))}
+function mfCap(root,n){root.querySelectorAll('.mf-cap span').forEach(function(c){c.classList.toggle('on',+c.dataset.s===n)})}
+(function(){
+  /* HERO ALT: PAUSE THE LOOP — respond-cycle pulses; snooze pauses; attention swings to priority */
+  var $=function(id){return document.getElementById(id)};
+  var stage=$('haStage'),all=$('plAll'),top=$('plTop'),bot=$('plBot'),thin=$('plThin'),lane=$('plLane'),
+      pulses=$('plPulses'),laneDot=$('plLaneDot'),you=$('plYou'),nodeA=$('plA'),nodeB=$('plB'),bt=$('plBt'),
+      rounds=$('plRounds'),pauseB=$('plPause'),pauseTxt=$('plPauseTxt'),
+      keys=$('plKeys'),modal=$('plModal'),p0=$('plP0'),cur=$('plCur'),
+      clock=$('haClock'),clockTxt=$('haClockTxt');
+  console.log('[snooze-dev-block] hero film init: 9.4s pause-the-loop diagram loop (alt)');
+  function round(n){rounds.textContent=String(n);rounds.classList.remove('pop');void rounds.offsetWidth;rounds.classList.add('pop');you.classList.remove('jit');void you.offsetWidth;you.classList.add('jit')}
+  var cues=[
+    {at:.2,do:function(){top.classList.add('on');bot.classList.add('on');thin.classList.add('on');pulses.style.opacity='1';haCap(stage,0)}},
+    {at:1.2,do:function(){round(1)}},
+    {at:2.35,do:function(){round(2)}},
+    {at:3.5,do:function(){round(3)}},
+    {at:3.7,do:function(){keys.classList.add('in')}},
+    {at:3.95,do:function(){keys.classList.add('pressed')}},
+    {at:4.1,do:function(){modal.classList.add('in');keys.classList.remove('pressed');cur.classList.add('in');haCur(cur,'42%','118px')}},
+    {at:4.3,do:function(){haCur(cur,'42%','172px')}},
+    {at:4.55,do:function(){haCurClick(cur);p0.classList.add('sel')}},
+    {at:4.75,do:function(){modal.classList.add('commit')}},
+    {at:4.95,do:function(){modal.classList.remove('in');cur.classList.remove('in');keys.classList.add('out');pulses.style.opacity='0';top.classList.add('paused');bot.classList.add('paused');pauseB.classList.add('in');haCap(stage,1)}},
+    {at:5.45,do:function(){lane.classList.add('on');laneDot.style.opacity='1';nodeB.classList.add('focus');haCap(stage,2)}},
+    {at:5.7,do:function(){haClock(clock,clockTxt,'2:41 PM')}},
+    {at:6.3,do:function(){haClock(clock,clockTxt,'3:12 PM')}},
+    {at:6.85,do:function(){bt.textContent='Answered ✓';bt.classList.add('go')}},
+    {at:7.1,do:function(){haClock(clock,clockTxt,'3:47 PM')}},
+    {at:7.55,do:function(){haClock(clock,clockTxt,'4:14 PM',true)}},
+    {at:7.75,do:function(){pauseTxt.textContent='resuming';pauseB.classList.add('res');top.classList.remove('paused');bot.classList.remove('paused');pulses.style.opacity='1';nodeA.classList.add('ret');laneDot.style.opacity='0';haCap(stage,3)}},
+    {at:8.95,do:function(){all.style.opacity='0';clock.style.opacity='0'}},
+    {at:9.2,do:function(){}}
+  ];
+  haFilm(stage,9.4,{
+    reset:function(){
+      all.style.opacity='';clock.style.opacity='';
+      top.classList.remove('on','paused');bot.classList.remove('on','paused');
+      thin.classList.remove('on');lane.classList.remove('on');
+      pulses.style.opacity='0';laneDot.style.opacity='0';
+      you.classList.remove('jit');nodeA.classList.remove('ret');nodeB.classList.remove('focus');
+      bt.textContent='needs you now';bt.classList.remove('go');
+      rounds.textContent='0';pauseB.classList.remove('in','res');pauseTxt.textContent='paused · resumes 4:14';
+      keys.classList.remove('in','pressed','out');modal.classList.remove('in','commit');
+      p0.classList.remove('sel');cur.classList.remove('in','click');haCur(cur,'42%','96px');
+      clock.classList.remove('landed');clockTxt.textContent='2:14 PM';
+      haCap(stage,-1);
+    },
+    cues:cues,
+    final:function(){
+      top.classList.add('on');bot.classList.add('on');thin.classList.add('on');
+      rounds.textContent='3';pauseB.classList.add('in','res');pauseTxt.textContent='resuming';
+      lane.classList.add('on');nodeB.classList.add('focus');bt.textContent='Answered ✓';bt.classList.add('go');
+      nodeA.classList.add('ret');clockTxt.textContent='4:14 PM';clock.classList.add('landed');
+      haCap(stage,3);
+    }
+  });
+})();
+/* ═══ SEG-2 MINI-FILM — three parked asks, one batch return at 4:14 ═══ */
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var body=$('bkBody'),clockEl=$('bkClock'),state=$('bkState'),
+      rows=[$('bkR1'),$('bkR2'),$('bkR3')];
+  if(!body)return;
+  console.log('[snooze-dev-block] batch-return mini-film init: 8.5s loop');
+  haFilm(body,8.5,{
+    reset:function(){
+      body.style.opacity='';clockEl.textContent='2:14 PM';clockEl.classList.remove('landed');
+      state.textContent='Snoozed · return in 2 hours';state.classList.remove('go');
+      rows.forEach(function(r){r.classList.add('ghost');r.classList.remove('shout')});
+      mfCap(body,0);
+    },
+    cues:[
+      {at:1.8,do:function(){clockEl.textContent='3:02 PM'}},
+      {at:3.4,do:function(){clockEl.textContent='3:48 PM'}},
+      {at:4.9,do:function(){clockEl.textContent='4:14 PM';clockEl.classList.add('landed');state.textContent='Returned from snooze';state.classList.add('go');rows[0].classList.remove('ghost');rows[0].classList.add('shout');mfCap(body,1)}},
+      {at:5.1,do:function(){rows[1].classList.remove('ghost');rows[1].classList.add('shout')}},
+      {at:5.3,do:function(){rows[2].classList.remove('ghost');rows[2].classList.add('shout')}},
+      {at:6.1,do:function(){rows.forEach(function(r){r.classList.remove('shout')})}},
+      {at:8.15,do:function(){body.style.opacity='0'}},
+      {at:8.35,do:function(){}}
+    ],
+    final:function(){
+      clockEl.textContent='4:14 PM';clockEl.classList.add('landed');
+      state.textContent='Returned from snooze';state.classList.add('go');
+      rows.forEach(function(r){r.classList.remove('ghost')});mfCap(body,1);
+    }
+  });
+})();
+/* ═══ EDUCATE FILM — one full snooze start to finish, synced to the numbered steps ═══ */
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var body=$('edBody'),clockEl=$('edClock'),state=$('edState'),dim=$('edDim'),
+      ctx=$('edCtx'),pal=$('edPal'),pick=$('edPick'),cur=$('edCur'),
+      r1=$('edR1'),steps=$('edSteps'),lis=[$('edLi1'),$('edLi2'),$('edLi3')];
+  if(!body)return;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce)steps.classList.add('sync');
+  function stepOn(n){lis.forEach(function(li,i){li.classList.toggle('on',i===n)})}
+  console.log('[snooze-dev-block] educate walkthrough film init: 8.8s, film-synced steps');
+  haFilm(body,8.8,{
+    reset:function(){
+      body.style.opacity='';clockEl.textContent='2:14 PM';clockEl.classList.remove('landed');
+      state.style.opacity='0';state.textContent='Snoozed until 4:14 PM';state.classList.remove('go');
+      r1.classList.remove('out','back','ontime');
+      dim.classList.remove('on');ctx.classList.remove('in');pal.classList.remove('in','commit');pick.classList.remove('sel');
+      cur.classList.add('in');haCur(cur,'34%','30px');
+      stepOn(0);mfCap(body,0);
+    },
+    cues:[
+      {at:.5, do:function(){haCurClick(cur);ctx.classList.add('in')}},
+      {at:.9, do:function(){haCur(cur,'58%','96px')}},
+      {at:1.4,do:function(){haCurClick(cur);}},
+      {at:1.6,do:function(){ctx.classList.remove('in');pal.classList.add('in');stepOn(1);mfCap(body,1)}},
+      {at:2.2,do:function(){haCur(cur,'62%','93px')}},
+      {at:2.9,do:function(){haCurClick(cur);pick.classList.add('sel')}},
+      {at:3.3,do:function(){pal.classList.add('commit')}},
+      {at:3.7,do:function(){pal.classList.remove('in');cur.classList.remove('in');r1.classList.add('out');state.style.opacity='1';stepOn(2);mfCap(body,2)}},
+      {at:4.6,do:function(){dim.classList.add('on');clockEl.textContent='3:12 PM'}},
+      {at:5.3,do:function(){clockEl.textContent='4:14 PM';clockEl.classList.add('landed')}},
+      {at:5.7,do:function(){dim.classList.remove('on');r1.classList.remove('out');r1.classList.add('back','ontime');state.textContent='Returned from snooze';state.classList.add('go')}},
+      {at:8.45,do:function(){body.style.opacity='0'}},
+      {at:8.65,do:function(){}}
+    ],
+    final:function(){
+      cur.classList.remove('in');clockEl.textContent='4:14 PM';clockEl.classList.add('landed');
+      r1.classList.add('ontime');state.style.opacity='1';state.textContent='Returned from snooze';state.classList.add('go');
+      stepOn(-1);mfCap(body,2);
+    }
+  });
+})();
+</script>
+</body>
+</html>
