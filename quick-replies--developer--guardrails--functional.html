@@ -1,0 +1,293 @@
+<!doctype html>
+<!--
+  AMC FEATURE LANDING PAGE — Quick Replies
+  Cell 7 — "The rules your agent forgets, one key away" · Developer · Power · guardrails · functional/PAS
+  Structure: landing-page-blueprint.md · Style: design-language.md · Build: html-remotion-build-guide.md
+  ANIMATION OPTION USED: C — live DOM/CSS mock (play-once-and-hold; reduced-motion fallback below)
+  Segments: 1 Hook · 2 Sell · 3 Educate · 4 CTA
+  Panel fixes (2026-07-05): auto-submit path kept; "stateless" over-explain trimmed; cross-channel omitted.
+  Live-UI verification pass (2026-07-08, vs Agent-Orchestrator source): numbers count up from the
+  bottom (bottom row = 1, highlighted on open); folder drill-in shown as the real breadcrumb
+  (Root › Guardrails); auto-send rows show a send icon; real toggle label "Auto-send when
+  selected"; false "self-sorts" replaced with pinned Number key + cross-project truth.
+  rev4 · 2026-07-09 — global-standards pass: one-message h1, hero hotkey strip (Alt+S), speed story
+  rev · 2026-07-10 — persistent hotkey badge added (fixed top-left, visible on every segment; Dilan).
+  rev · 2026-07-10 — copy standards v2 sweep (em-dashes removed; educate=play; montage; defluff).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quick Replies · Agent Mission Control</title>
+<style>
+:root{
+  --bg:#030712; --glass:rgba(3,7,18,.7); --glass-strong:rgba(3,7,18,.92);
+  --line:rgba(255,255,255,.08);
+  --text:#fff; --text-2:rgba(255,255,255,.85); --body:#9ca3af;
+  --faint:rgba(255,255,255,.45); --fine:rgba(255,255,255,.25);
+  --accent:#4ade80; --info:#60a5fa; --warn:#fbbf24; --error:#f87171;
+  --on-accent:#030712;
+  --radius:12px; --radius-pill:20px; --maxw:1100px;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1); --t-hover:.15s; --t-small:.25s; --t-reveal:.45s;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{overflow:hidden;height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hidden;height:100%;line-height:1.65}
+.lp-scroll{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+.lp-section{position:relative;z-index:1;height:100vh;display:flex;align-items:center;justify-content:center;padding:0 24px;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
+.lp-inner{display:flex;align-items:center;gap:64px;max-width:var(--maxw);width:100%;opacity:0;transform:translateY(16px);transition:opacity var(--t-small) var(--ease),transform var(--t-small) var(--ease)}
+.lp-inner.visible{opacity:1;transform:translateY(0)}
+.text-col{flex:0 0 50%;display:flex;flex-direction:column;gap:24px;min-width:0}
+.demo-col{flex:1;display:flex;align-items:center;justify-content:center;min-width:0}
+.bg-effects{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.12;animation:orbFloat 20s ease-in-out infinite}
+.bg-orb-1{width:600px;height:600px;background:var(--accent);top:-200px;left:-100px}
+.bg-orb-2{width:500px;height:500px;background:var(--info);top:40%;right:-150px;animation-delay:-7s}
+.bg-orb-3{width:550px;height:550px;background:var(--warn);bottom:-200px;left:30%;animation-delay:-14s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0)}33%{transform:translate(30px,-40px)}66%{transform:translate(-20px,30px)}}
+.bg-grid{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px);background-size:32px 32px}
+/* Keycaps + hero hotkey strip */
+.kbd{display:inline-block;font-family:ui-monospace,Consolas,monospace;font-size:12px;font-weight:600;color:var(--text-2);background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:6px;padding:2px 7px;line-height:1.4;vertical-align:middle}
+.kbd-join{color:var(--faint);font-size:11px;margin:0 3px}
+.hk-strip{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.hk-strip .kbd{font-size:13px;padding:4px 9px}
+.hk-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--faint)}
+
+/* Hero headline — one message (staircase retired 2026-07-09) */
+.hero-line{display:block;opacity:0;transform:translateY(12px);transition:opacity var(--t-reveal) var(--ease),transform var(--t-reveal) var(--ease);font-weight:700;font-size:clamp(2rem,5vw,3rem);line-height:1.14;letter-spacing:-.02em;padding-left:0}
+.hero-line.visible{opacity:1;transform:translateY(0)}
+.hero-line.accent{color:var(--accent)}
+.hero-desc{opacity:0;transition:opacity var(--t-reveal) var(--ease);font-size:1.05rem;color:var(--body);max-width:560px;margin-top:6px}
+.hero-desc.visible{opacity:1}
+.hero-desc b{color:var(--text-2)}
+.seg-h{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700}
+.seg-p{color:var(--body);font-size:1.05rem;max-width:560px}
+.seg-p b{color:var(--text)}
+.seg-list{list-style:none;display:flex;flex-direction:column;gap:16px;counter-reset:step;max-width:560px}
+.seg-list li{display:flex;gap:14px;align-items:flex-start;color:var(--body)}
+.seg-list li::before{counter-increment:step;content:counter(step);flex:0 0 28px;height:28px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--text);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.seg-list b{color:var(--text)}
+.seg-aside{font-size:.92rem;color:var(--body);max-width:560px}
+.demo-panel{width:100%;max-width:460px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.demo-title{font-size:12px;font-weight:600;padding:10px 14px;border-bottom:1px solid var(--line);color:var(--text-2)}
+.demo-body{padding:12px 14px;display:flex;flex-direction:column;gap:10px;min-height:230px}
+.demo-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.demo-agentline{display:flex;gap:8px;align-items:center;font-size:12.5px;color:var(--text-2);border:1px solid var(--line);border-radius:8px;padding:9px 10px}
+.demo-agentline.drift{background:rgba(251,191,36,.07);border-color:rgba(251,191,36,.22)}
+.drift-tag{margin-left:auto;font-size:10px;font-weight:700;color:var(--warn);letter-spacing:.03em}
+.qr-picker{border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.02);overflow:hidden}
+.qr-picker-h{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-bottom:1px solid var(--line);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-weight:700}
+.qr-kbd{font-size:10px;color:var(--faint);border:1px solid var(--line);border-radius:5px;padding:2px 6px;background:rgba(255,255,255,.03);text-transform:none;letter-spacing:0}
+.qr-row{display:flex;align-items:center;gap:9px;padding:8px 10px;font-size:12.5px;color:var(--text-2);border-top:1px solid rgba(255,255,255,.04);opacity:0}
+.qr-row:first-of-type{border-top:none}
+.qr-num{flex:0 0 16px;height:16px;border-radius:4px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:10px;color:var(--faint);display:flex;align-items:center;justify-content:center;font-weight:600}
+.qr-row.active{background:rgba(74,222,128,.08);color:var(--text);box-shadow:inset 2px 0 0 var(--accent)}
+.qr-sends{margin-left:auto;font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.02em}
+.qr-plane{flex-shrink:0;color:var(--accent);display:inline-flex}
+.qr-crumb{display:flex;align-items:center;gap:5px;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.05);font-size:10.5px;color:var(--faint)}
+.qr-crumb b{color:var(--text-2);font-weight:600}
+.qr-foot{padding:6px 10px;border-top:1px solid rgba(255,255,255,.05);font-size:10.5px;color:var(--accent);text-align:center;font-weight:600}
+.qr-input{position:relative;display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:8px;padding:9px 10px;color:var(--fine);font-size:12.5px;background:rgba(255,255,255,.02)}
+.qr-send{margin-left:auto;width:22px;height:22px;border-radius:6px;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center}
+.qr-sent{position:absolute;inset:0;display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;background:#0a1a12;border:1px solid rgba(74,222,128,.4);color:var(--accent);font-weight:600;opacity:0}
+.qr-sent svg{flex-shrink:0}
+.lp-inner.visible .qr-row{animation:rowIn .45s var(--ease) both}
+.lp-inner.visible .qr-sent{animation:sentIn .5s var(--ease) 1.5s both}
+@keyframes rowIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes sentIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.ba{display:flex;flex-direction:column;gap:12px;width:100%;max-width:360px}
+.ba-card{border:1px solid var(--line);border-radius:var(--radius);background:var(--glass);padding:12px 14px}
+.ba-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+.ba-typed{font-size:12.5px;color:var(--fine);padding:6px 10px;border:1px dashed var(--line);border-radius:7px;margin-bottom:6px}
+.ba-typed:last-child{margin-bottom:0}
+.ba-after{opacity:0}
+.lp-inner.visible .ba-after{animation:sentIn .5s var(--ease) .5s both}
+.ba-fire{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--text);background:rgba(74,222,128,.08);box-shadow:inset 2px 0 0 var(--accent);border-radius:7px;padding:8px 10px}
+.ba-arrow{align-self:center;color:var(--faint);font-size:18px;line-height:1}
+.edu-card{width:100%;max-width:320px;border:1px solid var(--line);border-radius:var(--radius);background:var(--glass);padding:14px}
+.edu-row{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;color:var(--text-2);padding:9px 0;border-top:1px solid var(--line)}
+.edu-row:first-child{border-top:none}
+.edu-toggle{width:34px;height:19px;border-radius:10px;background:var(--accent);position:relative;flex-shrink:0}
+.edu-knob{position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:var(--on-accent)}
+.lp-inner.visible .edu-knob{animation:knobOn .45s var(--ease) .4s both}
+@keyframes knobOn{from{left:2px}to{left:17px}}
+.edu-chip{font-size:11px;color:var(--accent);font-weight:600;white-space:nowrap}
+.lp-cta-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:var(--radius);background:var(--accent);color:var(--on-accent);font-weight:600;font-size:15px;text-decoration:none;border:none;cursor:pointer;transition:transform var(--t-hover),box-shadow var(--t-hover)}
+.lp-cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(74,222,128,.25)}
+.lp-cta-btn:focus-visible{outline:2px solid var(--info);outline-offset:3px}
+.lp-cta{flex-direction:column;text-align:center}
+.lp-cta .seg-p{margin:16px auto 0}
+.lp-cta-sub{margin-top:16px;color:var(--body);font-size:14px}
+.scroll-hint{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:200;color:var(--fine);font-size:11px;display:flex;flex-direction:column;align-items:center;gap:4px;transition:opacity .4s;pointer-events:none}
+.scroll-hint.hidden{opacity:0}
+.scroll-hint-arrow{width:20px;height:20px;border-right:2px solid rgba(255,255,255,.2);border-bottom:2px solid rgba(255,255,255,.2);transform:rotate(45deg);animation:scrollBounce 1.5s ease-in-out infinite}
+@keyframes scrollBounce{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(3px,3px)}}
+@media(max-width:800px){
+  .lp-scroll{scroll-snap-type:y proximity}
+  .lp-section{height:auto;min-height:100vh;min-height:100svh;padding:56px 24px;overflow:visible}
+  .lp-inner{flex-direction:column;gap:36px;text-align:center}
+  .text-col{align-items:center}
+  .hero-line{font-size:clamp(1.65rem,7vw,2.1rem)}
+  .hero-desc{max-width:100%}
+  .hk-strip{justify-content:center}
+  .seg-list{text-align:left}.seg-list li{text-align:left}
+  .seg-p,.seg-aside{margin-left:auto;margin-right:auto}
+  .scroll-hint{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.1s!important}
+  .bg-orb,.scroll-hint-arrow{animation:none!important}
+  .lp-scroll{scroll-behavior:auto}
+  .lp-inner,.hero-line,.hero-desc{opacity:1;transform:none}
+  .qr-row,.qr-sent,.ba-after{opacity:1!important;animation:none!important;transform:none!important}
+  .edu-knob{animation:none!important;left:17px!important}
+}
+
+/* ── Persistent hotkey badge — fixed top-left, visible on EVERY segment (Dilan, 2026-07-10) ── */
+.hk-fixed{position:fixed;top:18px;left:18px;z-index:150;display:inline-flex;align-items:center;gap:9px;padding:6px 13px 6px 7px;border-radius:var(--radius-pill);background:rgba(3,7,18,.66);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);box-shadow:0 6px 22px rgba(0,0,0,.4)}
+.hkf-cap{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;border-radius:6px;background:linear-gradient(180deg,#1c1f2e,#12141f);border:1px solid rgba(255,255,255,.2);border-bottom-width:3px;color:#eef;font:800 .82rem/1 ui-monospace,Consolas,monospace}
+.hkf-join{color:var(--faint);font-size:11px;font-weight:700}
+.hkf-name{font-size:12.5px;font-weight:700;color:var(--text-2);letter-spacing:.01em;white-space:nowrap}
+.hkf-auto{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--accent)}
+.hkf-auto::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+@media(max-width:800px){.hk-fixed{top:10px;left:10px;padding:5px 11px 5px 6px;gap:7px}.hkf-cap{min-width:21px;height:21px;font-size:.75rem}.hkf-name{font-size:11.5px}}
+</style>
+</head>
+<body>
+
+<div class="bg-effects" aria-hidden="true">
+  <div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-2"></div><div class="bg-orb bg-orb-3"></div>
+  <div class="bg-grid"></div>
+</div>
+
+
+<!-- PERSISTENT HOTKEY BADGE — fixed top-left, visible on every segment (Dilan, 2026-07-10) -->
+<div class="hk-fixed" role="note" aria-label="Quick Replies, press Alt plus S"><span class="hkf-cap" aria-hidden="true">Alt</span><span class="hkf-join">+</span><span class="hkf-cap" aria-hidden="true">S</span><span class="hkf-name">Quick Replies</span></div>
+
+<main class="lp-scroll" id="scroll" tabindex="0">
+
+  <!-- ════ 1 — HOOK ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <div class="hk-strip">
+          <span class="hk-keys" aria-label="Alt plus S"><kbd class="kbd">Alt</kbd><span class="kbd-join">+</span><kbd class="kbd">S</kbd></span>
+          <span class="hk-label">Quick Replies: saved answers</span>
+        </div>
+        <h1>
+          <span class="hero-line">&ldquo;Only edit these files.&rdquo; Again. And again.</span>
+          <span class="hero-line accent">Now it&rsquo;s one key.</span>
+        </h1>
+        <p class="hero-desc">Fire the correction the moment an agent drifts. <b>Not another rules file it ignores.</b></p>
+      </div>
+      <div class="demo-col">
+        <div class="demo-panel" role="img" aria-label="A session drifting: the agent is editing 6 files across the repo. The Quick Replies picker is open inside a Guardrails folder (breadcrumb Root to Guardrails), numbers counting up from the bottom; the bottom row 'only edit the files I listed' is highlighted as number 1 and sends when picked.">
+          <div class="demo-title">session &middot; checkout-refactor</div>
+          <div class="demo-body">
+            <div class="demo-agentline drift"><span class="demo-dot" style="background:var(--warn)"></span>Agent: &ldquo;Editing 6 files across the repo&hellip;&rdquo;<span class="drift-tag">drift</span></div>
+            <div class="qr-picker">
+              <div class="qr-picker-h"><span>Quick replies</span><span class="qr-kbd">Alt+S</span></div>
+              <div class="qr-crumb"><span>Root</span><span aria-hidden="true">&rsaquo;</span><b>Guardrails</b></div>
+              <div class="qr-row" style="animation-delay:.15s"><span class="qr-num">4</span>we use pnpm, not npm</div>
+              <div class="qr-row" style="animation-delay:.25s"><span class="qr-num">3</span>run the tests, then stop</div>
+              <div class="qr-row" style="animation-delay:.35s"><span class="qr-num">2</span>don&rsquo;t revert unrelated changes<span class="qr-plane"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></span></div>
+              <div class="qr-row active" style="animation-delay:.45s"><span class="qr-num">1</span>only edit the files I listed<span class="qr-plane"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></span><span class="qr-sends">&crarr; sends</span></div>
+              <div class="qr-foot">Manage Quick Replies</div>
+            </div>
+            <div class="qr-input">Reply to checkout-refactor&hellip;
+              <span class="qr-send" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></span>
+              <span class="qr-sent"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Sent &middot; guardrail applied</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ 2 — SELL (PAS) ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <h2 class="seg-h">Agents forget. So you repeat yourself</h2>
+        <p class="seg-p">Your rules file is read once at startup, then buried under everything since. So you type &ldquo;only the files I listed&rdquo; for the hundredth time, right when you&rsquo;re holding flow.</p>
+        <p class="seg-p"><b>AGENTS.md is the startup rules. This is the mid-session re-fire.</b> Keep your guardrails in a folder; drop the right one in with a number key the instant it drifts.</p>
+      </div>
+      <div class="demo-col">
+        <div class="ba" role="img" aria-label="Before: the same guardrail retyped three times. After: the guardrail fired with number key 1.">
+          <div class="ba-card">
+            <div class="ba-label">Before</div>
+            <div class="ba-typed">&gt; only edit the files I listed</div>
+            <div class="ba-typed">&gt; only edit the files I listed</div>
+            <div class="ba-typed">&gt; only edit the files I listed</div>
+          </div>
+          <div class="ba-arrow" aria-hidden="true">&darr;</div>
+          <div class="ba-card ba-after">
+            <div class="ba-label" style="color:var(--accent)">After</div>
+            <div class="ba-fire"><span class="qr-num">1</span>only edit the files I listed<span class="qr-sends">&crarr; sent</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ 3 — EDUCATE ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <h2 class="seg-h">Try it. Load your first guardrail</h2>
+        <ol class="seg-list">
+          <li><span>In the <b>Quick Replies</b> project, make a <b>Guardrails</b> folder of your standing corrections.</span></li>
+          <li><span>Turn on <b>Auto-send when selected</b> so the correction fires on a keystroke.</span></li>
+          <li><span>At the drift, press <kbd class="kbd">Alt</kbd><span class="kbd-join">+</span><kbd class="kbd">S</kbd>, pick the rule. Sent in under a second.</span></li>
+        </ol>
+        <p class="seg-aside">Pin a <b>Number key</b> to your most-fired guardrail so it&rsquo;s always on 1, and the same library rides along in every project.</p>
+      </div>
+      <div class="demo-col">
+        <div class="edu-card" role="img" aria-label="A saved guardrail 'only edit the files I listed' in the Guardrails folder: Auto-send when selected is on, and Number key 1 is pinned to it.">
+          <div class="edu-row"><span style="color:var(--faint)">Folder</span><span style="color:var(--text)">Guardrails</span></div>
+          <div class="edu-row"><span>Rule</span><span style="color:var(--text);text-align:right">only edit the files I listed</span></div>
+          <div class="edu-row"><span>Auto-send when selected</span><span class="edu-toggle"><span class="edu-knob"></span></span></div>
+          <div class="edu-row"><span>Number key</span><span class="edu-chip">1</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ 4 — CTA ════ -->
+  <section class="lp-section lp-cta">
+    <div class="lp-inner" style="flex-direction:column">
+      <h2 class="seg-h">Stop re-typing the rules your agent keeps forgetting</h2>
+      <p class="seg-p">Your guardrails, one keystroke from the drift.</p>
+      <!-- PLACEHOLDER: agentmc:// deep-link CTA goes here once aligned with Johnny (CLAUDE.md guardrail). -->
+      <a class="lp-cta-btn" href="#" onclick="return false">Try Quick Replies</a>
+      <p class="lp-cta-sub">Open AMC &rarr; the <b style="color:var(--text-2)">Quick Replies</b> project &rarr; save the correction you give most.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="scroll-hint" id="hint"><span>Scroll</span><div class="scroll-hint-arrow"></div></div>
+
+<script>
+(function(){
+  var scroller=document.getElementById('scroll');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  console.log('[quick-replies-c7] init',{segments:document.querySelectorAll('.lp-section').length,reduce:reduce});
+  function staged(inner){
+    var steps=inner.querySelectorAll('.hero-line,.hero-desc');
+    steps.forEach(function(el,i){setTimeout(function(){el.classList.add('visible');},reduce?0:180*i+120);});
+  }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');staged(e.target);io.unobserve(e.target);}
+    });
+  },{root:scroller,threshold:.35});
+  document.querySelectorAll('.lp-inner').forEach(function(el){io.observe(el)});
+  var hint=document.getElementById('hint');
+  scroller.addEventListener('scroll',function(){hint.classList.add('hidden');},{once:true,passive:true});
+  scroller.focus({preventScroll:true});
+})();
+</script>
+</body>
+</html>

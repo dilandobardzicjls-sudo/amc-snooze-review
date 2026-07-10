@@ -28,6 +28,8 @@
   into labeled time slots (incl. the typed one); one solid green lane remains; a parked ask
   returns on schedule. Copy = canonical rev+5; sell/educate films unchanged. Divergent set.
   rev+6 · 2026-07-10 — copy-standards v2 audit (2026-07-09 call rules): educate reframed as play ('Try it. Two clicks'), trainer CTA copy tightened; films select the target before H where a session row exists.
+  rev · 2026-07-10 — persistent hotkey badge added (fixed top-left, visible on every segment; Dilan).
+  rev · 2026-07-10 — red-team consistency: future-tense trainer, count-free educate/captions, allowed RM status, dual-status clock hidden.
 -->
 <html lang="en">
 <head>
@@ -175,6 +177,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
 @keyframes edDrop{0%{transform:translateY(-12px) scale(.96);opacity:0}60%{transform:translateY(2px) scale(1.01);opacity:1}100%{transform:none;opacity:1}}
 .mf-rtag{display:none;margin-left:auto;font-size:9px;font-weight:800;letter-spacing:.02em;color:var(--warn);align-items:center;gap:3px;text-transform:uppercase;white-space:nowrap}
 .mf-row.ontime .mf-rtag{display:inline-flex}
+.mf-row.ontime .mf-clock{display:none}
 .mf-clock{margin-left:auto;font-size:10px;font-weight:700;color:var(--faint);font-variant-numeric:tabular-nums;transition:color .3s}
 .mf-clock.landed{color:var(--accent)}
 .mf-state{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;border-radius:var(--radius-pill);padding:3px 10px;background:rgba(251,191,36,.12);color:var(--warn);width:fit-content;transition:background .3s,color .3s,opacity .25s}
@@ -246,6 +249,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
   .lp-scroll{scroll-behavior:auto}
   .lp-inner,.hero-line,.hero-desc{opacity:1;transform:none}
 }
+
+/* ── Persistent hotkey badge — fixed top-left, visible on EVERY segment (Dilan, 2026-07-10) ── */
+.hk-fixed{position:fixed;top:18px;left:18px;z-index:150;display:inline-flex;align-items:center;gap:9px;padding:6px 13px 6px 7px;border-radius:var(--radius-pill);background:rgba(3,7,18,.66);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);box-shadow:0 6px 22px rgba(0,0,0,.4)}
+.hkf-cap{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;border-radius:6px;background:linear-gradient(180deg,#1c1f2e,#12141f);border:1px solid rgba(255,255,255,.2);border-bottom-width:3px;color:#eef;font:800 .82rem/1 ui-monospace,Consolas,monospace}
+.hkf-join{color:var(--faint);font-size:11px;font-weight:700}
+.hkf-name{font-size:12.5px;font-weight:700;color:var(--text-2);letter-spacing:.01em;white-space:nowrap}
+.hkf-auto{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--accent)}
+.hkf-auto::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+@media(max-width:800px){.hk-fixed{top:10px;left:10px;padding:5px 11px 5px 6px;gap:7px}.hkf-cap{min-width:21px;height:21px;font-size:.75rem}.hkf-name{font-size:11.5px}}
 </style>
 </head>
 <body>
@@ -254,6 +266,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
   <div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-2"></div><div class="bg-orb bg-orb-3"></div>
   <div class="bg-grid"></div>
 </div>
+
+
+<!-- PERSISTENT HOTKEY BADGE — fixed top-left, visible on every segment (Dilan, 2026-07-10) -->
+<div class="hk-fixed" role="note" aria-label="Snooze, press H"><span class="hkf-cap" aria-hidden="true">H</span><span class="hkf-name">Snooze</span></div>
 
 <main class="lp-scroll" id="scroll" tabindex="0">
 
@@ -346,9 +362,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
   <section class="lp-section" id="try">
     <div class="lp-inner">
       <div class="text-col">
-        <h2 class="seg-h">Try it. Two clicks</h2>
+        <h2 class="seg-h">Try it. It's seconds</h2>
         <ol class="seg-list" id="edSteps">
-          <li id="edLi1"><span><b>Right-click the session and pick Snooze.</b> Or press <kbd class="kbd">H</kbd> with the session active. Two clicks either way.</span></li>
+          <li id="edLi1"><span><b>Right-click the session and pick Snooze.</b> Or press <kbd class="kbd">H</kbd> with the session active. Seconds either way.</span></li>
           <li id="edLi2"><span><b>Pick a return time, or type one in your words.</b> The palette offers 2 Hours From Now plus the three natural times coming up next. Typing works too: "fri 9am", "in 2 hours", even "tomorow 5pm" with the typo. AMC shows what it understood before you press Enter.</span></li>
           <li id="edLi3"><span><b>Done. It leaves the sidebar and inbox until your time.</b> Then it returns on its own. A message wakes it early, and the amber badge edits or ends the snooze.</span></li>
         </ol>
@@ -393,7 +409,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
   <section class="lp-section lp-cta">
     <div class="lp-inner" style="flex-direction:column">
       <h2 class="seg-h">Try your first snooze</h2>
-      <p class="seg-p">The trainer opens a practice session and starts the clock. Two clicks and it&#39;s yours.</p>
+      <p class="seg-p">The trainer will open a practice session and start the clock. Snooze one, see it come back.</p>
       <!-- PLACEHOLDER: agentmc:// deep link to the Education Hub Snooze trainer (Dilan 2026-07-10). Hub not built yet; scrolls to #try until wired. -->
       <a class="lp-cta-btn" href="#try" id="finale-cta">Teach me snooze</a>
       <p class="lp-cta-sub" id="finale-sub">Or try the real thing now: right-click any session and pick Snooze.</p>

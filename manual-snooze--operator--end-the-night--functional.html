@@ -1,0 +1,578 @@
+<!doctype html>
+<!--
+  AMC FEATURE LANDING PAGE — Snooze a session (manual)
+  Variation: Operator · "End the night" · O1-F functional (PAS) · the BULK story
+  Brief: briefs/manual-snooze.md · v2 · 2026-07-08 (corrected mechanism — ask-waits)
+  Segments: 1 Hook · 2 Sell · 3 Educate · 4 CTA
+  rev+1 · 2026-07-09 — global-standards pass: one-message h1, hero hotkey strip, invocation honesty, loop ~9s
+  rev+2 · 2026-07-09 — snooze key verified live (GET /keybindings): strip + educate upgraded to H
+  rev+3 · 2026-07-10 — FULL REBUILD to the rev6 standard (six-page upgrade; decisions-log 2026-07-10
+  rounds 1-3). Differentiated from the go-to-bed flagship via the verified BULK mechanic: hero performs
+  shift-select of three leftover sessions → one Snooze → Tomorrow Morning → batch return at 8:00 AM.
+  Em-dashes removed; NOTE claims removed (opt-in, off by default); presets corrected to contextual truth
+  (late night set, resolved times right-side); h1 → single assertion "End the night" + plain sub; big H
+  keycap strip; educate = play with bulk-first step 1 + film-synced walkthrough (two sessions selected);
+  CTA = Education Hub trainer button ("Teach me snooze", placeholder link).
+  rev · 2026-07-10 — persistent hotkey badge added (fixed top-left, visible on every segment; Dilan).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Snooze · Agent Mission Control</title>
+<style>
+:root{
+  --bg:#030712; --glass:rgba(3,7,18,.7); --glass-strong:rgba(3,7,18,.92);
+  --line:rgba(255,255,255,.08);
+  --text:#fff; --text-2:rgba(255,255,255,.85); --body:#9ca3af;
+  --faint:rgba(255,255,255,.45); --fine:rgba(255,255,255,.25);
+  --accent:#4ade80; --info:#60a5fa; --warn:#fbbf24; --error:#f87171;
+  --on-accent:#030712;
+  --radius:12px; --radius-pill:20px; --maxw:1100px;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1); --t-hover:.15s; --t-small:.25s; --t-reveal:.45s;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{overflow:hidden;height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hidden;height:100%;line-height:1.65}
+.lp-scroll{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+.lp-section{position:relative;z-index:1;height:100vh;display:flex;align-items:center;justify-content:center;padding:0 24px;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
+.lp-inner{display:flex;align-items:center;gap:64px;max-width:var(--maxw);width:100%;opacity:0;transform:translateY(16px);transition:opacity var(--t-reveal) var(--ease),transform var(--t-reveal) var(--ease)}
+.lp-inner.visible{opacity:1;transform:translateY(0)}
+.text-col{flex:0 0 50%;display:flex;flex-direction:column;gap:24px;min-width:0}
+.demo-col{flex:1;display:flex;align-items:center;justify-content:center;min-width:0}
+.bg-effects{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.12;animation:orbFloat 20s ease-in-out infinite}
+.bg-orb-1{width:600px;height:600px;background:var(--accent);top:-240px;right:-120px}
+.bg-orb-2{width:500px;height:500px;background:var(--info);top:38%;left:-160px;animation-delay:-7s}
+.bg-orb-3{width:550px;height:550px;background:var(--warn);bottom:-220px;right:28%;animation-delay:-14s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0)}33%{transform:translate(30px,-40px)}66%{transform:translate(-20px,30px)}}
+.bg-grid{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px);background-size:32px 32px}
+.kbd{display:inline-block;font-family:ui-monospace,Consolas,monospace;font-size:12px;font-weight:600;color:var(--text-2);background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:6px;padding:2px 7px;line-height:1.4;vertical-align:middle}
+.hk-strip{display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.hk-cap{display:flex;align-items:center;justify-content:center;min-width:48px;height:48px;padding:0 14px;border-radius:11px;background:linear-gradient(180deg,#1c1f2e,#12141f);border:1px solid rgba(255,255,255,.2);border-bottom-width:4px;color:#eef;font:800 1.35rem/1 ui-monospace,Consolas,monospace;box-shadow:0 10px 26px rgba(0,0,0,.5)}
+.hk-label{font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint)}
+.hero-line{display:block;opacity:0;transform:translateY(12px);transition:opacity var(--t-reveal) var(--ease),transform var(--t-reveal) var(--ease);font-weight:700;font-size:clamp(2rem,5vw,3rem);line-height:1.14;letter-spacing:-.02em}
+.hero-line.visible{opacity:1;transform:translateY(0)}
+.hero-desc{opacity:0;transition:opacity var(--t-reveal) var(--ease);font-size:1.05rem;color:var(--body);max-width:580px;margin-top:6px}
+.hero-desc.visible{opacity:1}
+.seg-h{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700}
+.seg-p{color:var(--body);font-size:1.05rem;max-width:580px}
+.seg-list{list-style:none;display:flex;flex-direction:column;gap:16px;counter-reset:step}
+.seg-list li{display:flex;gap:14px;align-items:flex-start;color:var(--body);transition:opacity .35s var(--ease)}
+.seg-list li::before{counter-increment:step;content:counter(step);flex:0 0 28px;height:28px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--text);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;transition:background .3s,border-color .3s,color .3s}
+.seg-list.sync li{opacity:.45}
+.seg-list.sync li.on{opacity:1}
+.seg-list.sync li.on::before{background:rgba(74,222,128,.14);border-color:rgba(74,222,128,.6);color:var(--accent)}
+.seg-list b{color:var(--text)}
+.seg-aside{font-size:.92rem;color:var(--body);max-width:580px}
+.demo-panel{width:100%;max-width:460px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.demo-title{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:600;padding:10px 14px;border-bottom:1px solid var(--line);color:var(--text-2)}
+.demo-body{padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-height:300px;position:relative}
+.demo-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.skeleton{height:8px;border-radius:4px;background:rgba(255,255,255,.07);flex:1}
+.palette{border:1px solid var(--line);border-radius:8px;background:var(--glass-strong);padding:8px;display:flex;flex-direction:column;gap:6px}
+.palette-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--body);border:1px solid transparent;border-radius:6px;padding:6px 10px;transition:background .2s,border-color .2s,color .2s}
+.palette-row.sel{background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.5);color:var(--text)}
+.pr-when{margin-left:auto;font-size:10px;font-weight:600;color:var(--faint);font-variant-numeric:tabular-nums}
+/* ═══ HERO FILM KIT (rev6 shell — window + palette grammar + bulk select) ═══ */
+.ha-stage{position:relative;width:100%;max-width:560px;height:360px;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#05070f}
+.ha-vig{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 0%,rgba(96,165,250,.06),transparent 60%)}
+.ha-clock{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:6;display:inline-flex;align-items:center;gap:6px;background:rgba(3,7,18,.75);border:1px solid var(--line);border-radius:var(--radius-pill);padding:4px 12px;font-size:12px;font-weight:700;color:var(--text-2);backdrop-filter:blur(8px);font-variant-numeric:tabular-nums}
+.ha-clock.tick{animation:haPop .22s cubic-bezier(.34,1.56,.64,1)}
+.ha-clock.landed{border-color:rgba(74,222,128,.6);color:var(--accent);box-shadow:0 0 16px rgba(74,222,128,.25)}
+.ha-window{position:absolute;left:24px;top:56px;width:min(300px,55%);background:rgba(9,11,20,.92);border:1px solid rgba(255,255,255,.1);border-radius:14px;box-shadow:0 24px 60px rgba(0,0,0,.55);z-index:2;transition:filter .3s var(--ease),opacity .3s}
+.ha-whead{display:flex;align-items:center;gap:7px;padding:10px 13px;border-bottom:1px solid var(--line);font-size:12px;font-weight:700;color:var(--text-2)}
+.ha-whead svg{color:var(--faint)}
+.ha-count{font-variant-numeric:tabular-nums}
+.ha-count.flip{animation:haPop .25s cubic-bezier(.34,1.56,.64,1)}
+@keyframes haPop{50%{transform:scale(1.12)}}
+.ha-rows{padding:8px;display:flex;flex-direction:column;gap:4px}
+.ha-row{position:relative;display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:9px;background:rgba(255,255,255,.03);border:1px solid transparent;font-size:11.5px;font-weight:600;color:var(--text-2);max-height:32px;transition:transform .34s cubic-bezier(.5,0,.15,1),opacity .3s,max-height .34s cubic-bezier(.5,0,.15,1),padding .34s cubic-bezier(.5,0,.15,1),margin .34s cubic-bezier(.5,0,.15,1),border-color .3s,box-shadow .3s,background .25s}
+.ha-row.selected{background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.45)}
+.ha-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ha-dot.amber{background:var(--warn)}
+.ha-when{margin-left:auto;font-size:10px;font-weight:600;color:var(--faint);display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.ha-when.ret{color:var(--warn);font-weight:800;text-transform:uppercase;font-size:9px;letter-spacing:.03em}
+.ha-row.shout{border-color:rgba(251,191,36,.55);box-shadow:0 0 0 3px rgba(251,191,36,.12)}
+.ha-row.shout .ha-dot.amber{animation:haPulse .5s ease-in-out 2}
+@keyframes haPulse{50%{opacity:.3}}
+.ha-row.gone{transform:translateX(130%) rotate(2deg);opacity:0;max-height:0;padding-top:0;padding-bottom:0;margin-top:-4px}
+.ha-row.back{animation:edDrop .5s cubic-bezier(.34,1.56,.64,1)}
+.ha-state{margin:0 8px 8px;display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;border-radius:var(--radius-pill);padding:3px 10px;background:rgba(251,191,36,.12);color:var(--warn);width:fit-content;transition:background .3s,color .3s,opacity .25s;opacity:0}
+.ha-state.show{opacity:1}
+.ha-state.go{background:rgba(74,222,128,.12);color:var(--accent)}
+.ms-chip{position:absolute;left:26px;top:30px;z-index:5;display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;color:#93c5fd;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.45);border-radius:var(--radius-pill);padding:3px 10px;opacity:0;transform:translateY(-6px);transition:opacity .2s,transform .25s cubic-bezier(.34,1.56,.64,1)}
+.ms-chip.in{opacity:1;transform:none}
+.ha-ctx{position:absolute;left:38%;top:150px;width:158px;background:#12141f;border:1px solid rgba(255,255,255,.14);border-radius:10px;box-shadow:0 20px 55px rgba(0,0,0,.6);padding:6px;opacity:0;transform:scale(.92);transition:transform .22s cubic-bezier(.34,1.56,.64,1),opacity .18s;z-index:6}
+.ha-ctx.in{opacity:1;transform:scale(1)}
+.ha-ctx .ci{display:flex;align-items:center;gap:7px;padding:6px 9px;border-radius:7px;font-size:11px;font-weight:600;color:var(--text-2);border:1px solid transparent;transition:background .15s,border-color .15s}
+.ha-ctx .ci.hot{background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.5)}
+.ha-modal{position:absolute;left:79%;top:96px;width:218px;transform:translateX(-50%) scale(.9);opacity:0;z-index:7;background:#12141f;border:1px solid rgba(255,255,255,.14);border-radius:13px;box-shadow:0 26px 70px rgba(0,0,0,.65);padding:11px;transition:transform .26s cubic-bezier(.34,1.56,.64,1),opacity .2s;pointer-events:none}
+.ha-modal.in{opacity:1;transform:translateX(-50%) scale(1)}
+.ha-modal.commit{border-color:rgba(74,222,128,.7);box-shadow:0 0 0 3px rgba(74,222,128,.2),0 26px 70px rgba(0,0,0,.65)}
+.ha-mtitle{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--text-2);margin:0 1px 8px}
+.ha-mtitle svg{color:var(--faint)}
+.ha-presets{display:flex;flex-direction:column;gap:4px}
+.ha-preset{display:flex;align-items:center;gap:7px;padding:5px 9px;border-radius:8px;font-size:10.5px;font-weight:600;color:var(--text-2);background:rgba(255,255,255,.04);border:1px solid transparent;transition:background .15s,border-color .15s,color .15s}
+.ha-preset.sel{background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.55);color:#d9ffe6}
+.ha-preset .pw{margin-left:auto;font-size:9px;font-weight:600;color:var(--faint);font-variant-numeric:tabular-nums}
+.ha-input{display:flex;align-items:center;border:1px solid rgba(255,255,255,.14);border-radius:8px;background:rgba(255,255,255,.05);padding:6px 9px;font:600 10.5px/1.3 ui-monospace,Consolas,monospace;color:#eef;min-height:28px;margin-bottom:6px}
+.ha-input .ph{color:var(--fine);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ha-caret{width:2px;height:12px;background:var(--accent);margin-left:1px;animation:haCaret 1s steps(1) infinite;flex-shrink:0}
+@keyframes haCaret{50%{opacity:0}}
+.ha-dim{position:absolute;inset:0;background:rgba(3,7,18,.55);opacity:0;transition:opacity .35s;z-index:4;pointer-events:none}
+.ha-dim.on{opacity:1}
+.ha-cursor{position:absolute;z-index:9;opacity:0;transition:left .5s cubic-bezier(.5,0,.15,1),top .5s cubic-bezier(.5,0,.15,1),opacity .25s;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.7))}
+.ha-cursor.in{opacity:1}
+.ha-cursor svg{display:block}
+.ha-cursor .rip{position:absolute;left:-8px;top:-8px;width:28px;height:28px;border-radius:50%;border:2px solid rgba(74,222,128,.65);opacity:0}
+.ha-cursor.click .rip{animation:haRing .4s var(--ease)}
+.ha-cursor.click svg{animation:haClickDip .18s ease}
+@keyframes haRing{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.06)}}
+@keyframes haClickDip{50%{transform:scale(.8)}}
+.ha-caps{position:absolute;left:12px;right:12px;bottom:0;height:40px;z-index:6;pointer-events:none}
+.ha-cap-line{position:absolute;left:0;right:0;bottom:17px;text-align:center;font-size:11px;font-weight:600;color:var(--body);opacity:0;transition:opacity .25s var(--ease)}
+.ha-cap-line.on{opacity:1}
+.ha-cap-line b{color:var(--text-2)}
+.ha-dots{position:absolute;left:50%;transform:translateX(-50%);bottom:6px;display:inline-flex;gap:5px}
+.ha-dots i{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.18);transition:background .2s}
+.ha-dots i.on{background:var(--accent)}
+.ha-board{display:none}
+/* seg + educate mini-films */
+.mf-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-2);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:8px;padding:8px 10px;transition:opacity .3s,border-color .3s,box-shadow .3s,transform .35s var(--ease),max-height .35s var(--ease)}
+.mf-row.ghost{opacity:.38}
+.mf-row.hidden{opacity:0;transform:translateY(8px);max-height:0;padding-top:0;padding-bottom:0;border-width:0;overflow:hidden;margin-top:-8px}
+.mf-row.shout{border-color:rgba(251,191,36,.55);box-shadow:0 0 0 3px rgba(251,191,36,.12)}
+.mf-row.out{transform:translateX(115%);opacity:0}
+.mf-row.back{animation:edDrop .5s cubic-bezier(.34,1.56,.64,1)}
+.mf-row.selected{background:rgba(96,165,250,.08);border-color:rgba(96,165,250,.45)}
+@keyframes edDrop{0%{transform:translateY(-12px) scale(.96);opacity:0}60%{transform:translateY(2px) scale(1.01);opacity:1}100%{transform:none;opacity:1}}
+.mf-rtag{display:none;margin-left:auto;font-size:9px;font-weight:800;letter-spacing:.02em;color:var(--warn);align-items:center;gap:3px;text-transform:uppercase;white-space:nowrap}
+.mf-row.ontime .mf-rtag{display:inline-flex}
+.mf-row.ontime .mf-clock{display:none}
+.mf-clock{margin-left:auto;font-size:10px;font-weight:700;color:var(--faint);font-variant-numeric:tabular-nums;transition:color .3s}
+.mf-clock.landed{color:var(--accent)}
+.mf-state{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;border-radius:var(--radius-pill);padding:3px 10px;background:rgba(251,191,36,.12);color:var(--warn);width:fit-content;transition:background .3s,color .3s,opacity .25s}
+.mf-state.go{background:rgba(74,222,128,.12);color:var(--accent)}
+.mf-cap{border-top:1px solid var(--line);margin-top:auto;padding-top:9px;font-size:11.5px;color:var(--body);min-height:38px;position:relative}
+.mf-cap span{position:absolute;left:0;right:0;top:9px;opacity:0;transition:opacity .25s var(--ease)}
+.mf-cap span.on{opacity:1}
+.mf-cap b{color:var(--warn);font-weight:600}
+.ed-ctx{position:absolute;left:44%;top:44px;width:158px;background:#12141f;border:1px solid rgba(255,255,255,.14);border-radius:10px;box-shadow:0 20px 55px rgba(0,0,0,.6);padding:6px;opacity:0;transform:scale(.92);transition:transform .22s cubic-bezier(.34,1.56,.64,1),opacity .18s;z-index:6}
+.ed-ctx.in{opacity:1;transform:scale(1)}
+.ed-ctx .ci{display:flex;align-items:center;gap:7px;padding:6px 9px;border-radius:7px;font-size:11px;font-weight:600;color:var(--text-2);border:1px solid transparent;transition:background .15s,border-color .15s}
+.ed-ctx .ci.hot{background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.5)}
+.ed-pal{position:absolute;left:50%;top:34px;transform:translateX(-50%) scale(.94);width:90%;opacity:0;z-index:7;transition:transform .24s cubic-bezier(.34,1.56,.64,1),opacity .2s;pointer-events:none}
+.ed-pal.in{opacity:1;transform:translateX(-50%) scale(1)}
+.ed-pal .palette{box-shadow:0 24px 64px rgba(0,0,0,.65)}
+.ed-pal.commit .palette{border-color:rgba(74,222,128,.6);box-shadow:0 0 0 3px rgba(74,222,128,.18),0 24px 64px rgba(0,0,0,.65)}
+.ed-dim{position:absolute;inset:0;background:rgba(3,7,18,.55);opacity:0;transition:opacity .3s;z-index:5;pointer-events:none}
+.ed-dim.on{opacity:1}
+.lp-cta-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:var(--radius);background:var(--accent);color:var(--on-accent);font-weight:600;font-size:15px;text-decoration:none;border:none;cursor:pointer;transition:transform var(--t-hover),box-shadow var(--t-hover);width:fit-content}
+.lp-cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(74,222,128,.25)}
+.lp-cta-btn:focus-visible{outline:2px solid var(--info);outline-offset:3px}
+.lp-cta{flex-direction:column;text-align:center}
+.lp-cta .seg-p{margin:16px auto 40px}
+.lp-cta-sub{margin-top:16px;color:var(--body);font-size:14px}
+.lp-cta-sub.flash{animation:subFlash 1.4s var(--ease)}
+@keyframes subFlash{0%,25%{color:var(--warn)}100%{color:var(--body)}}
+.scroll-hint{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:200;color:var(--fine);font-size:11px;display:flex;flex-direction:column;align-items:center;gap:4px;transition:opacity .4s;pointer-events:none}
+.scroll-hint.hidden{opacity:0}
+.scroll-hint-arrow{width:20px;height:20px;border-right:2px solid rgba(255,255,255,.2);border-bottom:2px solid rgba(255,255,255,.2);transform:rotate(45deg);animation:scrollBounce 1.5s ease-in-out infinite}
+@keyframes scrollBounce{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(3px,3px)}}
+@media(max-width:800px){
+  .lp-scroll{height:100vh;height:100dvh;scroll-snap-type:y proximity}
+  .lp-section{height:auto;min-height:100vh;min-height:100svh;padding:48px 24px;overflow:visible}
+  .lp-inner{flex-direction:column;gap:40px;text-align:center}
+  .text-col{align-items:center}
+  .hero-line{font-size:clamp(1.65rem,7vw,2.1rem)}
+  .hero-desc{max-width:100%}
+  .hk-strip{justify-content:center}
+  .seg-list li{text-align:left}
+  .scroll-hint{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.1s!important}
+  .bg-orb,.scroll-hint-arrow{animation:none!important}
+  .seg-list.sync li{opacity:1}
+  .ha-stage{display:none}
+  .ha-board{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:560px;margin:0 auto;text-align:left}
+  .ha-bcard{background:rgba(9,11,20,.92);border:1px solid var(--line);border-radius:12px;padding:12px}
+  .ha-brow{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--text-2);background:rgba(255,255,255,.04);border-radius:7px;padding:6px 9px;margin-bottom:6px}
+  .ha-bcap{font-size:11px;color:var(--body);margin-top:8px}
+  .lp-scroll{scroll-behavior:auto}
+  .lp-inner,.hero-line,.hero-desc{opacity:1;transform:none}
+}
+
+/* ── Persistent hotkey badge — fixed top-left, visible on EVERY segment (Dilan, 2026-07-10) ── */
+.hk-fixed{position:fixed;top:18px;left:18px;z-index:150;display:inline-flex;align-items:center;gap:9px;padding:6px 13px 6px 7px;border-radius:var(--radius-pill);background:rgba(3,7,18,.66);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);box-shadow:0 6px 22px rgba(0,0,0,.4)}
+.hkf-cap{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;border-radius:6px;background:linear-gradient(180deg,#1c1f2e,#12141f);border:1px solid rgba(255,255,255,.2);border-bottom-width:3px;color:#eef;font:800 .82rem/1 ui-monospace,Consolas,monospace}
+.hkf-join{color:var(--faint);font-size:11px;font-weight:700}
+.hkf-name{font-size:12.5px;font-weight:700;color:var(--text-2);letter-spacing:.01em;white-space:nowrap}
+.hkf-auto{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--accent)}
+.hkf-auto::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+@media(max-width:800px){.hk-fixed{top:10px;left:10px;padding:5px 11px 5px 6px;gap:7px}.hkf-cap{min-width:21px;height:21px;font-size:.75rem}.hkf-name{font-size:11.5px}}
+</style>
+</head>
+<body>
+
+<div class="bg-effects" aria-hidden="true">
+  <div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-2"></div><div class="bg-orb bg-orb-3"></div>
+  <div class="bg-grid"></div>
+</div>
+
+
+<!-- PERSISTENT HOTKEY BADGE — fixed top-left, visible on every segment (Dilan, 2026-07-10) -->
+<div class="hk-fixed" role="note" aria-label="Snooze, press H"><span class="hkf-cap" aria-hidden="true">H</span><span class="hkf-name">Snooze</span></div>
+
+<main class="lp-scroll" id="scroll" tabindex="0">
+
+  <!-- ════ SEGMENT 1 — HOOK ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <div class="hk-strip">
+          <span class="hk-cap" aria-label="H key">H</span>
+          <span class="hk-label">Snooze &middot; press H</span>
+        </div>
+        <h1>
+          <span class="hero-line">End the night</span>
+        </h1>
+        <p class="hero-desc">Three sessions still asking at midnight? Select them all and snooze once. Everything returns together at 8 AM.</p>
+        <!-- PLACEHOLDER: agentmc:// deep link to the Education Hub Snooze trainer (Dilan 2026-07-10). Hub not built yet; scrolls to #try until wired. -->
+        <a class="lp-cta-btn hero-cta" href="#try" data-goto="3">Teach me snooze</a>
+      </div>
+      <div class="demo-col">
+        <div class="ha-stage" id="haStage" role="img"
+             aria-label="11:52 PM. Three sessions still ask for attention. All three are shift-selected, a 3-selected chip appears, and one right-click opens Snooze. Tomorrow Morning is picked and all three leave the list together: 3 snoozed until 8:00 AM. The screen dims through the night, and at 8:00 AM all three return together, marked returned. Closing words: end the night.">
+          <div class="ha-vig" aria-hidden="true"></div>
+          <div class="ha-clock" id="enClock"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span id="enClockTxt">11:52 PM</span></div>
+          <div class="ha-window" id="enWin">
+            <div class="ha-whead"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 3v18"/></svg>Sessions <span class="ha-count" id="enCount">(3)</span></div>
+            <div class="ha-rows">
+              <div class="ha-row" id="enR1"><span class="ha-dot amber"></span>Product page rewrite<span class="ha-when" id="enW1">needs you</span></div>
+              <div class="ha-row" id="enR2"><span class="ha-dot amber"></span>Customer email drafts<span class="ha-when" id="enW2">needs you</span></div>
+              <div class="ha-row" id="enR3"><span class="ha-dot amber"></span>Landing page build<span class="ha-when" id="enW3">needs you</span></div>
+            </div>
+            <span class="ha-state" id="enState">3 snoozed until 8:00 AM</span>
+          </div>
+          <div class="ms-chip" id="enChip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>3 selected</div>
+          <div class="ha-ctx" id="enCtx">
+            <div class="ci"><span class="skeleton" style="max-width:70%"></span></div>
+            <div class="ci hot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/></svg>Snooze</div>
+            <div class="ci"><span class="skeleton" style="max-width:55%"></span></div>
+          </div>
+          <div class="ha-modal" id="enModal">
+            <div class="ha-input"><span class="ph">e.g. 2h, Friday, tomorrow 5pm&hellip;</span><span class="ha-caret" aria-hidden="true"></span></div>
+            <div class="ha-presets">
+              <div class="ha-preset">2 Hours From Now<span class="pw">1:52 AM</span></div>
+              <div class="ha-preset" id="enPick">Tomorrow Morning<span class="pw">8:00 AM</span></div>
+              <div class="ha-preset">Tomorrow Afternoon<span class="pw">1:00 PM</span></div>
+              <div class="ha-preset">Day After Tomorrow<span class="pw">Sun 8:00 AM</span></div>
+            </div>
+          </div>
+          <div class="ha-dim" id="enDim"></div>
+          <div class="ha-cursor" id="enCur"><svg width="15" height="15" viewBox="0 0 24 24" fill="#eef" stroke="#05070f" stroke-width="1.4"><path d="M4 2l16 11.5-7 .8L9.6 22z"/></svg><span class="rip" aria-hidden="true"></span></div>
+          <div class="ha-caps" aria-hidden="true">
+            <div class="ha-cap-line" data-s="0">11:52 PM. <b>Three still want you.</b></div>
+            <div class="ha-cap-line" data-s="1"><b>Select them all.</b></div>
+            <div class="ha-cap-line" data-s="2">One snooze <b>for the lot</b>.</div>
+            <div class="ha-cap-line" data-s="3"><b>The night is over.</b></div>
+            <div class="ha-cap-line" data-s="4">8:00 AM. <b>Back in one sitting.</b></div>
+            <div class="ha-cap-line" data-s="5"><b>End the night.</b></div>
+            <div class="ha-dots"><i data-d="0"></i><i data-d="1"></i><i data-d="2"></i><i data-d="3"></i><i data-d="4"></i><i data-d="5"></i></div>
+          </div>
+        </div>
+        <div class="ha-board" aria-label="End the night, in three panels">
+          <div class="ha-bcard"><div class="ha-brow"><span class="ha-dot amber"></span>3 sessions &middot; needs you</div><div class="ha-bcap">11:52 PM: shift-select all three.</div></div>
+          <div class="ha-bcard"><div class="ha-brow" style="border:1px solid rgba(74,222,128,.4)">Snooze &middot; <b>Tomorrow Morning</b></div><div class="ha-bcap">One right-click, one snooze for the lot. The night is over.</div></div>
+          <div class="ha-bcard"><div class="ha-brow" style="border:1px solid rgba(74,222,128,.45)"><span class="ha-dot amber"></span>Returned from snooze</div><div class="ha-bcap">All three back together. <b>One sitting.</b></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ SEGMENT 2 — SELL ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <h2 class="seg-h">Closing the laptop shouldn't mean losing your place</h2>
+        <p class="seg-p">You stay because the thread lives on the screen. Walk away and tomorrow starts with twenty minutes of finding it again.</p>
+        <p class="seg-p"><b style="color:var(--text)">The return does the remembering.</b> Every snoozed session comes back at your time and reopens right where it stopped. Until you answer, the ask waits.</p>
+      </div>
+      <div class="demo-col">
+        <div class="demo-panel" style="max-width:400px" role="img" aria-label="Three sessions parked overnight to one return. At 8:00 AM all three come back together, one sitting.">
+          <div class="demo-title">One return, one sitting <span class="mf-clock" id="bkClock">11:58 PM</span></div>
+          <div class="demo-body" style="min-height:216px" id="bkBody">
+            <span class="mf-state" id="bkState">3 snoozed until 8:00 AM</span>
+            <div class="mf-row ghost" id="bkR1"><span class="demo-dot" style="background:var(--warn)"></span>Product page rewrite</div>
+            <div class="mf-row ghost" id="bkR2"><span class="demo-dot" style="background:var(--warn)"></span>Customer email drafts</div>
+            <div class="mf-row ghost" id="bkR3"><span class="demo-dot" style="background:var(--warn)"></span>Landing page build</div>
+            <div class="mf-cap">
+              <span data-s="0" class="on">Parked. <b>The screen is closed.</b></span>
+              <span data-s="1">8:00 AM. <b>All three back at once.</b> Coffee first.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ SEGMENT 3 — EDUCATE ════ -->
+  <section class="lp-section" id="try">
+    <div class="lp-inner">
+      <div class="text-col">
+        <h2 class="seg-h">Try it. One snooze for the lot</h2>
+        <ol class="seg-list" id="edSteps">
+          <li id="edLi1"><span><b>Shift-click the sessions that can wait, then right-click and pick Snooze.</b> One snooze parks the lot. Solo works too: press <kbd class="kbd">H</kbd> with a session active.</span></li>
+          <li id="edLi2"><span><b>Pick when they come back, or type it in your words.</b> The palette offers 2 Hours From Now plus the three natural times coming up next. Typing works too: "fri 9am", "in 2 hours", even "tomorow 5pm" with the typo. AMC shows what it understood before you press Enter.</span></li>
+          <li id="edLi3"><span><b>That's it. They're off your screen until your time.</b> Then they return together. A message wakes any of them early, and the amber badge changes or ends a snooze.</span></li>
+        </ol>
+        <p class="seg-aside">Every session comes back to its own chat, marker at the spot where you stopped.</p>
+      </div>
+      <div class="demo-col">
+        <div class="demo-panel" style="max-width:400px" role="img" aria-label="A batch snooze, start to finish: two sessions are selected, Snooze is picked from the right-click menu, Tomorrow Morning is clicked, both leave the list, the night passes, and at 8:00 AM both return together.">
+          <div class="demo-title">One batch snooze, start to finish <span class="mf-clock" id="edClock">11:52 PM</span></div>
+          <div class="demo-body" style="min-height:236px" id="edBody">
+            <div class="mf-row" id="edR1"><span class="demo-dot" style="background:var(--warn)"></span>Product page rewrite<span class="mf-clock">needs you</span><span class="mf-rtag"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/></svg>returned</span></div>
+            <div class="mf-row" id="edR2"><span class="demo-dot" style="background:var(--warn)"></span>Customer email drafts<span class="mf-clock">needs you</span><span class="mf-rtag"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/></svg>returned</span></div>
+            <div class="mf-row" id="edR3"><span class="demo-dot" style="background:var(--accent)"></span>Newsletter draft<span class="mf-clock">running</span></div>
+            <span class="mf-state" id="edState" style="opacity:0">2 snoozed until 8:00 AM</span>
+            <div class="ed-dim" id="edDim"></div>
+            <div class="ed-ctx" id="edCtx">
+              <div class="ci"><span class="skeleton" style="max-width:70%"></span></div>
+              <div class="ci hot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/></svg>Snooze</div>
+              <div class="ci"><span class="skeleton" style="max-width:55%"></span></div>
+            </div>
+            <div class="ed-pal" id="edPal">
+              <div class="palette">
+                <div class="ha-input" style="margin-bottom:0"><span class="ph">e.g. 2h, Friday, tomorrow 5pm&hellip;</span><span class="ha-caret" aria-hidden="true"></span></div>
+                <div class="palette-row">2 Hours From Now<span class="pr-when">1:52 AM</span></div>
+                <div class="palette-row" id="edPick">Tomorrow Morning<span class="pr-when">8:00 AM</span></div>
+                <div class="palette-row">Tomorrow Afternoon<span class="pr-when">1:00 PM</span></div>
+                <div class="palette-row">Day After Tomorrow<span class="pr-when">Sun 8:00 AM</span></div>
+              </div>
+            </div>
+            <div class="ha-cursor" id="edCur"><svg width="15" height="15" viewBox="0 0 24 24" fill="#eef" stroke="#05070f" stroke-width="1.4"><path d="M4 2l16 11.5-7 .8L9.6 22z"/></svg><span class="rip" aria-hidden="true"></span></div>
+            <div class="mf-cap">
+              <span data-s="0" class="on"><b>Shift-click.</b> Right-click. Snooze.</span>
+              <span data-s="1">Pick a time. <b>Or type one.</b></span>
+              <span data-s="2">Gone until morning. <b>Back together.</b></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ SEGMENT 4 — CTA: the trainer ════ -->
+  <section class="lp-section lp-cta">
+    <div class="lp-inner" style="flex-direction:column">
+      <h2 class="seg-h">End tonight on purpose</h2>
+      <p class="seg-p">The trainer will run you through a batch snooze on practice sessions. Select, snooze, done.</p>
+      <!-- PLACEHOLDER: agentmc:// deep link to the Education Hub Snooze trainer (Dilan 2026-07-10). Hub not built yet; scrolls to #try until wired. -->
+      <a class="lp-cta-btn" href="#try" id="finale-cta">Teach me snooze</a>
+      <p class="lp-cta-sub" id="finale-sub">Or tonight: shift-select the leftovers, right-click, pick Tomorrow Morning.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="scroll-hint" id="hint"><span>Scroll</span><div class="scroll-hint-arrow"></div></div>
+
+<script>
+(function(){
+  var scroller=document.getElementById('scroll');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  console.log('[snooze-op-endnight] init',{segments:document.querySelectorAll('.lp-section').length,reduce:reduce});
+  function staged(inner){
+    var steps=inner.querySelectorAll('.hero-line,.hero-desc');
+    steps.forEach(function(el,i){setTimeout(function(){el.classList.add('visible');},reduce?0:180*i+120);});
+  }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');staged(e.target);io.unobserve(e.target);}
+    });
+  },{root:scroller,threshold:.35});
+  document.querySelectorAll('.lp-inner').forEach(function(el){io.observe(el)});
+  document.querySelectorAll('[data-goto]').forEach(function(a){
+    a.addEventListener('click',function(ev){
+      ev.preventDefault();
+      var target=document.querySelectorAll('.lp-section')[Number(a.getAttribute('data-goto'))-1];
+      if(target){target.scrollIntoView({behavior:reduce?'auto':'smooth'});}
+    });
+  });
+  var finale=document.getElementById('finale-cta'),finaleSub=document.getElementById('finale-sub');
+  if(finale&&finaleSub){
+    finale.addEventListener('click',function(){
+      finaleSub.classList.remove('flash');void finaleSub.offsetWidth;finaleSub.classList.add('flash');
+    });
+  }
+  var hint=document.getElementById('hint');
+  scroller.addEventListener('scroll',function(){hint.classList.add('hidden');},{once:true,passive:true});
+  scroller.focus({preventScroll:true});
+})();
+</script>
+<script>
+/* ═══ HERO FILM — "End the night" (haFilm engine; picked grammar, bulk variant) ═══ */
+function haFilm(stageEl,DUR,def){
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){def.reset();if(def.final)def.final();console.log('[snooze-op-endnight] film: reduced motion, final frame shown');return}
+  var start=null,idx=0;
+  function loop(ts){
+    if(start===null){start=ts;idx=0;def.reset();}
+    var t=(ts-start)/1000;
+    while(idx<def.cues.length&&def.cues[idx].at<=t){def.cues[idx].do();idx++;}
+    if(def.tick)def.tick(t);
+    if(t>=DUR)start=null;
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+}
+function haFlip(el,txt){el.textContent=txt;el.classList.remove('flip');void el.offsetWidth;el.classList.add('flip')}
+function haClock(clockEl,txtEl,txt,landed){txtEl.textContent=txt;clockEl.classList.remove('tick');void clockEl.offsetWidth;clockEl.classList.add('tick');clockEl.classList.toggle('landed',!!landed)}
+function haCap(root,n){root.querySelectorAll('.ha-cap-line').forEach(function(c){c.classList.toggle('on',+c.dataset.s===n)});root.querySelectorAll('.ha-dots i').forEach(function(d){d.classList.toggle('on',+d.dataset.d<=n)})}
+function haCur(cur,x,y){cur.style.left=x;cur.style.top=y}
+function haCurClick(cur){cur.classList.remove('click');void cur.offsetWidth;cur.classList.add('click')}
+function mfCap(root,n){root.querySelectorAll('.mf-cap span').forEach(function(c){c.classList.toggle('on',+c.dataset.s===n)})}
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var stage=$('haStage'),win=$('enWin'),count=$('enCount'),state=$('enState'),chip=$('enChip'),
+      rows=[$('enR1'),$('enR2'),$('enR3')],whens=[$('enW1'),$('enW2'),$('enW3')],
+      ctx=$('enCtx'),modal=$('enModal'),pick=$('enPick'),dim=$('enDim'),cur=$('enCur'),
+      clock=$('enClock'),clockTxt=$('enClockTxt');
+  console.log('[snooze-op-endnight] hero film init: 9.4s bulk night snooze loop');
+  var ROWY=['122px','153px','184px'];
+  var cues=[
+    {at:.25,do:function(){rows[0].classList.add('shout')}},
+    {at:.4, do:function(){rows[1].classList.add('shout');haCap(stage,0)}},
+    {at:.55,do:function(){rows[2].classList.add('shout')}},
+    {at:1.0,do:function(){rows.forEach(function(r){r.classList.remove('shout')});cur.classList.add('in');haCur(cur,'30%',ROWY[0])}},
+    {at:1.25,do:function(){haCurClick(cur);rows[0].classList.add('selected')}},
+    {at:1.5,do:function(){haCur(cur,'30%',ROWY[1])}},
+    {at:1.7,do:function(){haCurClick(cur);rows[1].classList.add('selected')}},
+    {at:1.95,do:function(){haCur(cur,'30%',ROWY[2])}},
+    {at:2.15,do:function(){haCurClick(cur);rows[2].classList.add('selected');chip.classList.add('in');haCap(stage,1)}},
+    {at:2.55,do:function(){haCurClick(cur);ctx.classList.add('in')}},
+    {at:2.9,do:function(){haCur(cur,'52%','199px')}},
+    {at:3.15,do:function(){haCurClick(cur)}},
+    {at:3.3,do:function(){ctx.classList.remove('in');modal.classList.add('in')}},
+    {at:3.55,do:function(){haCur(cur,'81%','196px')}},
+    {at:3.85,do:function(){haCurClick(cur);pick.classList.add('sel');haCap(stage,2)}},
+    {at:4.05,do:function(){modal.classList.add('commit')}},
+    {at:4.25,do:function(){modal.classList.remove('in');cur.classList.remove('in');chip.classList.remove('in');rows[0].classList.add('gone');rows[0].classList.remove('selected')}},
+    {at:4.4,do:function(){rows[1].classList.add('gone');rows[1].classList.remove('selected')}},
+    {at:4.55,do:function(){rows[2].classList.add('gone');rows[2].classList.remove('selected');haFlip(count,'(0)');state.classList.add('show')}},
+    {at:5.0,do:function(){dim.classList.add('on');haCap(stage,3)}},
+    {at:5.6,do:function(){haClock(clock,clockTxt,'3:04 AM')}},
+    {at:6.2,do:function(){haClock(clock,clockTxt,'8:00 AM',true)}},
+    {at:6.5,do:function(){dim.classList.remove('on');rows[0].classList.remove('gone');rows[0].classList.add('back');whens[0].textContent='returned';whens[0].classList.add('ret')}},
+    {at:6.65,do:function(){rows[1].classList.remove('gone');rows[1].classList.add('back');whens[1].textContent='returned';whens[1].classList.add('ret')}},
+    {at:6.8,do:function(){rows[2].classList.remove('gone');rows[2].classList.add('back');whens[2].textContent='returned';whens[2].classList.add('ret');haFlip(count,'(3)');state.textContent='Returned from snooze';state.classList.add('go');haCap(stage,4)}},
+    {at:7.8,do:function(){haCap(stage,5)}},
+    {at:9.0,do:function(){win.style.opacity='0';clock.style.opacity='0'}},
+    {at:9.2,do:function(){}}
+  ];
+  haFilm(stage,9.4,{
+    reset:function(){
+      win.style.opacity='';clock.style.opacity='';
+      rows.forEach(function(r){r.classList.remove('shout','gone','back','selected')});
+      whens.forEach(function(w){w.textContent='needs you';w.classList.remove('ret')});
+      count.textContent='(3)';chip.classList.remove('in');
+      state.classList.remove('show','go');state.textContent='3 snoozed until 8:00 AM';
+      ctx.classList.remove('in');modal.classList.remove('in','commit');pick.classList.remove('sel');
+      cur.classList.remove('in','click');haCur(cur,'30%','96px');
+      dim.classList.remove('on');
+      clock.classList.remove('landed','tick');clockTxt.textContent='11:52 PM';
+      haCap(stage,-1);
+    },
+    cues:cues,
+    final:function(){
+      clockTxt.textContent='8:00 AM';clock.classList.add('landed');
+      whens.forEach(function(w){w.textContent='returned';w.classList.add('ret')});
+      state.classList.add('show','go');state.textContent='Returned from snooze';
+      haCap(stage,5);
+    }
+  });
+})();
+/* ═══ SELL MINI-FILM — three parked, one 8 AM return ═══ */
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var body=$('bkBody'),clockEl=$('bkClock'),state=$('bkState'),
+      rows=[$('bkR1'),$('bkR2'),$('bkR3')];
+  if(!body)return;
+  console.log('[snooze-op-endnight] sell mini-film init: 8.5s batch-return loop');
+  haFilm(body,8.5,{
+    reset:function(){
+      body.style.opacity='';clockEl.textContent='11:58 PM';clockEl.classList.remove('landed');
+      state.textContent='3 snoozed until 8:00 AM';state.classList.remove('go');
+      rows.forEach(function(r){r.classList.add('ghost');r.classList.remove('shout')});
+      mfCap(body,0);
+    },
+    cues:[
+      {at:1.8,do:function(){clockEl.textContent='2:40 AM'}},
+      {at:3.4,do:function(){clockEl.textContent='6:15 AM'}},
+      {at:4.9,do:function(){clockEl.textContent='8:00 AM';clockEl.classList.add('landed');state.textContent='Returned from snooze';state.classList.add('go');rows[0].classList.remove('ghost');rows[0].classList.add('shout');mfCap(body,1)}},
+      {at:5.1,do:function(){rows[1].classList.remove('ghost');rows[1].classList.add('shout')}},
+      {at:5.3,do:function(){rows[2].classList.remove('ghost');rows[2].classList.add('shout')}},
+      {at:6.1,do:function(){rows.forEach(function(r){r.classList.remove('shout')})}},
+      {at:8.15,do:function(){body.style.opacity='0'}},
+      {at:8.35,do:function(){}}
+    ],
+    final:function(){
+      clockEl.textContent='8:00 AM';clockEl.classList.add('landed');
+      state.textContent='Returned from snooze';state.classList.add('go');
+      rows.forEach(function(r){r.classList.remove('ghost')});mfCap(body,1);
+    }
+  });
+})();
+/* ═══ EDUCATE FILM — one batch snooze start to finish, synced to the numbered steps ═══ */
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var body=$('edBody'),clockEl=$('edClock'),state=$('edState'),dim=$('edDim'),
+      ctx=$('edCtx'),pal=$('edPal'),pick=$('edPick'),cur=$('edCur'),
+      r1=$('edR1'),r2=$('edR2'),steps=$('edSteps'),lis=[$('edLi1'),$('edLi2'),$('edLi3')];
+  if(!body)return;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce)steps.classList.add('sync');
+  function stepOn(n){lis.forEach(function(li,i){li.classList.toggle('on',i===n)})}
+  console.log('[snooze-op-endnight] educate walkthrough film init: 9.0s, film-synced steps');
+  haFilm(body,9.0,{
+    reset:function(){
+      body.style.opacity='';clockEl.textContent='11:52 PM';clockEl.classList.remove('landed');
+      state.style.opacity='0';state.textContent='2 snoozed until 8:00 AM';state.classList.remove('go');
+      r1.classList.remove('out','back','ontime','selected');r2.classList.remove('out','back','ontime','selected');
+      dim.classList.remove('on');ctx.classList.remove('in');pal.classList.remove('in','commit');pick.classList.remove('sel');
+      cur.classList.add('in');haCur(cur,'34%','30px');
+      stepOn(0);mfCap(body,0);
+    },
+    cues:[
+      {at:.4, do:function(){haCurClick(cur);r1.classList.add('selected')}},
+      {at:.75,do:function(){haCur(cur,'34%','67px')}},
+      {at:1.0,do:function(){haCurClick(cur);r2.classList.add('selected')}},
+      {at:1.3,do:function(){haCurClick(cur);ctx.classList.add('in')}},
+      {at:1.7,do:function(){haCur(cur,'58%','96px')}},
+      {at:2.1,do:function(){haCurClick(cur)}},
+      {at:2.3,do:function(){ctx.classList.remove('in');pal.classList.add('in');stepOn(1);mfCap(body,1)}},
+      {at:2.9,do:function(){haCur(cur,'62%','129px')}},
+      {at:3.5,do:function(){haCurClick(cur);pick.classList.add('sel')}},
+      {at:3.9,do:function(){pal.classList.add('commit')}},
+      {at:4.3,do:function(){pal.classList.remove('in');cur.classList.remove('in');r1.classList.remove('selected');r2.classList.remove('selected');r1.classList.add('out');r2.classList.add('out');state.style.opacity='1';stepOn(2);mfCap(body,2)}},
+      {at:5.1,do:function(){dim.classList.add('on');clockEl.textContent='3:20 AM'}},
+      {at:5.8,do:function(){clockEl.textContent='8:00 AM';clockEl.classList.add('landed')}},
+      {at:6.2,do:function(){dim.classList.remove('on');r1.classList.remove('out');r1.classList.add('back','ontime');r2.classList.remove('out');r2.classList.add('back','ontime');state.textContent='Returned from snooze';state.classList.add('go')}},
+      {at:8.65,do:function(){body.style.opacity='0'}},
+      {at:8.85,do:function(){}}
+    ],
+    final:function(){
+      cur.classList.remove('in');clockEl.textContent='8:00 AM';clockEl.classList.add('landed');
+      r1.classList.add('ontime');r2.classList.add('ontime');
+      state.style.opacity='1';state.textContent='Returned from snooze';state.classList.add('go');
+      stepOn(-1);mfCap(body,2);
+    }
+  });
+})();
+</script>
+</body>
+</html>

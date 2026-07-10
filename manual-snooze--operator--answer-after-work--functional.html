@@ -1,29 +1,19 @@
 <!doctype html>
 <!--
   AMC FEATURE LANDING PAGE — Snooze a session (manual)
-  Variation: Developer · "You choose" (angle id: attention-scheduled) · D1-E emotional (B/A/B · Power)
+  Variation: Operator · "Answer after work" · O2-F functional (PAS)
   Brief: briefs/manual-snooze.md · v2 · 2026-07-08 (corrected mechanism — ask-waits)
-  ANIMATION OPTION USED: [C — live DOM/CSS mock]
   Segments: 1 Hook · 2 Sell · 3 Educate · 4 CTA
-  rev+1 · 2026-07-09 — global-standards pass: one-message h1, hero hotkey strip (snoozeSession, rebindable), invocation honesty
-  rev+2 · 2026-07-09 — snooze key verified live (GET /keybindings): strip + educate upgraded to H (was snoozeSession chip)
-  rev+3 · 2026-07-09 — HERO REBUILD (Dilan pick, concept B "The triage"): CSS triage loop → haFilm performance film
-  rev+4 · 2026-07-10 — TYPED NATURAL LANGUAGE (Dilan unlock, parser-contract-verified): hero round 3 types "tomorow 5pm"
-  rev+5 · 2026-07-10 — DILAN COPY DIRECTION (this session):
-    · h1 → "You choose" + plain-words sub; em-dashes removed page-wide; fluff cut
-    · hero hotkey strip enlarged (real keycap look) to showcase the key
-    · Sell segment reframed: you know where your attention should go + typed natural language
-      as the lead mechanism (film performs type → read-back → park → wait → return)
-    · NOTE REMOVED everywhere: source-verified (SnoozePalette.tsx) — the note field is gated
-      behind snoozeNoteEnabled, OFF by default. Not part of the default palette.
-    · Presets corrected to source (snooze-presets.ts): palette = first 4 contextually relevant
-      of the static list; afternoon depiction = 2 Hours From Now · This Evening · Tomorrow
-      Morning · Tomorrow Afternoon. "Tomorrow Evening" does not exist and is gone.
-    · Educate = ONE full walkthrough film (right-click → menu → palette → preset → hidden →
-      returns) with film-synced step highlighting; steps cut to 3.
-    · CTA = future Education Hub / Snooze trainer button ("Teach me snooze") per Dilan;
-      deep link placeholder below, scrolls to #try until the hub exists.
-  rev+6 · 2026-07-10 — copy-standards v2 audit (2026-07-09 call rules): educate reframed as play ('Try it. Two clicks'), trainer CTA copy tightened; films select the target before H where a session row exists.
+  rev+1 · 2026-07-09 — global-standards pass: one-message h1, hero hotkey strip, invocation honesty, loop ~9s
+  rev+2 · 2026-07-09 — snooze key verified live (GET /keybindings): strip + educate upgraded to H
+  rev+3 · 2026-07-10 — FULL REBUILD to the rev6 standard (six-page upgrade; decisions-log 2026-07-10
+  rounds 1-3). ANGLE TIME CORRECTED: the old "Tomorrow Evening" preset does not exist in the app;
+  the story now snoozes to the real This Evening preset (6:00 PM), which fits "answer after work"
+  better anyway. Hero = picked performance grammar: 1:58 PM ask → right-click → Snooze → This
+  Evening → dim time-jump → 6:00 PM return. Em-dashes removed; NOTE claims removed (opt-in, off by
+  default); contextual afternoon presets with resolved times; h1 → single assertion + plain sub;
+  big H keycap strip; educate = play with film-synced walkthrough; CTA = trainer button.
+  O2 scrub honored: the ask WAITS SAFELY; no progress claims.
   rev · 2026-07-10 — persistent hotkey badge added (fixed top-left, visible on every segment; Dilan).
   rev · 2026-07-10 — red-team consistency: future-tense trainer, count-free educate/captions, allowed RM status, dual-status clock hidden.
 -->
@@ -61,7 +51,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
 @keyframes orbFloat{0%,100%{transform:translate(0,0)}33%{transform:translate(30px,-40px)}66%{transform:translate(-20px,30px)}}
 .bg-grid{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px);background-size:32px 32px}
 .kbd{display:inline-block;font-family:ui-monospace,Consolas,monospace;font-size:12px;font-weight:600;color:var(--text-2);background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:6px;padding:2px 7px;line-height:1.4;vertical-align:middle}
-/* Hero hotkey strip — enlarged per Dilan 2026-07-10: a real keycap, big enough to be the first thing seen */
 .hk-strip{display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap}
 .hk-cap{display:flex;align-items:center;justify-content:center;min-width:48px;height:48px;padding:0 14px;border-radius:11px;background:linear-gradient(180deg,#1c1f2e,#12141f);border:1px solid rgba(255,255,255,.2);border-bottom-width:4px;color:#eef;font:800 1.35rem/1 ui-monospace,Consolas,monospace;box-shadow:0 10px 26px rgba(0,0,0,.5)}
 .hk-label{font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--faint)}
@@ -82,17 +71,19 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
 .demo-panel{width:100%;max-width:460px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
 .demo-title{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:600;padding:10px 14px;border-bottom:1px solid var(--line);color:var(--text-2)}
 .demo-body{padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-height:300px;position:relative}
-.demo-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
 .demo-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .skeleton{height:8px;border-radius:4px;background:rgba(255,255,255,.07);flex:1}
 .palette{border:1px solid var(--line);border-radius:8px;background:var(--glass-strong);padding:8px;display:flex;flex-direction:column;gap:6px}
 .palette-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--body);border:1px solid transparent;border-radius:6px;padding:6px 10px;transition:background .2s,border-color .2s,color .2s}
 .palette-row.sel{background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.5);color:var(--text)}
 .pr-when{margin-left:auto;font-size:10px;font-weight:600;color:var(--faint);font-variant-numeric:tabular-nums}
-/* ═══ HERO FILM KIT (subset from templates/hero-animation-template.html v2 — concept B "The triage") ═══ */
+/* ═══ HERO FILM KIT (rev6 shell — window + palette grammar) ═══ */
 .ha-stage{position:relative;width:100%;max-width:560px;height:360px;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#05070f}
 .ha-vig{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 0%,rgba(96,165,250,.06),transparent 60%)}
-.ha-window{position:absolute;left:24px;top:56px;width:min(300px,55%);background:rgba(9,11,20,.92);border:1px solid rgba(255,255,255,.1);border-radius:14px;box-shadow:0 24px 60px rgba(0,0,0,.55);z-index:2;transition:filter .3s var(--ease),opacity .3s}
+.ha-clock{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:6;display:inline-flex;align-items:center;gap:6px;background:rgba(3,7,18,.75);border:1px solid var(--line);border-radius:var(--radius-pill);padding:4px 12px;font-size:12px;font-weight:700;color:var(--text-2);backdrop-filter:blur(8px);font-variant-numeric:tabular-nums}
+.ha-clock.tick{animation:haPop .22s cubic-bezier(.34,1.56,.64,1)}
+.ha-clock.landed{border-color:rgba(74,222,128,.6);color:var(--accent);box-shadow:0 0 16px rgba(74,222,128,.25)}
+.ha-window{position:absolute;left:24px;top:64px;width:min(300px,55%);background:rgba(9,11,20,.92);border:1px solid rgba(255,255,255,.1);border-radius:14px;box-shadow:0 24px 60px rgba(0,0,0,.55);z-index:2;transition:filter .3s var(--ease),opacity .3s}
 .ha-whead{display:flex;align-items:center;gap:7px;padding:10px 13px;border-bottom:1px solid var(--line);font-size:12px;font-weight:700;color:var(--text-2)}
 .ha-whead svg{color:var(--faint)}
 .ha-count{font-variant-numeric:tabular-nums}
@@ -101,46 +92,56 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
 .ha-rows{padding:8px;display:flex;flex-direction:column;gap:4px}
 .ha-row{position:relative;display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:9px;background:rgba(255,255,255,.03);border:1px solid transparent;font-size:11.5px;font-weight:600;color:var(--text-2);max-height:32px;transition:transform .34s cubic-bezier(.5,0,.15,1),opacity .3s,max-height .34s cubic-bezier(.5,0,.15,1),padding .34s cubic-bezier(.5,0,.15,1),margin .34s cubic-bezier(.5,0,.15,1),border-color .3s,box-shadow .3s,background .25s}
 .ha-row.active{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.22)}
-.ha-row.focus{border-color:rgba(74,222,128,.55);box-shadow:0 0 0 3px rgba(74,222,128,.12);background:rgba(74,222,128,.05)}
 .ha-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.ha-dot.amber{background:var(--warn)}.ha-dot.green{background:var(--accent)}
-.ha-when{margin-left:auto;font-size:10px;font-weight:600;color:var(--faint);display:inline-flex;align-items:center;gap:5px}
+.ha-dot.amber{background:var(--warn)}
+.ha-when{margin-left:auto;font-size:10px;font-weight:600;color:var(--faint);display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.ha-when.ret{color:var(--warn);font-weight:800;text-transform:uppercase;font-size:9px;letter-spacing:.03em}
 .ha-row.shout{border-color:rgba(251,191,36,.55);box-shadow:0 0 0 3px rgba(251,191,36,.12)}
 .ha-row.shout .ha-dot.amber{animation:haPulse .5s ease-in-out 2}
 @keyframes haPulse{50%{opacity:.3}}
 .ha-row.gone{transform:translateX(130%) rotate(2deg);opacity:0;max-height:0;padding-top:0;padding-bottom:0;margin-top:-4px}
+.ha-row.back{animation:edDrop .5s cubic-bezier(.34,1.56,.64,1)}
+.ha-state{margin:0 8px 8px;display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;border-radius:var(--radius-pill);padding:3px 10px;background:rgba(251,191,36,.12);color:var(--warn);width:fit-content;transition:background .3s,color .3s,opacity .25s;opacity:0}
+.ha-state.show{opacity:1}
+.ha-state.go{background:rgba(74,222,128,.12);color:var(--accent)}
 .ha-fly{position:absolute;right:10px;z-index:5;display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;color:var(--warn);background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.45);border-radius:var(--radius-pill);padding:3px 10px;opacity:0;pointer-events:none}
 .ha-fly.go{animation:haFly .55s cubic-bezier(.5,0,.15,1) forwards}
 @keyframes haFly{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(90px,-6px)}}
-.ha-keys{position:absolute;left:79%;top:40px;transform:translateX(-50%) translateY(20px) scale(.7);z-index:8;opacity:0;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .2s;display:flex;gap:10px;align-items:flex-end}
-.ha-keys.in{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}
-.ha-keys.out{opacity:0;transform:translateX(-50%) translateY(20px) scale(.8);transition:transform .25s var(--ease),opacity .2s}
-.ha-key{display:flex;flex-direction:column;align-items:center;gap:7px}
-.ha-cap{display:flex;align-items:center;justify-content:center;min-width:48px;height:48px;padding:0 12px;border-radius:11px;background:linear-gradient(180deg,#1c1f2e,#12141f);border:1px solid rgba(255,255,255,.18);border-bottom-width:4px;color:#eef;font:800 1.15rem/1 ui-monospace,Consolas,monospace;box-shadow:0 14px 34px rgba(0,0,0,.6);position:relative;transition:transform .1s ease,border-bottom-width .1s}
-.ha-keys.pressed .ha-cap{transform:translateY(3px);border-bottom-width:1px;box-shadow:0 6px 18px rgba(0,0,0,.5)}
-.ha-cap::after{content:"";position:absolute;inset:-7px;border-radius:15px;border:2px solid rgba(74,222,128,.6);opacity:0}
-.ha-keys.pressed .ha-cap::after{animation:haRing .45s var(--ease)}
-@keyframes haRing{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.06)}}
-.ha-klabel{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--faint);text-transform:uppercase}
-.ha-modal{position:absolute;left:79%;top:100px;width:214px;transform:translateX(-50%) scale(.9);opacity:0;z-index:7;background:#12141f;border:1px solid rgba(255,255,255,.14);border-radius:13px;box-shadow:0 26px 70px rgba(0,0,0,.65);padding:11px;transition:transform .26s cubic-bezier(.34,1.56,.64,1),opacity .2s;pointer-events:none}
+.ha-ctx{position:absolute;left:38%;top:118px;width:158px;background:#12141f;border:1px solid rgba(255,255,255,.14);border-radius:10px;box-shadow:0 20px 55px rgba(0,0,0,.6);padding:6px;opacity:0;transform:scale(.92);transition:transform .22s cubic-bezier(.34,1.56,.64,1),opacity .18s;z-index:6}
+.ha-ctx.in{opacity:1;transform:scale(1)}
+.ha-ctx .ci{display:flex;align-items:center;gap:7px;padding:6px 9px;border-radius:7px;font-size:11px;font-weight:600;color:var(--text-2);border:1px solid transparent;transition:background .15s,border-color .15s}
+.ha-ctx .ci.hot{background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.5)}
+.ha-modal{position:absolute;left:79%;top:96px;width:218px;transform:translateX(-50%) scale(.9);opacity:0;z-index:7;background:#12141f;border:1px solid rgba(255,255,255,.14);border-radius:13px;box-shadow:0 26px 70px rgba(0,0,0,.65);padding:11px;transition:transform .26s cubic-bezier(.34,1.56,.64,1),opacity .2s;pointer-events:none}
 .ha-modal.in{opacity:1;transform:translateX(-50%) scale(1)}
 .ha-modal.commit{border-color:rgba(74,222,128,.7);box-shadow:0 0 0 3px rgba(74,222,128,.2),0 26px 70px rgba(0,0,0,.65)}
 .ha-mtitle{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--text-2);margin:0 1px 8px}
 .ha-mtitle svg{color:var(--faint)}
 .ha-presets{display:flex;flex-direction:column;gap:4px}
-.ha-preset{display:flex;align-items:center;gap:7px;padding:5px 9px;border-radius:8px;font-size:11px;font-weight:600;color:var(--text-2);background:rgba(255,255,255,.04);border:1px solid transparent;transition:background .15s,border-color .15s,color .15s}
+.ha-preset{display:flex;align-items:center;gap:7px;padding:5px 9px;border-radius:8px;font-size:10.5px;font-weight:600;color:var(--text-2);background:rgba(255,255,255,.04);border:1px solid transparent;transition:background .15s,border-color .15s,color .15s}
 .ha-preset.sel{background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.55);color:#d9ffe6}
-.ha-preset .ok{margin-left:auto;font-size:10px;color:var(--accent);font-weight:800;opacity:0;transition:opacity .15s}
-.ha-preset.sel .ok{opacity:1}
-.ha-input{display:flex;align-items:center;border:1px solid rgba(255,255,255,.14);border-radius:8px;background:rgba(255,255,255,.05);padding:6px 9px;font:600 11.5px/1.3 ui-monospace,Consolas,monospace;color:#eef;min-height:30px;margin-bottom:6px}
+.ha-preset .pw{margin-left:auto;font-size:9px;font-weight:600;color:var(--faint);font-variant-numeric:tabular-nums}
+.ha-input{display:flex;align-items:center;border:1px solid rgba(255,255,255,.14);border-radius:8px;background:rgba(255,255,255,.05);padding:6px 9px;font:600 10.5px/1.3 ui-monospace,Consolas,monospace;color:#eef;min-height:28px;margin-bottom:6px}
 .ha-input .ph{color:var(--fine);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ha-caret{width:2px;height:13px;background:var(--accent);margin-left:1px;animation:haCaret 1s steps(1) infinite;flex-shrink:0}
+.ha-caret{width:2px;height:12px;background:var(--accent);margin-left:1px;animation:haCaret 1s steps(1) infinite;flex-shrink:0}
 @keyframes haCaret{50%{opacity:0}}
-.ha-modal.typing .ha-presets{display:none}
-.ha-modal.typing .ha-input .ph{display:none}
-.ha-resolved{display:none;align-items:center;gap:6px;margin-top:6px;border-radius:8px;padding:6px 9px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.35);font-size:11px;font-weight:700;color:#d9ffe6}
-.ha-modal.resolved .ha-resolved,.ha-resolved.show{display:flex}
-.ha-resolved .ok2{margin-left:auto;font-size:9.5px;color:var(--accent);font-weight:800}
+.ha-dim{position:absolute;inset:0;background:rgba(3,7,18,.55);opacity:0;transition:opacity .35s;z-index:4;pointer-events:none}
+.ha-dim.on{opacity:1}
+.ha-cursor{position:absolute;z-index:9;opacity:0;transition:left .5s cubic-bezier(.5,0,.15,1),top .5s cubic-bezier(.5,0,.15,1),opacity .25s;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.7))}
+.ha-cursor.in{opacity:1}
+.ha-cursor svg{display:block}
+.ha-cursor .rip{position:absolute;left:-8px;top:-8px;width:28px;height:28px;border-radius:50%;border:2px solid rgba(74,222,128,.65);opacity:0}
+.ha-cursor.click .rip{animation:haRing .4s var(--ease)}
+.ha-cursor.click svg{animation:haClickDip .18s ease}
+@keyframes haRing{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.06)}}
+@keyframes haClickDip{50%{transform:scale(.8)}}
+.ha-caps{position:absolute;left:12px;right:12px;bottom:0;height:40px;z-index:6;pointer-events:none}
+.ha-cap-line{position:absolute;left:0;right:0;bottom:17px;text-align:center;font-size:11px;font-weight:600;color:var(--body);opacity:0;transition:opacity .25s var(--ease)}
+.ha-cap-line.on{opacity:1}
+.ha-cap-line b{color:var(--text-2)}
+.ha-dots{position:absolute;left:50%;transform:translateX(-50%);bottom:6px;display:inline-flex;gap:5px}
+.ha-dots i{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.18);transition:background .2s}
+.ha-dots i.on{background:var(--accent)}
+.ha-board{display:none}
 /* seg + educate mini-films */
 .mf-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-2);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:8px;padding:8px 10px;transition:opacity .3s,border-color .3s,box-shadow .3s,transform .35s var(--ease),max-height .35s var(--ease)}
 .mf-row.ghost{opacity:.38}
@@ -160,8 +161,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
 .mf-cap span{position:absolute;left:0;right:0;top:9px;opacity:0;transition:opacity .25s var(--ease)}
 .mf-cap span.on{opacity:1}
 .mf-cap b{color:var(--warn);font-weight:600}
-.mf-typed{font:600 12px/1.3 ui-monospace,Consolas,monospace;color:#eef}
-/* educate walkthrough overlays */
 .ed-ctx{position:absolute;left:44%;top:44px;width:158px;background:#12141f;border:1px solid rgba(255,255,255,.14);border-radius:10px;box-shadow:0 20px 55px rgba(0,0,0,.6);padding:6px;opacity:0;transform:scale(.92);transition:transform .22s cubic-bezier(.34,1.56,.64,1),opacity .18s;z-index:6}
 .ed-ctx.in{opacity:1;transform:scale(1)}
 .ed-ctx .ci{display:flex;align-items:center;gap:7px;padding:6px 9px;border-radius:7px;font-size:11px;font-weight:600;color:var(--text-2);border:1px solid transparent;transition:background .15s,border-color .15s}
@@ -172,21 +171,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
 .ed-pal.commit .palette{border-color:rgba(74,222,128,.6);box-shadow:0 0 0 3px rgba(74,222,128,.18),0 24px 64px rgba(0,0,0,.65)}
 .ed-dim{position:absolute;inset:0;background:rgba(3,7,18,.55);opacity:0;transition:opacity .3s;z-index:5;pointer-events:none}
 .ed-dim.on{opacity:1}
-.ha-cursor{position:absolute;z-index:9;opacity:0;transition:left .5s cubic-bezier(.5,0,.15,1),top .5s cubic-bezier(.5,0,.15,1),opacity .25s;pointer-events:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.7))}
-.ha-cursor.in{opacity:1}
-.ha-cursor svg{display:block}
-.ha-cursor .rip{position:absolute;left:-8px;top:-8px;width:28px;height:28px;border-radius:50%;border:2px solid rgba(74,222,128,.65);opacity:0}
-.ha-cursor.click .rip{animation:haRing .4s var(--ease)}
-.ha-cursor.click svg{animation:haClickDip .18s ease}
-@keyframes haClickDip{50%{transform:scale(.8)}}
-.ha-caps{position:absolute;left:12px;right:12px;bottom:0;height:40px;z-index:6;pointer-events:none}
-.ha-cap-line{position:absolute;left:0;right:0;bottom:17px;text-align:center;font-size:11px;font-weight:600;color:var(--body);opacity:0;transition:opacity .25s var(--ease)}
-.ha-cap-line.on{opacity:1}
-.ha-cap-line b{color:var(--text-2)}
-.ha-dots{position:absolute;left:50%;transform:translateX(-50%);bottom:6px;display:inline-flex;gap:5px}
-.ha-dots i{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.18);transition:background .2s}
-.ha-dots i.on{background:var(--accent)}
-.ha-board{display:none}
 .lp-cta-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:var(--radius);background:var(--accent);color:var(--on-accent);font-weight:600;font-size:15px;text-decoration:none;border:none;cursor:pointer;transition:transform var(--t-hover),box-shadow var(--t-hover);width:fit-content}
 .lp-cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(74,222,128,.25)}
 .lp-cta-btn:focus-visible{outline:2px solid var(--info);outline-offset:3px}
@@ -214,7 +198,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.1s!important}
   .bg-orb,.scroll-hint-arrow{animation:none!important}
   .seg-list.sync li{opacity:1}
-  /* hero film: stage hides, static 3-still storyboard tells the story */
   .ha-stage{display:none}
   .ha-board{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:560px;margin:0 auto;text-align:left}
   .ha-bcard{background:rgba(9,11,20,.92);border:1px solid var(--line);border-radius:12px;padding:12px}
@@ -256,81 +239,80 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
           <span class="hk-label">Snooze &middot; press H</span>
         </div>
         <h1>
-          <span class="hero-line">You choose</span>
+          <span class="hero-line">Answer it after work</span>
         </h1>
-        <p class="hero-desc">Not everything asking for your attention deserves it now. Pick the one you work on and snooze the rest. Every snoozed ask comes back at the time you set.</p>
+        <p class="hero-desc">The ask lands in the middle of your day job. Snooze it to this evening. It waits safely and returns the hour you actually own.</p>
         <!-- PLACEHOLDER: agentmc:// deep link to the Education Hub Snooze trainer (Dilan 2026-07-10). Hub not built yet; scrolls to #try until wired. -->
         <a class="lp-cta-btn hero-cta" href="#try" data-goto="3">Teach me snooze</a>
       </div>
       <div class="demo-col">
         <div class="ha-stage" id="haStage" role="img"
-             aria-label="Four session asks land at once. Three are snoozed in quick succession: Dep upgrade sweep to the 2 Hours From Now preset, API refactor to Tomorrow Morning, and for Docs regen a time is typed in plain words with a typo, tomorow 5pm, which AMC reads back as Tomorrow at 5 PM before committing. Each ask leaves the list as the count drops. The payment webhook session is left in calm focus: the one that matters now.">
+             aria-label="1:58 PM, during the day job. A session asks: storefront copy polish needs you. It is right-clicked, Snooze is picked, and This Evening is chosen from the palette, which in the afternoon offers 2 Hours From Now, This Evening, Tomorrow Morning and Tomorrow Afternoon. The session leaves the list, snoozed until 6:00 PM. The screen dims while the afternoon passes. At 6:00 PM it returns on its own, marked returned. Closing words: answer it after work.">
           <div class="ha-vig" aria-hidden="true"></div>
-          <div class="ha-window" id="haWin">
-            <div class="ha-whead"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 3v18"/></svg>Sessions <span class="ha-count" id="haCount">(4)</span></div>
+          <div class="ha-clock" id="awClock"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span id="awClockTxt">1:58 PM</span></div>
+          <div class="ha-window" id="awWin">
+            <div class="ha-whead"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 3v18"/></svg>Sessions <span class="ha-count" id="awCount">(1)</span></div>
             <div class="ha-rows">
-              <div class="ha-row" id="haKeep"><span class="ha-dot amber"></span>Fix payment webhook<span class="ha-when">needs you</span></div>
-              <div class="ha-row" id="haR1"><span class="ha-dot amber"></span>Dep upgrade sweep<span class="ha-when">needs you</span></div>
-              <div class="ha-row" id="haR2"><span class="ha-dot amber"></span>API refactor<span class="ha-when">needs you</span></div>
-              <div class="ha-row" id="haR3"><span class="ha-dot amber"></span>Docs regen<span class="ha-when">needs you</span></div>
+              <div class="ha-row" id="awRow"><span class="ha-dot amber"></span>Storefront copy polish<span class="ha-when" id="awWhen">needs you</span></div>
             </div>
-            <div class="ha-fly" id="haFly" style="top:86px"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/></svg><span id="haFlyTxt">In 2 hours</span></div>
+            <span class="ha-state" id="awState">Snoozed until 6:00 PM</span>
+            <div class="ha-fly" id="awFly" style="top:52px"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/></svg><span>This evening</span></div>
           </div>
-          <div class="ha-keys" id="haKeys"><span class="ha-key"><span class="ha-cap">H</span><span class="ha-klabel">snooze</span></span></div>
-          <div class="ha-modal" id="haModal">
+          <div class="ha-ctx" id="awCtx">
+            <div class="ci"><span class="skeleton" style="max-width:70%"></span></div>
+            <div class="ci hot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/></svg>Snooze</div>
+            <div class="ci"><span class="skeleton" style="max-width:55%"></span></div>
+          </div>
+          <div class="ha-modal" id="awModal">
             <div class="ha-mtitle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/></svg>Snooze until&hellip;</div>
-            <div class="ha-input"><span class="ph" id="haPh">e.g. 2h, Friday, tomorrow 5pm&hellip;</span><span id="haTyped"></span><span class="ha-caret" aria-hidden="true"></span></div>
+            <div class="ha-input"><span class="ph">e.g. 2h, Friday, tomorrow 5pm&hellip;</span><span class="ha-caret" aria-hidden="true"></span></div>
             <div class="ha-presets">
-              <div class="ha-preset" id="haP0">2 Hours From Now<span class="ok">&#10003;</span></div>
-              <div class="ha-preset" id="haP1">This Evening<span class="ok">&#10003;</span></div>
-              <div class="ha-preset" id="haP2">Tomorrow Morning<span class="ok">&#10003;</span></div>
-              <div class="ha-preset" id="haP3">Tomorrow Afternoon<span class="ok">&#10003;</span></div>
+              <div class="ha-preset">2 Hours From Now<span class="pw">3:58 PM</span></div>
+              <div class="ha-preset" id="awPick">This Evening<span class="pw">6:00 PM</span></div>
+              <div class="ha-preset">Tomorrow Morning<span class="pw">8:00 AM</span></div>
+              <div class="ha-preset">Tomorrow Afternoon<span class="pw">1:00 PM</span></div>
             </div>
-            <div class="ha-resolved" id="haResolved"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Tomorrow at 5 PM<span class="ok2">&#9166; Enter</span></div>
           </div>
-          <div class="ha-cursor" id="haCursor"><svg width="15" height="15" viewBox="0 0 24 24" fill="#eef" stroke="#05070f" stroke-width="1.4"><path d="M4 2l16 11.5-7 .8L9.6 22z"/></svg><span class="rip" aria-hidden="true"></span></div>
+          <div class="ha-dim" id="awDim"></div>
+          <div class="ha-cursor" id="awCur"><svg width="15" height="15" viewBox="0 0 24 24" fill="#eef" stroke="#05070f" stroke-width="1.4"><path d="M4 2l16 11.5-7 .8L9.6 22z"/></svg><span class="rip" aria-hidden="true"></span></div>
           <div class="ha-caps" aria-hidden="true">
-            <div class="ha-cap-line" data-s="0">Four asks. <b>One matters now.</b></div>
-            <div class="ha-cap-line" data-s="1">This one: <b>in 2 hours</b>.</div>
-            <div class="ha-cap-line" data-s="2">This one: <b>tomorrow morning</b>.</div>
-            <div class="ha-cap-line" data-s="3">This one: typed. <b>&ldquo;tomorow 5pm&rdquo;, typo and all.</b></div>
-            <div class="ha-cap-line" data-s="4">One left. <b>The one you chose.</b></div>
-            <div class="ha-cap-line" data-s="5"><b>You choose.</b></div>
+            <div class="ha-cap-line" data-s="0">1:58 PM. <b>You're at your day job.</b></div>
+            <div class="ha-cap-line" data-s="1"><b>Right-click.</b> Snooze.</div>
+            <div class="ha-cap-line" data-s="2"><b>This Evening.</b> Seconds.</div>
+            <div class="ha-cap-line" data-s="3">It waits safely. <b>Nothing nags.</b></div>
+            <div class="ha-cap-line" data-s="4">6:00 PM. <b>Yours now.</b></div>
+            <div class="ha-cap-line" data-s="5"><b>Answer it after work.</b></div>
             <div class="ha-dots"><i data-d="0"></i><i data-d="1"></i><i data-d="2"></i><i data-d="3"></i><i data-d="4"></i><i data-d="5"></i></div>
           </div>
         </div>
-        <div class="ha-board" aria-label="Triage with snooze, in three panels">
-          <div class="ha-bcard"><div class="ha-brow"><span class="ha-dot amber"></span>Fix payment webhook</div><div class="ha-brow"><span class="ha-dot amber"></span>Dep upgrade sweep</div><div class="ha-brow"><span class="ha-dot amber"></span>API refactor</div><div class="ha-bcap">Four asks at once. One is actually urgent.</div></div>
-          <div class="ha-bcard"><div class="ha-brow" style="border:1px solid rgba(74,222,128,.4)">Snooze until&hellip; <b>2 Hours / Tomorrow</b></div><div class="ha-bcap">Click a session, press <b>H</b>, pick a time. Or type one in your own words, typos included.</div></div>
-          <div class="ha-bcard"><div class="ha-brow" style="border:1px solid rgba(74,222,128,.45)"><span class="ha-dot amber"></span>Fix payment webhook</div><div class="ha-bcap">One session left, in focus. The rest return at the times you picked.</div></div>
+        <div class="ha-board" aria-label="Answer after work, in three panels">
+          <div class="ha-bcard"><div class="ha-brow"><span class="ha-dot amber"></span>Storefront copy polish &middot; needs you</div><div class="ha-bcap">1:58 PM, mid day job: right-click, Snooze, This Evening.</div></div>
+          <div class="ha-bcard"><div class="ha-brow">Snoozed until 6:00 PM</div><div class="ha-bcap">The afternoon passes. The ask waits safely. Nothing nags.</div></div>
+          <div class="ha-bcard"><div class="ha-brow" style="border:1px solid rgba(74,222,128,.45)"><span class="ha-dot amber"></span>Returned from snooze</div><div class="ha-bcap">Back the hour you own. <b>Answer it after work.</b></div></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ════ SEGMENT 2 — SELL: attention goes where you say + natural language ════ -->
+  <!-- ════ SEGMENT 2 — SELL ════ -->
   <section class="lp-section">
     <div class="lp-inner">
       <div class="text-col">
-        <h2 class="seg-h">You know where your attention should go</h2>
-        <p class="seg-p">Snooze is how you act on it. Park the asks that can wait and give each one a return time. Nothing sneaks back early. Even a question that lands mid-snooze waits quietly for its turn.</p>
-        <p class="seg-p"><b style="color:var(--text)">And you set that time in your own words.</b> Type it like you'd say it: "fri 9am", "in 2 hours", even "tomorow 5pm" with the typo. AMC shows what it understood before you commit.</p>
+        <h2 class="seg-h">Guard the stolen hours</h2>
+        <p class="seg-p">The question lands at 2 PM like you're free. Answer now and lose the meeting. Ignore it and carry the don't-forget around all day.</p>
+        <p class="seg-p"><b style="color:var(--text)">Move the ask to the hour you own.</b> It waits safely, nothing nags in between, and it's back the minute you sit down. Presets not right? Type it your way: "fri 9am", "in 2 hours", even "tomorow 5pm" with the typo.</p>
       </div>
       <div class="demo-col">
-        <div class="demo-panel" style="max-width:400px" role="img" aria-label="A time is typed in plain words, fri 9am, and AMC reads it back as Friday at 9 AM. The session parks. A question lands during the night and waits. Friday at 9 the session returns and the question is right there.">
-          <div class="demo-title">Parked, not tracked <span class="mf-clock" id="pkClock">Wed 4:52 PM</span></div>
-          <div class="demo-body" style="min-height:236px" id="pkBody">
-            <div class="mf-row" id="pkRow"><span class="demo-dot" style="background:var(--warn)"></span>API refactor<span class="mf-clock">needs you</span></div>
-            <div class="palette" id="pkPal" style="transition:opacity .3s">
-              <div class="ha-input" style="margin-bottom:0"><span class="ph" id="pkPh">e.g. 2h, Friday, tomorrow 5pm&hellip;</span><span class="mf-typed" id="pkTyped"></span><span class="ha-caret" aria-hidden="true"></span></div>
-              <div class="palette-row" id="pkParsed" style="display:none"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.6" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Friday at 9 AM<span class="pr-when">&#9166; Enter</span></div>
-            </div>
-            <span class="mf-state" id="pkState" style="opacity:0">Snoozed until Fri 9:00 AM</span>
-            <div class="mf-row hidden" id="pkAsk"><span class="demo-dot" style="background:var(--warn)"></span>Asked: proceed with cleanup?<span class="mf-clock">2:04 AM</span></div>
+        <div class="demo-panel" style="max-width:400px" role="img" aria-label="A snoozed session parked through the afternoon. A question lands at 3:30 PM and waits, dimmed. At 6:00 PM the session returns, marked returned from snooze, question right there.">
+          <div class="demo-title">Parked till your hour <span class="mf-clock" id="pkClock">2:04 PM</span></div>
+          <div class="demo-body" style="min-height:216px" id="pkBody">
+            <span class="mf-state" id="pkState">Snoozed until 6:00 PM</span>
+            <div class="mf-row" id="pkRow"><span class="demo-dot" style="background:var(--warn)"></span>Storefront copy polish<span class="mf-rtag"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/></svg>returned</span></div>
+            <div class="mf-row hidden" id="pkAsk"><span class="demo-dot" style="background:var(--warn)"></span>Asked: use the new logo?<span class="mf-clock">3:30 PM</span></div>
             <div class="mf-cap">
-              <span data-s="0" class="on">Type it your way. <b>It reads it back first.</b></span>
-              <span data-s="1">Parked. A question lands at 2 AM. <b>It waits.</b></span>
-              <span data-s="2"><b>Friday, 9 AM.</b> It returns. You answer once.</span>
+              <span data-s="0" class="on">Parked. <b>Your meeting stays yours.</b></span>
+              <span data-s="1">3:30 PM: it asks. <b>It waits.</b></span>
+              <span data-s="2"><b>6:00 PM.</b> Answer it once, off the clock.</span>
             </div>
           </div>
         </div>
@@ -338,26 +320,26 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
     </div>
   </section>
 
-  <!-- ════ SEGMENT 3 — EDUCATE: one full snooze, start to finish ════ -->
+  <!-- ════ SEGMENT 3 — EDUCATE ════ -->
   <section class="lp-section" id="try">
     <div class="lp-inner">
       <div class="text-col">
         <h2 class="seg-h">Try it. It's seconds</h2>
         <ol class="seg-list" id="edSteps">
           <li id="edLi1"><span><b>Right-click the session and pick Snooze.</b> Or press <kbd class="kbd">H</kbd> with the session active. Seconds either way.</span></li>
-          <li id="edLi2"><span><b>Pick a return time, or type one in your words.</b> The palette offers 2 Hours From Now plus the three natural times coming up next. Typing works too: "fri 9am", "in 2 hours", even "tomorow 5pm" with the typo. AMC shows what it understood before you press Enter.</span></li>
-          <li id="edLi3"><span><b>Done. It leaves the sidebar and inbox until your time.</b> Then it returns on its own. A message wakes it early, and the amber badge edits or ends the snooze.</span></li>
+          <li id="edLi2"><span><b>Pick when it comes back, or type it in your words.</b> The palette offers 2 Hours From Now plus the three natural times coming up next. Typing works too: "fri 9am", "in 2 hours", even "tomorow 5pm" with the typo. AMC shows what it understood before you press Enter.</span></li>
+          <li id="edLi3"><span><b>That's it. The session is off your screen until your time.</b> Then it returns on its own. A message wakes it early, and the amber badge changes or ends the snooze.</span></li>
         </ol>
-        <p class="seg-aside">Shift-select first and one snooze parks the whole batch.</p>
+        <p class="seg-aside">Plans changed? The amber badge moves the time anytime.</p>
       </div>
       <div class="demo-col">
-        <div class="demo-panel" style="max-width:400px" role="img" aria-label="One full snooze, start to finish: right-click a session, pick Snooze from the menu, the palette opens, Tomorrow Morning is clicked, the session leaves the list, time passes, and at 8 AM it returns on its own.">
-          <div class="demo-title">One snooze, start to finish <span class="mf-clock" id="edClock">4:52 PM</span></div>
+        <div class="demo-panel" style="max-width:400px" role="img" aria-label="One full snooze, start to finish: right-click a session, pick Snooze from the menu, the palette opens with afternoon options, This Evening is clicked, the session leaves the list, the afternoon passes, and at 6:00 PM it returns on its own.">
+          <div class="demo-title">One snooze, start to finish <span class="mf-clock" id="edClock">1:58 PM</span></div>
           <div class="demo-body" style="min-height:236px" id="edBody">
-            <div class="mf-row" id="edR1"><span class="demo-dot" style="background:var(--warn)"></span>API refactor<span class="mf-clock">needs you</span><span class="mf-rtag"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/></svg>returned</span></div>
-            <div class="mf-row" id="edR2"><span class="demo-dot" style="background:var(--accent)"></span>Dep upgrade sweep<span class="mf-clock">running</span></div>
-            <div class="mf-row" id="edR3"><span class="demo-dot" style="background:var(--accent)"></span>Docs regen<span class="mf-clock">running</span></div>
-            <span class="mf-state" id="edState" style="opacity:0">Snoozed until Tomorrow 8:00 AM</span>
+            <div class="mf-row" id="edR1"><span class="demo-dot" style="background:var(--warn)"></span>Storefront copy polish<span class="mf-clock">needs you</span><span class="mf-rtag"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/></svg>returned</span></div>
+            <div class="mf-row" id="edR2"><span class="demo-dot" style="background:var(--accent)"></span>Supplier email drafts<span class="mf-clock">running</span></div>
+            <div class="mf-row" id="edR3"><span class="demo-dot" style="background:var(--accent)"></span>Blog outline<span class="mf-clock">running</span></div>
+            <span class="mf-state" id="edState" style="opacity:0">Snoozed until 6:00 PM</span>
             <div class="ed-dim" id="edDim"></div>
             <div class="ed-ctx" id="edCtx">
               <div class="ci"><span class="skeleton" style="max-width:70%"></span></div>
@@ -367,9 +349,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
             <div class="ed-pal" id="edPal">
               <div class="palette">
                 <div class="ha-input" style="margin-bottom:0"><span class="ph">e.g. 2h, Friday, tomorrow 5pm&hellip;</span><span class="ha-caret" aria-hidden="true"></span></div>
-                <div class="palette-row">2 Hours From Now<span class="pr-when">6:52 PM</span></div>
-                <div class="palette-row">This Evening<span class="pr-when">6:00 PM</span></div>
-                <div class="palette-row" id="edPick">Tomorrow Morning<span class="pr-when">8:00 AM</span></div>
+                <div class="palette-row">2 Hours From Now<span class="pr-when">3:58 PM</span></div>
+                <div class="palette-row" id="edPick">This Evening<span class="pr-when">6:00 PM</span></div>
+                <div class="palette-row">Tomorrow Morning<span class="pr-when">8:00 AM</span></div>
                 <div class="palette-row">Tomorrow Afternoon<span class="pr-when">1:00 PM</span></div>
               </div>
             </div>
@@ -377,7 +359,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
             <div class="mf-cap">
               <span data-s="0" class="on"><b>Right-click.</b> Pick Snooze.</span>
               <span data-s="1">Pick a time. <b>Or type one.</b></span>
-              <span data-s="2">Gone until morning. <b>Back on its own.</b></span>
+              <span data-s="2">Gone till 6. <b>Back on its own.</b></span>
             </div>
           </div>
         </div>
@@ -388,11 +370,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
   <!-- ════ SEGMENT 4 — CTA: the trainer ════ -->
   <section class="lp-section lp-cta">
     <div class="lp-inner" style="flex-direction:column">
-      <h2 class="seg-h">Try your first snooze</h2>
-      <p class="seg-p">The trainer will open a practice session and start the clock. Snooze one, see it come back.</p>
+      <h2 class="seg-h">Your evening, your queue</h2>
+      <p class="seg-p">The trainer will open a practice session and start the clock. One snooze to this evening, start to finish.</p>
       <!-- PLACEHOLDER: agentmc:// deep link to the Education Hub Snooze trainer (Dilan 2026-07-10). Hub not built yet; scrolls to #try until wired. -->
       <a class="lp-cta-btn" href="#try" id="finale-cta">Teach me snooze</a>
-      <p class="lp-cta-sub" id="finale-sub">Or try the real thing now: right-click any session and pick Snooze.</p>
+      <p class="lp-cta-sub" id="finale-sub">Or today: right-click the session, pick Snooze, choose This Evening.</p>
     </div>
   </section>
 
@@ -404,7 +386,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
 (function(){
   var scroller=document.getElementById('scroll');
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  console.log('[snooze-dev-scheduled] init',{segments:document.querySelectorAll('.lp-section').length,reduce:reduce});
+  console.log('[snooze-op-afterwork] init',{segments:document.querySelectorAll('.lp-section').length,reduce:reduce});
   function staged(inner){
     var steps=inner.querySelectorAll('.hero-line,.hero-desc');
     steps.forEach(function(el,i){setTimeout(function(){el.classList.add('visible');},reduce?0:180*i+120);});
@@ -425,7 +407,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
   var finale=document.getElementById('finale-cta'),finaleSub=document.getElementById('finale-sub');
   if(finale&&finaleSub){
     finale.addEventListener('click',function(){
-      /* no preventDefault - href=#try scrolls to the how-to while the path flashes */
       finaleSub.classList.remove('flash');void finaleSub.offsetWidth;finaleSub.classList.add('flash');
     });
   }
@@ -435,10 +416,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
 })();
 </script>
 <script>
-/* ═══ HERO FILM — concept B "The triage" (haFilm engine from templates/hero-animation-template.html v2) ═══ */
+/* ═══ HERO FILM — "Answer it after work" (haFilm engine; picked grammar, wrong-time pain) ═══ */
 function haFilm(stageEl,DUR,def){
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(reduce){def.reset();if(def.final)def.final();console.log('[snooze-dev-scheduled] film: reduced motion, final frame shown');return}
+  if(reduce){def.reset();if(def.final)def.final();console.log('[snooze-op-afterwork] film: reduced motion, final frame shown');return}
   var start=null,idx=0;
   function loop(ts){
     if(start===null){start=ts;idx=0;def.reset();}
@@ -451,107 +432,84 @@ function haFilm(stageEl,DUR,def){
   requestAnimationFrame(loop);
 }
 function haFlip(el,txt){el.textContent=txt;el.classList.remove('flip');void el.offsetWidth;el.classList.add('flip')}
+function haClock(clockEl,txtEl,txt,landed){txtEl.textContent=txt;clockEl.classList.remove('tick');void clockEl.offsetWidth;clockEl.classList.add('tick');clockEl.classList.toggle('landed',!!landed)}
 function haCap(root,n){root.querySelectorAll('.ha-cap-line').forEach(function(c){c.classList.toggle('on',+c.dataset.s===n)});root.querySelectorAll('.ha-dots i').forEach(function(d){d.classList.toggle('on',+d.dataset.d<=n)})}
 function haCur(cur,x,y){cur.style.left=x;cur.style.top=y}
 function haCurClick(cur){cur.classList.remove('click');void cur.offsetWidth;cur.classList.add('click')}
-function haType(node,text,t0,t1,t){var k=Math.max(0,Math.min(1,(t-t0)/(t1-t0)));node.textContent=text.slice(0,Math.round(k*text.length))}
 function mfCap(root,n){root.querySelectorAll('.mf-cap span').forEach(function(c){c.classList.toggle('on',+c.dataset.s===n)})}
 (function(){
   var $=function(id){return document.getElementById(id)};
-  var stage=$('haStage'),win=$('haWin'),keys=$('haKeys'),modal=$('haModal'),count=$('haCount'),
-      fly=$('haFly'),flyTxt=$('haFlyTxt'),cursor=$('haCursor'),typed=$('haTyped'),
-      rows=[$('haR1'),$('haR2'),$('haR3')],rowKeep=$('haKeep'),
-      presets=[$('haP0'),$('haP1'),$('haP2'),$('haP3')];
-  console.log('[snooze-dev-scheduled] hero film init: 9.3s triage loop (2 presets + 1 typed)');
-  var ROWX='27%',ROWY='149px';            /* slot-2 row center (window top-anchored, constant) */
-  var PX='79%';
-  var PY=['172px','203px','234px','265px'];/* preset row centers (input row above) */
-  function openPalette(){presets.forEach(function(p){p.classList.remove('sel')});modal.classList.remove('commit','typing','resolved');typed.textContent='';modal.classList.add('in')}
-  function round(T,rowEl,j,txt,capN,newCount){
-    return [
-      {at:T,     do:function(){haCap(stage,capN);haCur(cursor,ROWX,ROWY)}},
-      {at:T+.3,  do:function(){haCurClick(cursor);rowEl.classList.add('active')}},
-      {at:T+.5,  do:function(){keys.classList.add('pressed')}},
-      {at:T+.62, do:function(){openPalette();keys.classList.remove('pressed')}},
-      {at:T+.72, do:function(){haCur(cursor,PX,PY[j])}},
-      {at:T+1.1, do:function(){haCurClick(cursor);presets[j].classList.add('sel')}},
-      {at:T+1.28,do:function(){modal.classList.add('commit')}},
-      {at:T+1.42,do:function(){modal.classList.remove('in');flyTxt.textContent=txt;fly.classList.remove('go');void fly.offsetWidth;fly.classList.add('go');rowEl.classList.add('gone');rowEl.classList.remove('active');haFlip(count,newCount)}}
-    ];
-  }
+  var stage=$('haStage'),win=$('awWin'),row=$('awRow'),when=$('awWhen'),count=$('awCount'),
+      state=$('awState'),fly=$('awFly'),ctx=$('awCtx'),modal=$('awModal'),pick=$('awPick'),
+      dim=$('awDim'),cur=$('awCur'),clock=$('awClock'),clockTxt=$('awClockTxt');
+  console.log('[snooze-op-afterwork] hero film init: 9.1s after-work snooze loop');
   var cues=[
-    {at:.25,do:function(){rows[0].classList.add('shout')}},
-    {at:.38,do:function(){rows[1].classList.add('shout')}},
-    {at:.5, do:function(){rows[2].classList.add('shout');rowKeep.classList.add('shout')}},
-    {at:.9, do:function(){keys.classList.add('in');cursor.classList.add('in');rows.forEach(function(r){r.classList.remove('shout')});rowKeep.classList.remove('shout')}}
-  ]
-  .concat(round(1.05,rows[0],0,'In 2 hours',1,'(3)'))
-  .concat(round(2.65,rows[1],2,'Tomorrow morning',2,'(2)'))
-  .concat([
-    /* round 3: TYPED, typo and all (parser-verified: "tomorow" alias reads back Tomorrow) */
-    {at:4.3, do:function(){haCap(stage,3);haCur(cursor,ROWX,ROWY)}},
-    {at:4.6, do:function(){haCurClick(cursor);rows[2].classList.add('active')}},
-    {at:4.8, do:function(){keys.classList.add('pressed')}},
-    {at:4.92,do:function(){openPalette();keys.classList.remove('pressed')}},
-    {at:5.1, do:function(){modal.classList.add('typing');cursor.classList.remove('in')}},
-    {at:6.25,do:function(){modal.classList.add('resolved')}},
-    {at:6.8, do:function(){modal.classList.add('commit')}},
-    {at:7.0, do:function(){modal.classList.remove('in');flyTxt.textContent='Tomorrow 5 PM';fly.classList.remove('go');void fly.offsetWidth;fly.classList.add('go');rows[2].classList.add('gone');rows[2].classList.remove('active');haFlip(count,'(1)')}},
-    {at:7.4, do:function(){keys.classList.add('out');rowKeep.classList.add('focus');haCap(stage,4)}},
-    {at:8.35,do:function(){haCap(stage,5)}},
-    {at:9.0, do:function(){win.style.opacity='0'}},
-    {at:9.15,do:function(){}}
-  ]);
-  haFilm(stage,9.3,{
+    {at:.3, do:function(){row.classList.add('shout');haCap(stage,0)}},
+    {at:.85,do:function(){row.classList.remove('shout')}},
+    {at:.95,do:function(){cur.classList.add('in');haCur(cur,'30%','122px')}},
+    {at:1.2, do:function(){haCurClick(cur);row.classList.add('active');ctx.classList.add('in');haCap(stage,1)}},
+    {at:1.7, do:function(){haCur(cur,'52%','172px')}},
+    {at:2.0, do:function(){haCurClick(cur)}},
+    {at:2.15,do:function(){ctx.classList.remove('in');modal.classList.add('in')}},
+    {at:2.4, do:function(){haCur(cur,'81%','196px')}},
+    {at:2.75,do:function(){haCurClick(cur);pick.classList.add('sel');haCap(stage,2)}},
+    {at:3.0, do:function(){modal.classList.add('commit')}},
+    {at:3.2, do:function(){modal.classList.remove('in');cur.classList.remove('in');fly.classList.remove('go');void fly.offsetWidth;fly.classList.add('go');row.classList.add('gone');row.classList.remove('active');haFlip(count,'(0)');state.classList.add('show')}},
+    {at:3.9, do:function(){dim.classList.add('on');haCap(stage,3)}},
+    {at:4.6, do:function(){haClock(clock,clockTxt,'3:40 PM')}},
+    {at:5.3, do:function(){haClock(clock,clockTxt,'6:00 PM',true)}},
+    {at:5.7, do:function(){dim.classList.remove('on');row.classList.remove('gone');row.classList.add('back');when.textContent='returned';when.classList.add('ret');haFlip(count,'(1)');state.textContent='Returned from snooze';state.classList.add('go');haCap(stage,4)}},
+    {at:7.0, do:function(){haCap(stage,5)}},
+    {at:8.6, do:function(){win.style.opacity='0';clock.style.opacity='0'}},
+    {at:8.85,do:function(){}}
+  ];
+  haFilm(stage,9.1,{
     reset:function(){
-      win.style.opacity='';
-      rows.forEach(function(r){r.classList.remove('shout','gone','active')});
-      rowKeep.classList.remove('shout','focus');
-      keys.classList.remove('in','pressed','out');modal.classList.remove('in','commit','typing','resolved');
-      presets.forEach(function(p){p.classList.remove('sel')});typed.textContent='';
-      fly.classList.remove('go');cursor.classList.remove('in','click');haCur(cursor,ROWX,'110px');
-      count.textContent='(4)';haCap(stage,0);
+      win.style.opacity='';clock.style.opacity='';
+      row.classList.remove('shout','gone','back','active');
+      when.textContent='needs you';when.classList.remove('ret');
+      count.textContent='(1)';
+      state.classList.remove('show','go');state.textContent='Snoozed until 6:00 PM';
+      ctx.classList.remove('in');modal.classList.remove('in','commit');pick.classList.remove('sel');
+      fly.classList.remove('go');cur.classList.remove('in','click');haCur(cur,'30%','96px');
+      dim.classList.remove('on');
+      clock.classList.remove('landed','tick');clockTxt.textContent='1:58 PM';
+      haCap(stage,-1);
     },
-    cues:cues.sort(function(a,b){return a.at-b.at}),
-    tick:function(t){if(t>=5.15&&t<6.2)haType(typed,'tomorow 5pm',5.15,6.1,t)},
+    cues:cues,
     final:function(){
-      rows.forEach(function(r){r.classList.add('gone')});
-      rowKeep.classList.add('focus');count.textContent='(1)';haCap(stage,5);
+      clockTxt.textContent='6:00 PM';clock.classList.add('landed');
+      when.textContent='returned';when.classList.add('ret');
+      state.classList.add('show','go');state.textContent='Returned from snooze';
+      haCap(stage,5);
     }
   });
 })();
-/* ═══ SEG-2 MINI-FILM — type it your way, park, a mid-snooze question waits, Friday return ═══ */
+/* ═══ SELL MINI-FILM — parked through the afternoon, question waits, 6 PM return ═══ */
 (function(){
   var $=function(id){return document.getElementById(id)};
-  var body=$('pkBody'),clockEl=$('pkClock'),state=$('pkState'),ask=$('pkAsk'),
-      row=$('pkRow'),pal=$('pkPal'),ph=$('pkPh'),typed=$('pkTyped'),parsed=$('pkParsed');
+  var body=$('pkBody'),clockEl=$('pkClock'),state=$('pkState'),row=$('pkRow'),ask=$('pkAsk');
   if(!body)return;
-  console.log('[snooze-dev-scheduled] sell mini-film init: 8.6s type-park-wait-return loop');
+  console.log('[snooze-op-afterwork] sell mini-film init: 8.6s parked loop');
   haFilm(body,8.6,{
     reset:function(){
-      body.style.opacity='';clockEl.textContent='Wed 4:52 PM';clockEl.classList.remove('landed');
-      state.style.opacity='0';state.textContent='Snoozed until Fri 9:00 AM';state.classList.remove('go');
-      row.classList.remove('out','back','ontime');
-      pal.style.opacity='1';pal.style.display='';ph.style.display='';typed.textContent='';parsed.style.display='none';parsed.classList.remove('sel');
+      body.style.opacity='';clockEl.textContent='2:04 PM';clockEl.classList.remove('landed');
+      state.textContent='Snoozed until 6:00 PM';state.classList.remove('go');
+      row.classList.add('out');row.classList.remove('back','ontime');
       ask.classList.add('hidden');ask.classList.remove('ghost','shout');
       mfCap(body,0);
     },
     cues:[
-      {at:.4, do:function(){ph.style.display='none'}},
-      {at:1.7,do:function(){parsed.style.display='flex';parsed.classList.add('sel')}},
-      {at:2.6,do:function(){pal.style.opacity='0';row.classList.add('out');state.style.opacity='1'}},
-      {at:2.95,do:function(){pal.style.display='none'}},
-      {at:3.3,do:function(){clockEl.textContent='Thu 2:04 AM';ask.classList.remove('hidden');ask.classList.add('ghost');mfCap(body,1)}},
-      {at:5.6,do:function(){clockEl.textContent='Fri 9:00 AM';clockEl.classList.add('landed');state.textContent='Returned from snooze';state.classList.add('go');row.classList.remove('out');row.classList.add('back');ask.classList.remove('ghost');ask.classList.add('shout');mfCap(body,2)}},
-      {at:6.5,do:function(){ask.classList.remove('shout')}},
+      {at:2.0,do:function(){clockEl.textContent='3:30 PM';ask.classList.remove('hidden');ask.classList.add('ghost');mfCap(body,1)}},
+      {at:5.0,do:function(){clockEl.textContent='6:00 PM';clockEl.classList.add('landed');state.textContent='Returned from snooze';state.classList.add('go');row.classList.remove('out');row.classList.add('back','ontime');ask.classList.remove('ghost');ask.classList.add('shout');mfCap(body,2)}},
+      {at:5.9,do:function(){ask.classList.remove('shout')}},
       {at:8.25,do:function(){body.style.opacity='0'}},
       {at:8.45,do:function(){}}
     ],
-    tick:function(t){if(t>=.45&&t<1.6)haType(typed,'fri 9am',.45,1.5,t)},
     final:function(){
-      pal.style.display='none';ph.style.display='none';typed.textContent='fri 9am';
-      clockEl.textContent='Fri 9:00 AM';clockEl.classList.add('landed');
-      state.style.opacity='1';state.textContent='Returned from snooze';state.classList.add('go');
+      clockEl.textContent='6:00 PM';clockEl.classList.add('landed');
+      state.textContent='Returned from snooze';state.classList.add('go');
+      row.classList.remove('out');row.classList.add('ontime');
       ask.classList.remove('hidden','ghost');mfCap(body,2);
     }
   });
@@ -566,11 +524,11 @@ function mfCap(root,n){root.querySelectorAll('.mf-cap span').forEach(function(c)
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(!reduce)steps.classList.add('sync');
   function stepOn(n){lis.forEach(function(li,i){li.classList.toggle('on',i===n)})}
-  console.log('[snooze-dev-scheduled] educate walkthrough film init: 8.8s, film-synced steps');
+  console.log('[snooze-op-afterwork] educate walkthrough film init: 8.8s, film-synced steps');
   haFilm(body,8.8,{
     reset:function(){
-      body.style.opacity='';clockEl.textContent='4:52 PM';clockEl.classList.remove('landed');
-      state.style.opacity='0';state.textContent='Snoozed until Tomorrow 8:00 AM';state.classList.remove('go');
+      body.style.opacity='';clockEl.textContent='1:58 PM';clockEl.classList.remove('landed');
+      state.style.opacity='0';state.textContent='Snoozed until 6:00 PM';state.classList.remove('go');
       r1.classList.remove('out','back','ontime');
       dim.classList.remove('on');ctx.classList.remove('in');pal.classList.remove('in','commit');pick.classList.remove('sel');
       cur.classList.add('in');haCur(cur,'34%','30px');
@@ -581,18 +539,18 @@ function mfCap(root,n){root.querySelectorAll('.mf-cap span').forEach(function(c)
       {at:.9, do:function(){haCur(cur,'58%','96px')}},
       {at:1.4,do:function(){haCurClick(cur);}},
       {at:1.6,do:function(){ctx.classList.remove('in');pal.classList.add('in');stepOn(1);mfCap(body,1)}},
-      {at:2.2,do:function(){haCur(cur,'62%','165px')}},
+      {at:2.2,do:function(){haCur(cur,'62%','129px')}},
       {at:2.9,do:function(){haCurClick(cur);pick.classList.add('sel')}},
       {at:3.3,do:function(){pal.classList.add('commit')}},
       {at:3.7,do:function(){pal.classList.remove('in');cur.classList.remove('in');r1.classList.add('out');state.style.opacity='1';stepOn(2);mfCap(body,2)}},
-      {at:4.6,do:function(){dim.classList.add('on');clockEl.textContent='11:30 PM'}},
-      {at:5.3,do:function(){clockEl.textContent='8:00 AM';clockEl.classList.add('landed')}},
+      {at:4.6,do:function(){dim.classList.add('on');clockEl.textContent='4:20 PM'}},
+      {at:5.3,do:function(){clockEl.textContent='6:00 PM';clockEl.classList.add('landed')}},
       {at:5.7,do:function(){dim.classList.remove('on');r1.classList.remove('out');r1.classList.add('back','ontime');state.textContent='Returned from snooze';state.classList.add('go')}},
       {at:8.45,do:function(){body.style.opacity='0'}},
       {at:8.65,do:function(){}}
     ],
     final:function(){
-      cur.classList.remove('in');clockEl.textContent='8:00 AM';clockEl.classList.add('landed');
+      cur.classList.remove('in');clockEl.textContent='6:00 PM';clockEl.classList.add('landed');
       r1.classList.add('ontime');state.style.opacity='1';state.textContent='Returned from snooze';state.classList.add('go');
       stepOn(-1);mfCap(body,2);
     }

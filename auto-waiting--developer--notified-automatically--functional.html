@@ -1,0 +1,412 @@
+<!doctype html>
+<!--
+  AMC FEATURE LANDING PAGE — Auto-waiting · V5 "'I'll be notified automatically.' In AMC, that's true."
+  Identity: developer × notified-automatically × functional (D2F, Developer × Power, PAS)
+  Run: auto-waiting round 2 (brief: briefs/auto-waiting.md §Concepts refresh) · r1 built 2026-07-08
+  Gate-2 panel edits applied: 3-outcome decision path is the hero · "job-backed" defined ·
+  finishes-pass-or-fail · guard precedence stated · scoped-denial replaced ("never answers for you,
+  full stop") · cost-tracking clause dropped · Keep waiting introduced · strict mode explained ·
+  backtest-discipline atom · permissions fence · false-silence asymmetry confronted · audit-loop CTA
+  ANIMATION OPTION USED: [C — live DOM/CSS mock] (hero = JS-cycled classification sequencer)
+  Segments: 1 Hook · 2 Sell (mechanism) · 3 Sell (bounds/trust) · 4 Educate (knobs) · 5 CTA
+  rev+1 · 2026-07-09 — global-standards pass: one-message h1, Automatic strip, hero loop compressed to ≤10s
+  rev · 2026-07-10 — persistent hotkey badge added (fixed top-left, visible on every segment; Dilan).
+  rev · 2026-07-10 — copy standards v2 sweep (em-dashes removed; educate=play; montage; defluff).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Auto-waiting · “I&#39;ll be notified automatically.” In AMC, that&#39;s true · Agent Mission Control</title>
+<style>
+/* ── Tokens (design-language.md — do not fork values) ── */
+:root{
+  --bg:#030712; --glass:rgba(3,7,18,.7); --glass-strong:rgba(3,7,18,.92);
+  --line:rgba(255,255,255,.08);
+  --text:#fff; --text-2:rgba(255,255,255,.85); --body:#9ca3af;
+  --faint:rgba(255,255,255,.45); --fine:rgba(255,255,255,.25);
+  --accent:#4ade80; --info:#60a5fa; --warn:#fbbf24; --error:#f87171;
+  --on-accent:#030712;
+  --radius:12px; --radius-pill:20px; --maxw:1100px;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Consolas,monospace;
+  --ease:cubic-bezier(.16,1,.3,1); --t-hover:.15s; --t-small:.25s; --t-reveal:.45s;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{overflow:hidden;height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hidden;height:100%;line-height:1.65}
+
+/* ── Segment scroll ── */
+.lp-scroll{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+.lp-section{position:relative;z-index:1;height:100vh;display:flex;align-items:center;justify-content:center;padding:0 24px;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
+.lp-inner{display:flex;align-items:center;gap:64px;max-width:var(--maxw);width:100%;opacity:0;transform:translateY(16px);transition:opacity var(--t-small) var(--ease),transform var(--t-small) var(--ease)}
+.lp-inner.visible{opacity:1;transform:translateY(0)}
+.text-col{flex:0 0 50%;display:flex;flex-direction:column;gap:24px;min-width:0}
+.demo-col{flex:1;display:flex;align-items:center;justify-content:center;min-width:0}
+
+/* ── Background ── */
+.bg-effects{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.12;animation:orbFloat 20s ease-in-out infinite}
+.bg-orb-1{width:600px;height:600px;background:var(--accent);top:-200px;right:-120px}
+.bg-orb-2{width:500px;height:500px;background:var(--info);bottom:-150px;left:-140px;animation-delay:-7s}
+.bg-orb-3{width:550px;height:550px;background:var(--warn);top:35%;left:42%;animation-delay:-14s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0)}33%{transform:translate(30px,-40px)}66%{transform:translate(-20px,30px)}}
+.bg-grid{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px);background-size:32px 32px}
+
+/* ── Badge ── */
+.lp-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;padding:5px 12px;border-radius:var(--radius-pill);background:rgba(255,255,255,.04);border:1px solid var(--line);width:fit-content;margin-bottom:8px}
+.lp-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--warn)}
+
+/* ── Hero hotkey strip — Automatic variant (standard kit, design-language.md) ── */
+.hk-strip{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.hk-strip .lp-badge{margin-bottom:0}
+.hk-strip .kbd{font-size:13px;padding:4px 9px}
+.hk-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--faint)}
+.kbd{display:inline-block;font-family:ui-monospace,Consolas,monospace;font-size:12px;font-weight:600;color:var(--text-2);background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:6px;padding:2px 7px;line-height:1.4;vertical-align:middle}
+.kbd-join{color:var(--faint);font-size:11px;margin:0 3px}
+
+/* ── Hero headline — one message + accent payoff (adopted 2026-07-09; staircase retired) ── */
+.hero-line{display:block;opacity:0;transform:translateY(12px);transition:opacity var(--t-reveal) var(--ease),transform var(--t-reveal) var(--ease);font-weight:700;font-size:clamp(2rem,5vw,3rem);line-height:1.14;letter-spacing:-.02em;padding-left:0}
+.hero-line.visible{opacity:1;transform:translateY(0)}
+.hero-line.accent{color:var(--warn)} /* payoff line — auto-waiting's ⏱ amber */
+.hero-desc{opacity:0;transition:opacity var(--t-reveal) var(--ease);font-size:1.02rem;color:var(--body);max-width:580px;margin-top:6px}
+.hero-desc.visible{opacity:1}
+
+/* ── Headings + copy ── */
+.seg-h{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700}
+.seg-p{color:var(--body);font-size:1.05rem;max-width:580px}
+.seg-p b{color:var(--text)}
+.seg-p em{color:var(--text-2);font-style:italic}
+.seg-p code{font-family:var(--mono);font-size:.85em;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--text-2)}
+.seg-list{list-style:none;display:flex;flex-direction:column;gap:16px;counter-reset:step}
+.seg-list li{display:flex;gap:14px;align-items:flex-start;color:var(--body)}
+.seg-list li::before{counter-increment:step;content:counter(step);flex:0 0 28px;height:28px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--text);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.seg-list b{color:var(--text)}
+.seg-list code{font-family:var(--mono);font-size:.85em;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--text-2)}
+
+/* ── Demo panel ── */
+.demo-panel{width:100%;max-width:480px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.demo-title{font-size:12px;font-weight:600;padding:10px 14px;border-bottom:1px solid var(--line);color:var(--text-2)}
+.demo-body{padding:14px;display:flex;flex-direction:column;gap:12px}
+
+/* hero sequencer */
+.case{display:flex;flex-direction:column;gap:7px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:8px;padding:9px 11px;opacity:.85;transition:opacity .5s var(--ease),border-color .5s var(--ease),background .5s var(--ease)}
+.case.active{opacity:1;border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.055)}
+.cq{font-size:12px;color:var(--text-2)}
+.cq .ctx{color:var(--body);font-size:10.5px}
+.cflow{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.fpill{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;border-radius:10px;padding:1px 8px;border:1px solid var(--line);color:var(--faint);opacity:.7;transition:opacity .4s var(--ease)}
+.case.active .fpill.lit{opacity:1}
+.fpill.blue{border-color:rgba(96,165,250,.4);color:var(--info)}
+.fpill.amber{border-color:rgba(251,191,36,.35);color:var(--warn)}
+.fpill.hot{border-color:rgba(251,191,36,.65);color:var(--warn)}
+.fpill.green{border-color:rgba(74,222,128,.35);color:var(--accent)}
+.farrow{color:var(--fine);font-size:10px}
+.story-caption{font-size:12px;color:var(--text-2);border-top:1px solid var(--line);padding:10px 14px;min-height:40px;display:flex;align-items:center;gap:8px}
+.story-caption .stepno{flex:0 0 auto;font-size:10px;font-weight:700;color:var(--faint);border:1px solid var(--line);border-radius:10px;padding:0 7px}
+
+/* S2 audit tooltip */
+.tipwrap{display:flex;flex-direction:column;gap:10px}
+.tipbox{background:var(--glass-strong);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:11.5px;color:var(--text-2);max-width:320px}
+.tipbox .tiph{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);margin-bottom:4px}
+.tipbox .mono{font-family:var(--mono);font-size:10.5px;color:var(--text-2)}
+.wpill{display:inline-flex;align-items:center;font-size:10px;font-weight:600;border:1px solid rgba(251,191,36,.35);color:var(--warn);border-radius:10px;padding:1px 8px;width:fit-content}
+
+/* S3 window bar + timeout card */
+.winwrap{display:flex;flex-direction:column;gap:12px;width:100%;max-width:480px}
+.wintrack{position:relative;height:8px;border-radius:4px;background:rgba(255,255,255,.06);border:1px solid var(--line)}
+.winfill{position:absolute;left:0;top:0;bottom:0;width:18%;border-radius:4px;background:rgba(251,191,36,.35)}
+.winhandle{position:absolute;left:18%;top:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:var(--warn);border:2px solid var(--bg)}
+.winlabels{display:flex;justify-content:space-between;font-size:10px;color:var(--faint)}
+.winlabels .cur{color:var(--warn);font-weight:600}
+.tocard{background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.45);border-radius:8px;padding:10px 12px;font-size:11.5px;color:var(--text-2)}
+.tocard .toh{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--warn);margin-bottom:4px}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap}
+.mockbtn{font-size:11px;font-weight:600;border:1px solid var(--line);border-radius:8px;padding:6px 12px;color:var(--text-2);background:rgba(255,255,255,.04)}
+.mockbtn.primary{border-color:rgba(74,222,128,.4);color:var(--accent)}
+
+/* S4 settings readout */
+.cfg{display:flex;flex-direction:column;gap:6px;font-family:var(--mono);font-size:11px}
+.cfg .row{display:flex;justify-content:space-between;gap:12px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:6px;padding:6px 10px;color:var(--faint)}
+.cfg .row b{color:var(--text-2);font-weight:600}
+.cfg .row .val{color:var(--accent)}
+.cfg .row .val.off{color:var(--faint)}
+
+/* ── Buttons ── */
+.lp-cta-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:var(--radius);background:var(--accent);color:var(--on-accent);font-weight:600;font-size:15px;text-decoration:none;border:none;cursor:pointer;transition:transform var(--t-hover),box-shadow var(--t-hover)}
+.lp-cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(74,222,128,.25)}
+.lp-cta-btn:focus-visible{outline:2px solid var(--info);outline-offset:3px}
+.lp-cta{flex-direction:column;text-align:center}
+.lp-cta .seg-p{margin:16px auto 40px}
+.lp-cta-sub{margin-top:16px;color:var(--body);font-size:14px}
+
+/* ── Scroll hint ── */
+.scroll-hint{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:200;color:var(--fine);font-size:11px;display:flex;flex-direction:column;align-items:center;gap:4px;transition:opacity .4s;pointer-events:none}
+.scroll-hint.hidden{opacity:0}
+.scroll-hint-arrow{width:20px;height:20px;border-right:2px solid rgba(255,255,255,.2);border-bottom:2px solid rgba(255,255,255,.2);transform:rotate(45deg);animation:scrollBounce 1.5s ease-in-out infinite}
+@keyframes scrollBounce{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(3px,3px)}}
+
+/* ── Mobile ── */
+@media(max-width:800px){
+  .lp-scroll{scroll-snap-type:y proximity}
+  .lp-section{height:auto;min-height:100vh;min-height:100svh;padding:48px 24px;overflow:visible}
+  .lp-inner{flex-direction:column;gap:40px;text-align:center}
+  .text-col{align-items:center}
+  .hero-line{font-size:clamp(1.65rem,7vw,2.1rem)}
+  .hero-desc{max-width:100%}
+  .lp-badge{margin-left:auto;margin-right:auto}
+  .hk-strip{justify-content:center}
+  .seg-list li{text-align:left}
+  .case,.cq,.cfg{text-align:left}
+  .seg-p{text-align:left}
+  .scroll-hint{display:none}
+}
+
+/* ── Reduced motion ── */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.1s!important}
+  .bg-orb,.scroll-hint-arrow{animation:none!important}
+  .lp-scroll{scroll-behavior:auto}
+  .lp-inner,.hero-line,.hero-desc{opacity:1;transform:none}
+  .case{opacity:1!important}
+  .fpill{opacity:1!important}
+}
+
+/* ── Persistent hotkey badge — fixed top-left, visible on EVERY segment (Dilan, 2026-07-10) ── */
+.hk-fixed{position:fixed;top:18px;left:18px;z-index:150;display:inline-flex;align-items:center;gap:9px;padding:6px 13px 6px 7px;border-radius:var(--radius-pill);background:rgba(3,7,18,.66);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);box-shadow:0 6px 22px rgba(0,0,0,.4)}
+.hkf-cap{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;border-radius:6px;background:linear-gradient(180deg,#1c1f2e,#12141f);border:1px solid rgba(255,255,255,.2);border-bottom-width:3px;color:#eef;font:800 .82rem/1 ui-monospace,Consolas,monospace}
+.hkf-join{color:var(--faint);font-size:11px;font-weight:700}
+.hkf-name{font-size:12.5px;font-weight:700;color:var(--text-2);letter-spacing:.01em;white-space:nowrap}
+.hkf-auto{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--accent)}
+.hkf-auto::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+@media(max-width:800px){.hk-fixed{top:10px;left:10px;padding:5px 11px 5px 6px;gap:7px}.hkf-cap{min-width:21px;height:21px;font-size:.75rem}.hkf-name{font-size:11.5px}}
+</style>
+</head>
+<body>
+
+<div class="bg-effects" aria-hidden="true">
+  <div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-2"></div><div class="bg-orb bg-orb-3"></div>
+  <div class="bg-grid"></div>
+</div>
+
+
+<!-- PERSISTENT HOTKEY BADGE — fixed top-left, visible on every segment (Dilan, 2026-07-10) -->
+<div class="hk-fixed" role="note" aria-label="Waiting Detector, automatic"><span class="hkf-name">Waiting Detector</span><span class="hkf-auto">Automatic</span></div>
+
+<main class="lp-scroll" id="scroll" tabindex="0">
+
+  <!-- ════ SEGMENT 1 — HOOK ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <div class="hk-strip">
+          <span class="lp-badge"><span class="lp-badge-dot"></span>Automatic, on by default</span>
+          <span class="hk-label">Waiting detector</span>
+        </div>
+        <h1>
+          <span class="hero-line">Your agent says: &ldquo;I&rsquo;ll be notified automatically.&rdquo;</span>
+          <span class="hero-line accent">In AMC, that&rsquo;s true.</span>
+        </h1>
+        <p class="hero-desc">A wait backed by a real job (a background command, a cloud build, a monitor) stays Running under an auditable &#9201; tag, and the finished job wakes the agent in the same session, same context.</p>
+      </div>
+      <div class="demo-col">
+        <div class="demo-panel" role="img" aria-label="Three turn endings classified: a question surfaces immediately; a job-backed wait holds and the finished job wakes the agent; a prose wait with no job holds and surfaces at the window.">
+          <div class="demo-title">Every turn-end, classified</div>
+          <div class="demo-body">
+            <div class="case" id="c1">
+              <span class="cq">&ldquo;Should checkout use the new pricing table?&rdquo;</span>
+              <span class="cflow"><span class="fpill blue lit1">guard: question</span><span class="farrow">&#8594;</span><span class="fpill amber lit2">Needs you: pings now</span></span>
+            </div>
+            <div class="case" id="c2">
+              <span class="cq">&ldquo;Waiting on the build to finish. I&rsquo;ll be notified automatically.&rdquo; <span class="ctx">job: pnpm build</span></span>
+              <span class="cflow"><span class="fpill amber lit1">&#9201; Auto-waited</span><span class="farrow">&#8594;</span><span class="fpill lit2" style="border-color:rgba(255,255,255,.16);color:var(--text-2)">build finishes: pass or fail</span><span class="farrow">&#8594;</span><span class="fpill green lit3">wakes &middot; continues</span></span>
+            </div>
+            <div class="case" id="c3">
+              <span class="cq">&ldquo;Standing by for the deploy notification.&rdquo; <span class="ctx">no job attached</span></span>
+              <span class="cflow"><span class="fpill amber lit1">&#9201; Auto-waited</span><span class="farrow">&#8594;</span><span class="fpill lit2" style="border-color:rgba(255,255,255,.16);color:var(--text-2)">silent for your window</span><span class="farrow">&#8594;</span><span class="fpill hot lit3">surfaces: reason attached</span></span>
+            </div>
+          </div>
+          <div class="story-caption"><span class="stepno" id="capno">1/3</span><span id="cap">Guards run first and win: anything that reads as a question surfaces.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ SEGMENT 2 — SELL: mechanism ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <h2 class="seg-h">Classification, not vibes</h2>
+        <p class="seg-p"><b>70 fixed patterns (69 high-confidence, 1 medium) + guard rules read every turn-end</b> and decide one thing: is this reply waiting on <em>you</em>, or on <em>its own work</em>? Guards run first and win every conflict. Anything that reads as a question, an approval directed at you, a policy block, or any wait aimed at <em>you</em> surfaces. The detector never answers for you, full stop.</p>
+        <p class="seg-p">Waits on its own work stay Running. If a job is attached (a background command, a cloud run, a monitor, a subagent, a scheduled wake-up), <b>the finish wakes the agent, pass or fail.</b> Event-driven, not a keep-alive timer burning turns. A prose wait with no job behind it doesn&rsquo;t pretend: it holds, then surfaces at your window.</p>
+        <p class="seg-p">Rule-based, not model-judged: <b>hover any &#9201; tag and see the rule that fired</b> and the phrase it matched. Model-free by default. An opt-in AI second opinion exists, and the rule verdict is always the floor. Pattern changes ship only after backtesting against tens of thousands of real transcript messages with zero false holds.</p>
+        <p class="seg-p">Keep your notify hooks if you like them. This is the half they can&rsquo;t do: <b>waking the agent instead of you.</b></p>
+      </div>
+      <div class="demo-col">
+        <div class="demo-panel" role="img" aria-label="The Auto-waited tag with its audit tooltip open, showing the pattern id, category, and the exact matched phrase.">
+          <div class="demo-title">Every hold shows its work</div>
+          <div class="demo-body tipwrap">
+            <span class="wpill">&#9201; Auto-waited</span>
+            <div class="tipbox">
+              <div class="tiph">Auto-kept running: agent appears to be waiting</div>
+              <span class="mono">Pattern: waiting-for-on-any &middot; explicit-hold</span><br />
+              <span class="mono">Matched: &ldquo;waiting on the build to finish&rdquo;</span>
+            </div>
+            <p style="font-size:11px;color:var(--faint);max-width:320px">Same turn-end text, same classification, every time. If a hold ever looks wrong, the receipt is right there.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ SEGMENT 3 — SELL: bounds ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <h2 class="seg-h">Bounded, on the record</h2>
+        <p class="seg-p">A silent wait never outlives your window (<b>30 minutes by default, 5-240</b>), then it surfaces bright orange with what it was waiting on. That includes a job-backed wait whose event never comes: <b>a hung build hits the same window and surfaces the same way.</b></p>
+        <p class="seg-p">Worst case, stated plainly: <b>a misread question waits one window, then reaches you with a receipt.</b> That&rsquo;s the whole trade, and you size it.</p>
+        <p class="seg-p">When a wait surfaces, <b>Keep waiting</b> re-arms one more window of its own length (60 minutes by default) and <b>Check in</b> pokes the agent instead, both in the chat and the inbox right-click menu.</p>
+        <p class="seg-p"><b>And classification only ever decides <em>when you get pinged</em>, never what the agent is allowed to do.</b> Permissions and approvals are untouched.</p>
+      </div>
+      <div class="demo-col">
+        <div class="winwrap" role="img" aria-label="The waiting window slider from five minutes to four hours with the default at thirty minutes, and the timed-out wait card that surfaces with the reason, next to Keep waiting and Check in buttons.">
+          <div>
+            <div class="wintrack"><div class="winfill"></div><div class="winhandle"></div></div>
+            <div class="winlabels"><span>5 min</span><span class="cur">30 min · yours to set</span><span>4 h</span></div>
+          </div>
+          <div class="tocard">
+            <div class="toh">Surfaced: wait timed out</div>
+            Auto-wait timed out. No new activity for 30 minutes (was waiting on: &ldquo;the build&rdquo;). Surfacing to you.
+          </div>
+          <div class="btnrow">
+            <span class="mockbtn">Keep waiting &middot; 60 min</span>
+            <span class="mockbtn primary">Check in</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ SEGMENT 4 — EDUCATE: knobs ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <h2 class="seg-h">Your knobs</h2>
+        <ol class="seg-list">
+          <li><span><b>On by default</b> since 2026-05-27. Hover any &#9201; tag for the rule + matched phrase.</span></li>
+          <li><span><b>Waiting period:</b> Settings &#8594; Sessions. 30 min default, 5-240. <b>Keep waiting</b> has its own length: 60 min default, 5-240.</span></li>
+          <li><span><b>Auto check-in</b> (opt-in, off): when the window ends, AMC pokes the agent for you, at most 3&times; in a row, each visible in the chat as &ldquo;Checked in with the agent (N of 3).&rdquo;</span></li>
+          <li><span><b>Strict mode:</b> turn off &ldquo;Recognize all waiting phrasings&rdquo; and only the canonical waiting sentence suppresses. Arbitrary prose never does.</span></li>
+          <li><span><b>Escape hatches:</b> <code>AMC_DISABLE_WAITING_DETECTOR=1</code> kills the detector, <code>AMC_DISABLE_AUTO_NUDGE=1</code> kills check-ins. And the detector never overrides a tool-scheduled deferral.</span></li>
+        </ol>
+      </div>
+      <div class="demo-col">
+        <div class="demo-panel" role="img" aria-label="A settings readout: detector on by default since May 27, waiting period thirty minutes, keep waiting sixty, auto check-in off with max three, match mode all phrasings, and the environment kill switch.">
+          <div class="demo-title">Current config</div>
+          <div class="demo-body cfg">
+            <div class="row"><b>detector</b><span class="val">on (default since 2026-05-27)</span></div>
+            <div class="row"><b>waiting period</b><span class="val">30m (5-240)</span></div>
+            <div class="row"><b>keep waiting</b><span class="val">60m (5-240)</span></div>
+            <div class="row"><b>auto check-in</b><span class="val off">off (max 3)</span></div>
+            <div class="row"><b>match mode</b><span class="val">all phrasings (strict available)</span></div>
+            <div class="row"><b>kill switch</b><span class="val off">AMC_DISABLE_WAITING_DETECTOR=1</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ SEGMENT 5 — CTA ════ -->
+  <section class="lp-section lp-cta">
+    <div class="lp-inner" style="flex-direction:column">
+      <h2 class="seg-h">Tune your window</h2>
+      <p class="seg-p">It&rsquo;s already running. Your real decision is inspect or disable. Here&rsquo;s the inspection harness.</p>
+      <!-- PLACEHOLDER: agentmc:// deep-link CTA goes here once direction is aligned
+           with Johnny (CLAUDE.md guardrail). Until then: worded action. -->
+      <a class="lp-cta-btn" href="#" onclick="return false">Open Settings &#8594; Sessions</a>
+      <p class="lp-cta-sub">Set Waiting period to 5, work a normal day, then hover every &#9201; that appears.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="scroll-hint" id="hint"><span>Scroll</span><div class="scroll-hint-arrow"></div></div>
+
+<script>
+/* Segment reveal + staged hero + classification sequencer */
+(function(){
+  var scroller=document.getElementById('scroll');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  console.log('[auto-waiting-v5] init',{segments:document.querySelectorAll('.lp-section').length,reduce:reduce});
+
+  function staged(inner){
+    var steps=inner.querySelectorAll('.hero-line,.hero-desc');
+    steps.forEach(function(el,i){setTimeout(function(){el.classList.add('visible');},reduce?0:180*i+120);});
+  }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');staged(e.target);io.unobserve(e.target);}
+    });
+  },{root:scroller,threshold:.35});
+  document.querySelectorAll('.lp-inner').forEach(function(el){io.observe(el)});
+
+  var hint=document.getElementById('hint');
+  scroller.addEventListener('scroll',function(){hint.classList.add('hidden');},{once:true,passive:true});
+  scroller.focus({preventScroll:true});
+
+  /* ── Hero sequencer: cycle the 3 cases; light each case's flow pills in order.
+        Inactive cases dim to .5 (never hidden). Pauses off-screen. ── */
+  var cases=[
+    {id:'c1',subs:2,cap:'Guards run first and win: anything that reads as a question surfaces.'},
+    {id:'c2',subs:3,cap:'Job-backed wait: the finish wakes it. Same session, same context.'},
+    {id:'c3',subs:3,cap:'No event to listen to → your window is the failsafe.'}
+  ];
+  var capEl=document.getElementById('cap'),capNo=document.getElementById('capno');
+  var ci=-1,timer=null,visible=false;
+  var SUB_MS=700,CASE_HOLD=1300;
+  function litAll(on){
+    cases.forEach(function(c){
+      var el=document.getElementById(c.id);
+      el.classList.toggle('active',on);
+      el.querySelectorAll('.fpill').forEach(function(p){p.classList.toggle('lit',on);});
+    });
+  }
+  function playCase(i){
+    ci=i;
+    var c=cases[i],el=document.getElementById(c.id);
+    cases.forEach(function(cc){
+      var e=document.getElementById(cc.id);
+      e.classList.toggle('active',cc.id===c.id);
+      e.querySelectorAll('.fpill').forEach(function(p){p.classList.remove('lit');});
+    });
+    capEl.textContent=c.cap;capNo.textContent=(i+1)+'/'+cases.length;
+    var pills=el.querySelectorAll('.fpill');
+    pills.forEach(function(p,pi){
+      timer=setTimeout(function(){p.classList.add('lit');},SUB_MS*pi+200);
+    });
+    timer=setTimeout(function(){
+      if(!visible){timer=null;return;}
+      playCase((i+1)%cases.length);
+    },SUB_MS*c.subs+CASE_HOLD);
+  }
+  var panel=document.querySelector('.demo-panel');
+  if(reduce){
+    litAll(true);
+    capEl.textContent='Reads as a question? Pings now · job-backed waits resume on the event · the rest surface at your window.';capNo.textContent='3/3';
+    console.log('[auto-waiting-v5] sequencer disabled (reduced motion) — all cases lit');
+  }else{
+    var seqIo=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        visible=e.isIntersecting;
+        if(visible&&ci<0){playCase(0);}
+        else if(visible&&timer===null){playCase(ci);}
+        else if(!visible&&timer){clearTimeout(timer);timer=null;}
+      });
+    },{root:scroller,threshold:.4});
+    seqIo.observe(panel);
+  }
+})();
+</script>
+</body>
+</html>

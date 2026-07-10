@@ -1,45 +1,32 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AMC Snooze pages · review drafts</title>
-<style>
-:root{--bg:#030712;--line:rgba(255,255,255,.08);--text:#fff;--body:#9ca3af;--faint:rgba(255,255,255,.45);--accent:#4ade80;--warn:#fbbf24;--info:#60a5fa}
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AMC Feature Landing Pages — Review</title><style>
+:root{--bg:#030712;--line:rgba(255,255,255,.08);--text:#fff;--body:#9ca3af;--accent:#4ade80;--info:#60a5fa}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding:48px 24px}
-.wrap{max-width:760px;margin:0 auto}
-h1{font-size:1.6rem;font-weight:700;letter-spacing:-.01em}
-.sub{color:var(--body);font-size:.95rem;margin:6px 0 34px}
-h2{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin:30px 0 10px}
-a.card{display:flex;align-items:center;justify-content:space-between;gap:14px;text-decoration:none;color:var(--text);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:13px 18px;margin-bottom:8px;transition:border-color .15s,transform .15s}
-a.card:hover{border-color:rgba(74,222,128,.45);transform:translateY(-1px)}
-.t{display:block;font-weight:600;font-size:.98rem}
-.d{display:block;color:var(--body);font-size:.82rem;margin-top:1px}
-.tag{flex-shrink:0;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 10px;border-radius:20px}
-.main{background:rgba(74,222,128,.1);color:#86efac;border:1px solid rgba(74,222,128,.4)}
-.alt{background:rgba(251,191,36,.08);color:#fcd34d;border:1px solid rgba(251,191,36,.35)}
-.foot{color:var(--faint);font-size:.78rem;margin-top:36px}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <h1>AMC Snooze · landing page drafts</h1>
-  <p class="sub">Two pages, each with one main version and three alternative hero animations. Same copy per page; only the animation design differs. Best viewed on a desktop browser. July 10, 2026.</p>
-
-  <h2>Page 1 · "You choose"</h2>
-  <a class="card" href="manual-snooze--developer--attention-scheduled--emotional.html"><span><span class="t">You choose</span><span class="d">Main version. Hero: the triage film, three asks snoozed, one typed with a typo.</span></span><span class="tag main">Main</span></a>
-  <a class="card" href="manual-snooze--developer--attention-scheduled--emotional--alt-kinetic.html"><span><span class="t">You choose · kinetic type</span><span class="d">The asks are typography; each phrase morphs into its time chip.</span></span><span class="tag alt">Alt</span></a>
-  <a class="card" href="manual-snooze--developer--attention-scheduled--emotional--alt-overnight.html"><span><span class="t">You choose · overnight</span><span class="d">Dusk to starry night to dawn; the ask returns at 8 AM.</span></span><span class="tag alt">Alt</span></a>
-  <a class="card" href="manual-snooze--developer--attention-scheduled--emotional--alt-lane.html"><span><span class="t">You choose · attention lane</span><span class="d">Diagram: four lines pull at you; three reroute to time slots; one lane remains.</span></span><span class="tag alt">Alt</span></a>
-
-  <h2>Page 2 · "Own the block"</h2>
-  <a class="card" href="manual-snooze--developer--own-the-block--functional.html"><span><span class="t">Own the block</span><span class="d">Main version. Hero: without/with race, five glances vs one scheduled return.</span></span><span class="tag main">Main</span></a>
-  <a class="card" href="manual-snooze--developer--own-the-block--functional--alt-could-wait.html"><span><span class="t">Own the block · could wait</span><span class="d">Day-rail stats: 5 of 6 asks could have waited; snooze moves each to its right time.</span></span><span class="tag alt">Alt</span></a>
-  <a class="card" href="manual-snooze--developer--own-the-block--functional--alt-scoreboard.html"><span><span class="t">Own the block · scoreboard</span><span class="d">Giant counters over two live worlds: interruptions halt the work vs one scheduled return.</span></span><span class="tag alt">Alt</span></a>
-  <a class="card" href="manual-snooze--developer--own-the-block--functional--alt-pause-loop.html"><span><span class="t">Own the block · pause the loop</span><span class="d">The respond loop pauses; your attention swings to the ask that matters now.</span></span><span class="tag alt">Alt</span></a>
-
-  <p class="foot">Internal review drafts for Agent Mission Control feature marketing.</p>
-</div>
-</body>
-</html>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding:48px 24px 80px}
+.wrap{max-width:1000px;margin:0 auto}
+h1{font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.02em}
+.sub{color:var(--body);margin:12px 0 8px;max-width:680px}
+.meta{color:rgba(255,255,255,.45);font-size:13px;margin-bottom:36px}
+.grp{margin:34px 0;border-top:1px solid var(--line);padding-top:26px}
+.ghead{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.gbadge{display:inline-flex;align-items:center;gap:6px;flex-shrink:0}
+.cap{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;padding:0 8px;border-radius:6px;background:linear-gradient(180deg,#1c1f2e,#12141f);border:1px solid rgba(255,255,255,.2);border-bottom-width:3px;color:#eef;font:800 .85rem/1 ui-monospace,Consolas,monospace}
+.plus{color:rgba(255,255,255,.45);font-weight:700;margin:0 2px}
+.fauto{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
+h2{font-size:1.3rem}
+.gnote{color:var(--body);font-size:13.5px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.card{display:flex;flex-direction:column;gap:3px;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.02);text-decoration:none;transition:border-color .15s,transform .15s,background .15s}
+.card:hover{border-color:rgba(74,222,128,.5);transform:translateY(-2px);background:rgba(74,222,128,.04)}
+.card.alt{background:rgba(96,165,250,.03)}
+.card.alt:hover{border-color:rgba(96,165,250,.5)}
+.cl{color:var(--text);font-weight:700;font-size:15px}
+.ct{color:var(--body);font-size:12px}
+footer{margin-top:48px;color:rgba(255,255,255,.35);font-size:12px;border-top:1px solid var(--line);padding-top:20px}
+</style></head><body><div class="wrap">
+<h1>AMC feature landing pages</h1>
+<p class="sub">Animated, self-contained sales-and-education pages, one per feature. Every page now carries a <b style="color:#fff">persistent hotkey badge</b> top-left (keycap + feature name) that stays visible as you scroll.</p>
+<p class="meta">29 pages · updated 2026-07-10 · click any card to open. Best viewed on desktop; scroll each page through its segments.</p>
+<section class="grp"><div class="ghead"><div class="gbadge"><span class="cap">H</span></div><div><h2>Snooze a session</h2><p class="gnote">Manual snooze. Final set: 6 mains + 6 alternate heroes on the two developer pages.</p></div></div><div class="cards"><a class="card" href="manual-snooze--developer--attention-scheduled--emotional.html"><span class="cl">You choose</span><span class="ct">Developer · emotional · MAIN (attention triage)</span></a><a class="card alt" href="manual-snooze--developer--attention-scheduled--emotional--alt-kinetic.html"><span class="cl">You choose — Kinetic type</span><span class="ct">alt hero</span></a><a class="card alt" href="manual-snooze--developer--attention-scheduled--emotional--alt-overnight.html"><span class="cl">You choose — Overnight</span><span class="ct">alt hero</span></a><a class="card alt" href="manual-snooze--developer--attention-scheduled--emotional--alt-lane.html"><span class="cl">You choose — Attention lane</span><span class="ct">alt hero</span></a><a class="card" href="manual-snooze--developer--own-the-block--functional.html"><span class="cl">Own the block</span><span class="ct">Developer · functional · MAIN (attention race)</span></a><a class="card alt" href="manual-snooze--developer--own-the-block--functional--alt-could-wait.html"><span class="cl">Own the block — Could wait (stats)</span><span class="ct">alt hero</span></a><a class="card alt" href="manual-snooze--developer--own-the-block--functional--alt-scoreboard.html"><span class="cl">Own the block — Scoreboard</span><span class="ct">alt hero</span></a><a class="card alt" href="manual-snooze--developer--own-the-block--functional--alt-pause-loop.html"><span class="cl">Own the block — Pause the loop</span><span class="ct">alt hero</span></a><a class="card" href="manual-snooze--operator--go-to-bed--emotional.html"><span class="cl">Go to bed</span><span class="ct">Operator · emotional · flagship (overnight)</span></a><a class="card" href="manual-snooze--operator--end-the-night--functional.html"><span class="cl">End the night</span><span class="ct">Operator · functional (bulk)</span></a><a class="card" href="manual-snooze--operator--answer-after-work--functional.html"><span class="cl">Answer it after work</span><span class="ct">Operator · functional (wrong-time)</span></a><a class="card" href="manual-snooze--developer--not-now-tomorrow-morning--functional.html"><span class="cl">Just tell it when</span><span class="ct">Developer · functional · REBUILT (typed read-back mechanism)</span></a></div></section><section class="grp"><div class="ghead"><div class="gbadge"><span class="cap">Alt</span><span class="plus">+</span><span class="cap">Z</span></div><div><h2>Zap</h2><p class="gnote">One-keystroke "keep going" for a waiting agent.</p></div></div><div class="cards"><a class="card" href="zap--operator--leave-the-desk--emotional.html"><span class="cl">Leave the desk</span><span class="ct">Operator · emotional</span></a><a class="card" href="zap--operator--never-wonder--emotional.html"><span class="cl">Never wonder</span><span class="ct">Operator · emotional</span></a><a class="card" href="zap--operator--right-answer-button--functional.html"><span class="cl">The right-answer button</span><span class="ct">Operator · functional</span></a><a class="card" href="zap--operator--keep-it-moving--functional.html"><span class="cl">Keep it moving</span><span class="ct">Operator · functional</span></a><a class="card" href="zap--developer--not-a-babysitter--emotional.html"><span class="cl">Not a babysitter</span><span class="ct">Developer · emotional</span></a><a class="card" href="zap--developer--one-keystroke-nod--functional.html"><span class="cl">One-keystroke nod</span><span class="ct">Developer · functional</span></a><a class="card" href="zap--developer--stay-in-flow--emotional.html"><span class="cl">Stay in flow</span><span class="ct">Developer · emotional</span></a><a class="card" href="zap--developer--the-continue-key--functional.html"><span class="cl">The continue key</span><span class="ct">Developer · functional</span></a></div></section><section class="grp"><div class="ghead"><div class="gbadge"><span class="cap">Alt</span><span class="plus">+</span><span class="cap">S</span></div><div><h2>Quick Replies</h2><p class="gnote">Saved answers you fire in under a second.</p></div></div><div class="cards"><a class="card" href="quick-replies--operator--repetition--functional.html"><span class="cl">Repetition</span><span class="ct">Operator · functional</span></a><a class="card" href="quick-replies--operator--away--emotional.html"><span class="cl">Away</span><span class="ct">Operator · emotional</span></a><a class="card" href="quick-replies--operator--away--functional.html"><span class="cl">Away</span><span class="ct">Operator · functional</span></a><a class="card" href="quick-replies--developer--continue-flow--functional.html"><span class="cl">Continue flow</span><span class="ct">Developer · functional</span></a><a class="card" href="quick-replies--developer--guardrails--functional.html"><span class="cl">Guardrails</span><span class="ct">Developer · functional</span></a></div></section><section class="grp"><div class="ghead"><div class="gbadge"><span class="fauto">● Automatic</span></div><div><h2>Waiting Detector</h2><p class="gnote">Automatic, on by default. Surfaces a waiting agent for you.</p></div></div><div class="cards"><a class="card" href="auto-waiting--operator--not-every-ping--functional.html"><span class="cl">Not every ping</span><span class="ct">Operator · functional</span></a><a class="card" href="auto-waiting--operator--not-the-continue-button--functional.html"><span class="cl">Not the continue button</span><span class="ct">Operator · functional</span></a><a class="card" href="auto-waiting--developer--waiting-triaged--functional.html"><span class="cl">Waiting, triaged</span><span class="ct">Developer · functional</span></a><a class="card" href="auto-waiting--developer--notified-automatically--functional.html"><span class="cl">Notified automatically</span><span class="ct">Developer · functional</span></a></div></section>
+<footer>Internal review build. Snooze pages "be at dinner" and "two hours of quiet" are proposed for retirement (near-duplicates) and are not listed here.</footer>
+</div></body></html>

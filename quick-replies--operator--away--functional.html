@@ -1,0 +1,310 @@
+<!doctype html>
+<!--
+  AMC FEATURE LANDING PAGE — Quick Replies
+  Cell 3 — "One tap from your phone" · Operator · Explain-it · away/mobile · functional/PAS
+  Structure: landing-page-blueprint.md · Style: design-language.md · Build: html-remotion-build-guide.md
+  ANIMATION OPTION USED: C — live DOM/CSS mock (phone panel; play-once-and-hold; reduced-motion below)
+  Segments: 1 Hook · 2 Sell · 3 Educate · 4 CTA
+  Panel fixes (2026-07-05): auto-submit led; "no setup — wherever your agent already reaches you" in Educate.
+  Live-UI verification pass (2026-07-08, vs Agent-Orchestrator source): the phone surface is the
+  AMC mobile web app (PWA) — NOT a native SMS thread; the demo now shows the AMC session view with
+  the real picker (search, bottom-up numbers, send icons, Manage footer, Inbox/Projects tab bar).
+  Copy reframed: "open AMC on your phone" + honest one-time pairing; Telegram removed (surfaces =
+  sessions, texts, email); toggle's real label "Auto-send when selected"; no keyboard-only "↵" on phone.
+  rev4 · 2026-07-09 — global-standards pass: one-message h1, hero hotkey strip (Alt+S), speed story
+  rev · 2026-07-10 — persistent hotkey badge added (fixed top-left, visible on every segment; Dilan).
+  rev · 2026-07-10 — copy standards v2 sweep (em-dashes removed; educate=play; montage; defluff).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quick Replies · Agent Mission Control</title>
+<style>
+:root{
+  --bg:#030712; --glass:rgba(3,7,18,.7); --glass-strong:rgba(3,7,18,.92);
+  --line:rgba(255,255,255,.08);
+  --text:#fff; --text-2:rgba(255,255,255,.85); --body:#9ca3af;
+  --faint:rgba(255,255,255,.45); --fine:rgba(255,255,255,.25);
+  --accent:#4ade80; --info:#60a5fa; --warn:#fbbf24; --error:#f87171;
+  --on-accent:#030712;
+  --radius:12px; --radius-pill:20px; --maxw:1100px;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1); --t-hover:.15s; --t-small:.25s; --t-reveal:.45s;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{overflow:hidden;height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hidden;height:100%;line-height:1.65}
+.lp-scroll{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+.lp-section{position:relative;z-index:1;height:100vh;display:flex;align-items:center;justify-content:center;padding:0 24px;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
+.lp-inner{display:flex;align-items:center;gap:64px;max-width:var(--maxw);width:100%;opacity:0;transform:translateY(16px);transition:opacity var(--t-small) var(--ease),transform var(--t-small) var(--ease)}
+.lp-inner.visible{opacity:1;transform:translateY(0)}
+.text-col{flex:0 0 50%;display:flex;flex-direction:column;gap:24px;min-width:0}
+.demo-col{flex:1;display:flex;align-items:center;justify-content:center;min-width:0}
+.bg-effects{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.12;animation:orbFloat 20s ease-in-out infinite}
+.bg-orb-1{width:600px;height:600px;background:var(--accent);top:-200px;left:-100px}
+.bg-orb-2{width:500px;height:500px;background:var(--info);top:40%;right:-150px;animation-delay:-7s}
+.bg-orb-3{width:550px;height:550px;background:var(--warn);bottom:-200px;left:30%;animation-delay:-14s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0)}33%{transform:translate(30px,-40px)}66%{transform:translate(-20px,30px)}}
+.bg-grid{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px);background-size:32px 32px}
+/* Keycaps + hero hotkey strip */
+.kbd{display:inline-block;font-family:ui-monospace,Consolas,monospace;font-size:12px;font-weight:600;color:var(--text-2);background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:6px;padding:2px 7px;line-height:1.4;vertical-align:middle}
+.kbd-join{color:var(--faint);font-size:11px;margin:0 3px}
+.hk-strip{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.hk-strip .kbd{font-size:13px;padding:4px 9px}
+.hk-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--faint)}
+
+/* Hero headline — one message (staircase retired 2026-07-09) */
+.hero-line{display:block;opacity:0;transform:translateY(12px);transition:opacity var(--t-reveal) var(--ease),transform var(--t-reveal) var(--ease);font-weight:700;font-size:clamp(2rem,5vw,3rem);line-height:1.14;letter-spacing:-.02em;padding-left:0}
+.hero-line.visible{opacity:1;transform:translateY(0)}
+.hero-line.accent{color:var(--accent)}
+.hero-desc{opacity:0;transition:opacity var(--t-reveal) var(--ease);font-size:1.05rem;color:var(--body);max-width:560px;margin-top:6px}
+.hero-desc.visible{opacity:1}
+.hero-desc b{color:var(--text-2)}
+.seg-h{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700}
+.seg-p{color:var(--body);font-size:1.05rem;max-width:560px}
+.seg-p b{color:var(--text)}
+.seg-list{list-style:none;display:flex;flex-direction:column;gap:16px;counter-reset:step;max-width:560px}
+.seg-list li{display:flex;gap:14px;align-items:flex-start;color:var(--body)}
+.seg-list li::before{counter-increment:step;content:counter(step);flex:0 0 28px;height:28px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--text);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.seg-list b{color:var(--text)}
+.seg-aside{font-size:.92rem;color:var(--body);max-width:560px}
+/* Phone / SMS demo */
+.phone{width:286px;max-width:100%;height:588px;display:flex;flex-direction:column;background:linear-gradient(180deg,rgba(3,7,18,.86),rgba(3,7,18,.72));backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:44px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.phone-status{position:relative;display:flex;align-items:center;justify-content:space-between;padding:12px 24px 6px;font-size:11px;color:var(--text-2);font-weight:700}
+.phone-status .notch{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:84px;height:20px;border-radius:0 0 13px 13px;background:#000}
+.phone-sig{display:flex;gap:3px;align-items:center}
+.phone-sig i{width:4px;height:4px;border-radius:50%;background:var(--faint)}
+/* Screen content = the AMC mobile web app (session view), per the live-UI pass */
+.sms-head{display:flex;align-items:center;gap:8px;padding:6px 14px 10px;border-bottom:1px solid var(--line);font-size:12px;color:var(--text-2);font-weight:600}
+.sms-back{color:var(--faint);font-size:17px;line-height:1}
+.sms-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);margin-left:auto}
+.sms-convo{flex:1;padding:14px 12px 8px;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+.amc-msg{align-self:stretch;display:flex;gap:8px;align-items:flex-start;background:rgba(96,165,250,.06);border:1px solid var(--line);color:var(--text-2);padding:9px 11px;border-radius:10px;font-size:12.5px}
+.amc-msg .demo-dot{width:7px;height:7px;border-radius:50%;background:var(--info);flex-shrink:0;margin-top:5px}
+.sms-time{align-self:center;color:var(--fine);font-size:10px;margin-top:3px}
+.amc-tabs{display:flex;border-top:1px solid var(--line);flex-shrink:0}
+.amc-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 0 5px;font-size:9.5px;color:var(--faint);font-weight:600}
+.amc-tab.on{color:var(--accent)}
+.amc-tab svg{display:block}
+.qr-picker{margin:0 12px;border:1px solid var(--line);border-radius:14px;background:rgba(3,7,18,.92);overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.45)}
+.sms-input{position:relative;display:flex;align-items:center;gap:8px;margin:9px 12px;border:1px solid var(--line);border-radius:20px;padding:9px 14px;color:var(--fine);font-size:12.5px;background:rgba(255,255,255,.03)}
+.sms-input .qr-send{margin-left:auto;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sms-sent{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:20px;background:#0a1a12;border:1px solid rgba(74,222,128,.4);color:var(--accent);font-weight:600;opacity:0}
+.lp-inner.visible .sms-sent{animation:sentIn .5s var(--ease) 1.5s both}
+.phone-home{height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.phone-home::after{content:"";width:112px;height:4px;border-radius:3px;background:rgba(255,255,255,.28)}
+.qr-picker-h{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-bottom:1px solid var(--line);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-weight:700}
+.qr-kbd{font-size:10px;color:var(--faint);border:1px solid var(--line);border-radius:5px;padding:2px 6px;background:rgba(255,255,255,.03);text-transform:none;letter-spacing:0}
+.qr-row{display:flex;align-items:center;gap:9px;padding:8px 10px;font-size:12.5px;color:var(--text-2);border-top:1px solid rgba(255,255,255,.04);opacity:0}
+.qr-row:first-of-type{border-top:none}
+.qr-num{flex:0 0 16px;height:16px;border-radius:4px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:10px;color:var(--faint);display:flex;align-items:center;justify-content:center;font-weight:600}
+.qr-row.active{background:rgba(74,222,128,.08);color:var(--text);box-shadow:inset 2px 0 0 var(--accent)}
+.qr-sends{margin-left:auto;font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.02em}
+.qr-plane{flex-shrink:0;color:var(--accent);display:inline-flex}
+.qr-search{display:flex;align-items:center;gap:7px;padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.05);font-size:11px;color:var(--fine)}
+.qr-foot{padding:5px 10px;border-top:1px solid rgba(255,255,255,.05);font-size:10px;color:var(--accent);text-align:center;font-weight:600}
+.lp-inner.visible .qr-row{animation:rowIn .45s var(--ease) both}
+@keyframes rowIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes sentIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.ba{display:flex;flex-direction:column;gap:12px;width:100%;max-width:340px}
+.ba-card{border:1px solid var(--line);border-radius:var(--radius);background:var(--glass);padding:12px 14px}
+.ba-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+.ba-typed{font-size:12.5px;color:var(--fine);padding:6px 10px;border:1px dashed var(--line);border-radius:7px;margin-bottom:6px}
+.ba-typed:last-child{margin-bottom:0}
+.ba-after{opacity:0}
+.lp-inner.visible .ba-after{animation:sentIn .5s var(--ease) .5s both}
+.ba-fire{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--text);background:rgba(74,222,128,.08);box-shadow:inset 2px 0 0 var(--accent);border-radius:7px;padding:8px 10px}
+.ba-arrow{align-self:center;color:var(--faint);font-size:18px;line-height:1}
+.edu-card{width:100%;max-width:320px;border:1px solid var(--line);border-radius:var(--radius);background:var(--glass);padding:14px}
+.edu-row{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;color:var(--text-2);padding:9px 0;border-top:1px solid var(--line)}
+.edu-row:first-child{border-top:none}
+.edu-toggle{width:34px;height:19px;border-radius:10px;background:var(--accent);position:relative;flex-shrink:0}
+.edu-knob{position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:var(--on-accent)}
+.lp-inner.visible .edu-knob{animation:knobOn .45s var(--ease) .4s both}
+@keyframes knobOn{from{left:2px}to{left:17px}}
+.edu-chip{font-size:11px;color:var(--accent);font-weight:600;white-space:nowrap}
+.lp-cta-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:var(--radius);background:var(--accent);color:var(--on-accent);font-weight:600;font-size:15px;text-decoration:none;border:none;cursor:pointer;transition:transform var(--t-hover),box-shadow var(--t-hover)}
+.lp-cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(74,222,128,.25)}
+.lp-cta-btn:focus-visible{outline:2px solid var(--info);outline-offset:3px}
+.lp-cta{flex-direction:column;text-align:center}
+.lp-cta .seg-p{margin:16px auto 0}
+.lp-cta-sub{margin-top:16px;color:var(--body);font-size:14px}
+.scroll-hint{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:200;color:var(--fine);font-size:11px;display:flex;flex-direction:column;align-items:center;gap:4px;transition:opacity .4s;pointer-events:none}
+.scroll-hint.hidden{opacity:0}
+.scroll-hint-arrow{width:20px;height:20px;border-right:2px solid rgba(255,255,255,.2);border-bottom:2px solid rgba(255,255,255,.2);transform:rotate(45deg);animation:scrollBounce 1.5s ease-in-out infinite}
+@keyframes scrollBounce{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(3px,3px)}}
+@media(max-width:800px){
+  .lp-scroll{scroll-snap-type:y proximity}
+  .lp-section{height:auto;min-height:100vh;min-height:100svh;padding:56px 24px;overflow:visible}
+  .lp-inner{flex-direction:column;gap:36px;text-align:center}
+  .text-col{align-items:center}
+  .hero-line{font-size:clamp(1.65rem,7vw,2.1rem)}
+  .hero-desc{max-width:100%}
+  .hk-strip{justify-content:center}
+  .seg-list{text-align:left}.seg-list li{text-align:left}
+  .seg-p,.seg-aside{margin-left:auto;margin-right:auto}
+  .scroll-hint{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.1s!important}
+  .bg-orb,.scroll-hint-arrow{animation:none!important}
+  .lp-scroll{scroll-behavior:auto}
+  .lp-inner,.hero-line,.hero-desc{opacity:1;transform:none}
+  .qr-row,.sms-sent,.ba-after{opacity:1!important;animation:none!important;transform:none!important}
+  .edu-knob{animation:none!important;left:17px!important}
+}
+
+/* ── Persistent hotkey badge — fixed top-left, visible on EVERY segment (Dilan, 2026-07-10) ── */
+.hk-fixed{position:fixed;top:18px;left:18px;z-index:150;display:inline-flex;align-items:center;gap:9px;padding:6px 13px 6px 7px;border-radius:var(--radius-pill);background:rgba(3,7,18,.66);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);box-shadow:0 6px 22px rgba(0,0,0,.4)}
+.hkf-cap{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;border-radius:6px;background:linear-gradient(180deg,#1c1f2e,#12141f);border:1px solid rgba(255,255,255,.2);border-bottom-width:3px;color:#eef;font:800 .82rem/1 ui-monospace,Consolas,monospace}
+.hkf-join{color:var(--faint);font-size:11px;font-weight:700}
+.hkf-name{font-size:12.5px;font-weight:700;color:var(--text-2);letter-spacing:.01em;white-space:nowrap}
+.hkf-auto{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--accent)}
+.hkf-auto::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+@media(max-width:800px){.hk-fixed{top:10px;left:10px;padding:5px 11px 5px 6px;gap:7px}.hkf-cap{min-width:21px;height:21px;font-size:.75rem}.hkf-name{font-size:11.5px}}
+</style>
+</head>
+<body>
+
+<div class="bg-effects" aria-hidden="true">
+  <div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-2"></div><div class="bg-orb bg-orb-3"></div>
+  <div class="bg-grid"></div>
+</div>
+
+
+<!-- PERSISTENT HOTKEY BADGE — fixed top-left, visible on every segment (Dilan, 2026-07-10) -->
+<div class="hk-fixed" role="note" aria-label="Quick Replies, press Alt plus S"><span class="hkf-cap" aria-hidden="true">Alt</span><span class="hkf-join">+</span><span class="hkf-cap" aria-hidden="true">S</span><span class="hkf-name">Quick Replies</span></div>
+
+<main class="lp-scroll" id="scroll" tabindex="0">
+
+  <!-- ════ 1 — HOOK ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <div class="hk-strip">
+          <span class="hk-keys" aria-label="Alt plus S"><kbd class="kbd">Alt</kbd><span class="kbd-join">+</span><kbd class="kbd">S</kbd></span>
+          <span class="hk-label">Quick Replies: saved answers</span>
+        </div>
+        <h1>
+          <span class="hero-line">Your agent needs you.</span>
+          <span class="hero-line">You&rsquo;re away from your desk.</span>
+        </h1>
+        <p class="hero-desc">Open AMC on your phone. Your saved replies are right there. <b>One tap sends.</b></p>
+      </div>
+      <div class="demo-col">
+        <div class="phone" role="img" aria-label="A phone running the AMC app: a session asks 'Tests pass. Want me to deploy?'; the Quick Replies picker is open above the reply bar, numbers counting up from the bottom, with 'deploy it' highlighted at the bottom as number 1; tapping it sends.">
+          <div class="phone-status"><span>9:41</span><span class="notch"></span><span class="phone-sig"><i></i><i></i><i></i></span></div>
+          <div class="sms-head"><span class="sms-back">&lsaquo;</span><span>Redesign checkout</span><span class="sms-dot"></span></div>
+          <div class="sms-convo">
+            <div class="amc-msg"><span class="demo-dot"></span>Agent: &ldquo;Tests pass. Want me to deploy?&rdquo;</div>
+            <div class="sms-time">now</div>
+          </div>
+          <div class="qr-picker">
+            <div class="qr-picker-h"><span>Quick replies</span><span class="qr-kbd">tap to send</span></div>
+            <div class="qr-search"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>Search quick replies&hellip;</div>
+            <div class="qr-row" style="animation-delay:.15s"><span class="qr-num">4</span>hold for me</div>
+            <div class="qr-row" style="animation-delay:.25s"><span class="qr-num">3</span>run the tests</div>
+            <div class="qr-row" style="animation-delay:.35s"><span class="qr-num">2</span>continue<span class="qr-plane"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></span></div>
+            <div class="qr-row active" style="animation-delay:.45s"><span class="qr-num">1</span>deploy it<span class="qr-plane"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></span><span class="qr-sends">sends</span></div>
+            <div class="qr-foot">Manage Quick Replies</div>
+          </div>
+          <div class="sms-input">Reply to Redesign checkout&hellip;
+            <span class="qr-send" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></span>
+            <span class="sms-sent"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Sent &ldquo;deploy it&rdquo;</span>
+          </div>
+          <div class="amc-tabs" aria-hidden="true">
+            <span class="amc-tab on"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>Inbox</span>
+            <span class="amc-tab"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>Projects</span>
+          </div>
+          <div class="phone-home"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ 2 — SELL (PAS) ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <h2 class="seg-h">The answer&rsquo;s easy. Typing it isn&rsquo;t</h2>
+        <p class="seg-p">&ldquo;Yes, deploy.&rdquo; Simple, until you&rsquo;re thumbing it out on a sidewalk, fixing autocorrect, while the agent waits.</p>
+        <p class="seg-p"><b>Open AMC on your phone instead.</b> The same saved replies sit right above the reply bar. Tap &ldquo;deploy it&rdquo; and it sends. No thumb-typing, no autocorrect.</p>
+      </div>
+      <div class="demo-col">
+        <div class="ba" role="img" aria-label="Before: a mistyped, autocorrected message. After: one saved reply tapped and sent.">
+          <div class="ba-card">
+            <div class="ba-label">Before &middot; thumb-typing</div>
+            <div class="ba-typed">you: yes go ahead nd deploy i&hellip;</div>
+            <div class="ba-typed">autocorrect: &ldquo;depot&rdquo; &nbsp;&#x2715;</div>
+          </div>
+          <div class="ba-arrow" aria-hidden="true">&darr;</div>
+          <div class="ba-card ba-after">
+            <div class="ba-label" style="color:var(--accent)">After &middot; one tap</div>
+            <div class="ba-fire"><span class="qr-num">1</span>deploy it<span class="qr-sends">sent</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ 3 — EDUCATE ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <h2 class="seg-h">Try it. Set up before you step away</h2>
+        <ol class="seg-list">
+          <li><span>In the <b>Quick Replies</b> project, add the answers you send most (&ldquo;deploy it,&rdquo; &ldquo;hold for me&rdquo;) and switch on <b>Auto-send when selected.</b></span></li>
+          <li><span>Pair your phone once: <b>Settings &rarr; Remote Access</b>, scan the QR, add AMC to your home screen.</span></li>
+          <li><span>Away from your desk, open AMC on your phone. The same picker is in the reply bar. Tap, sent.</span></li>
+        </ol>
+        <p class="seg-aside">Your replies are already on the phone the moment it opens, nothing to re-create. They work in sessions, texts, and email replies; attachments ride along too. Back at your desk, the same picker is one keystroke away: <kbd class="kbd">Alt</kbd><span class="kbd-join">+</span><kbd class="kbd">S</kbd>.</p>
+      </div>
+      <div class="demo-col">
+        <div class="edu-card" role="img" aria-label="A saved reply 'deploy it': Auto-send when selected is on, and it works in sessions, texts, and email.">
+          <div class="edu-row"><span style="color:var(--faint)">Reply</span><span style="color:var(--text)">deploy it</span></div>
+          <div class="edu-row"><span>Auto-send when selected</span><span class="edu-toggle"><span class="edu-knob"></span></span></div>
+          <div class="edu-row"><span>Works in</span><span class="edu-chip">sessions &middot; texts &middot; email</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ 4 — CTA ════ -->
+  <section class="lp-section lp-cta">
+    <div class="lp-inner" style="flex-direction:column">
+      <h2 class="seg-h">Never make your agent wait again</h2>
+      <p class="seg-p">Answer from anywhere, with one tap.</p>
+      <!-- PLACEHOLDER: agentmc:// deep-link CTA goes here once aligned with Johnny (CLAUDE.md guardrail). -->
+      <a class="lp-cta-btn" href="#" onclick="return false">Try Quick Replies</a>
+      <p class="lp-cta-sub">Open AMC &rarr; the <b style="color:var(--text-2)">Quick Replies</b> project &rarr; save the answers you send on the go.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="scroll-hint" id="hint"><span>Scroll</span><div class="scroll-hint-arrow"></div></div>
+
+<script>
+(function(){
+  var scroller=document.getElementById('scroll');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  console.log('[quick-replies-c3] init',{segments:document.querySelectorAll('.lp-section').length,reduce:reduce});
+  function staged(inner){
+    var steps=inner.querySelectorAll('.hero-line,.hero-desc');
+    steps.forEach(function(el,i){setTimeout(function(){el.classList.add('visible');},reduce?0:180*i+120);});
+  }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');staged(e.target);io.unobserve(e.target);}
+    });
+  },{root:scroller,threshold:.35});
+  document.querySelectorAll('.lp-inner').forEach(function(el){io.observe(el)});
+  var hint=document.getElementById('hint');
+  scroller.addEventListener('scroll',function(){hint.classList.add('hidden');},{once:true,passive:true});
+  scroller.focus({preventScroll:true});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!doctype html>
+<!--
+  AMC FEATURE LANDING PAGE — Zap
+  Cell D2-F — "one-keystroke nod" · Developer · Power · functional/PAS
+  Built from templates/landing-page-template.html per html-remotion-build-guide.md
+  Copy source: briefs/zap-concepts.md §7 · Mock: pages/mocks/zap--developer--one-keystroke-nod--functional--mock.html
+  ANIMATION OPTION USED: C — live DOM/CSS mock
+  Segments: 1 Hook · 2 Sell · 3 Educate · 4 CTA
+  Rev: v1 2026-07-08 (Stage 5 build; rebuilt in-session after agent loss; facts verified vs use-quick-responses.md 2026-07-07)
+  rev+1 · 2026-07-09 — global-standards pass: one-message h1, hero hotkey strip, Alt+Z speed story
+  rev · 2026-07-10 — persistent hotkey badge added (fixed top-left, visible on every segment; Dilan).
+  rev · 2026-07-10 — copy standards v2 sweep (em-dashes removed; educate=play; montage; defluff).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Zap · Agent Mission Control</title>
+<style>
+/* ── Tokens (design-language.md — do not fork values) ── */
+:root{
+  --bg:#030712; --glass:rgba(3,7,18,.7); --glass-strong:rgba(3,7,18,.92);
+  --line:rgba(255,255,255,.08);
+  --text:#fff; --text-2:rgba(255,255,255,.85); --body:#9ca3af;
+  --faint:rgba(255,255,255,.45); --fine:rgba(255,255,255,.25);
+  --accent:#4ade80; --info:#60a5fa; --warn:#fbbf24; --error:#f87171;
+  --on-accent:#030712;
+  --radius:12px; --radius-pill:20px; --maxw:1100px;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1); --t-hover:.15s; --t-small:.25s; --t-reveal:.45s;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{overflow:hidden;height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hidden;height:100%;line-height:1.65}
+
+/* ── Segment scroll (signature) ── */
+.lp-scroll{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+.lp-section{position:relative;z-index:1;height:100vh;display:flex;align-items:center;justify-content:center;padding:0 24px;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
+.lp-inner{display:flex;align-items:center;gap:64px;max-width:var(--maxw);width:100%;opacity:0;transform:translateY(16px);transition:opacity var(--t-small) var(--ease),transform var(--t-small) var(--ease)}
+.lp-inner.visible{opacity:1;transform:translateY(0)}
+.text-col{flex:0 0 50%;display:flex;flex-direction:column;gap:24px;min-width:0}
+.demo-col{flex:1;display:flex;align-items:center;justify-content:center;min-width:0}
+
+/* ── Background: orbs + dot grid (family wallpaper) ── */
+.bg-effects{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.12;animation:orbFloat 20s ease-in-out infinite}
+.bg-orb-1{width:600px;height:600px;background:var(--accent);top:-180px;right:-120px}
+.bg-orb-2{width:500px;height:500px;background:var(--info);top:45%;left:-160px;animation-delay:-7s}
+.bg-orb-3{width:550px;height:550px;background:var(--warn);bottom:-220px;right:25%;animation-delay:-14s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0)}33%{transform:translate(30px,-40px)}66%{transform:translate(-20px,30px)}}
+.bg-grid{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px);background-size:32px 32px}
+
+/* ── Badge / kicker ── */
+.lp-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;padding:5px 12px;border-radius:var(--radius-pill);background:rgba(255,255,255,.04);border:1px solid var(--line);width:fit-content;margin-bottom:8px}
+.lp-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+
+/* ── Hero hotkey strip — standard top-left element (Dilan, 2026-07-09) ── */
+.hk-strip{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.hk-strip .kbd{font-size:13px;padding:4px 9px}
+.hk-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--faint)}
+
+/* ── Keycap — house hotkey style (design-language.md) ── */
+.kbd{display:inline-block;font-family:ui-monospace,Consolas,monospace;font-size:12px;font-weight:600;color:var(--text-2);background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:6px;padding:2px 7px;line-height:1.4;vertical-align:middle}
+.kbd-join{color:var(--faint);font-size:11px;margin:0 3px}
+
+/* ── Hero headline — one headline + sub (adopted 2026-07-09; staircase retired) ── */
+.hero-line{display:block;opacity:0;transform:translateY(12px);transition:opacity var(--t-reveal) var(--ease),transform var(--t-reveal) var(--ease);font-weight:700;font-size:clamp(2rem,5vw,3rem);line-height:1.14;letter-spacing:-.02em;padding-left:0}
+.hero-line.visible{opacity:1;transform:translateY(0)}
+.hero-line.accent{color:var(--accent)} /* payoff line — this page's Zap accent is green */
+.hero-desc{opacity:0;transition:opacity var(--t-reveal) var(--ease);font-size:1.05rem;color:var(--body);max-width:560px;margin-top:6px}
+.hero-desc.visible{opacity:1}
+
+/* ── Section headings + copy ── */
+.seg-h{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700}
+.seg-p{color:var(--body);font-size:1.05rem;max-width:580px}
+.seg-list{list-style:none;display:flex;flex-direction:column;gap:16px;counter-reset:step}
+.seg-list li{display:flex;gap:14px;align-items:flex-start;color:var(--body)}
+.seg-list li::before{counter-increment:step;content:counter(step);flex:0 0 28px;height:28px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--text);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.seg-list b{color:var(--text)}
+.seg-aside{font-size:13px;color:var(--faint);max-width:580px;border-left:2px solid var(--line);padding-left:14px}
+
+/* ── Demo panel ── */
+.demo-panel{width:100%;max-width:460px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.demo-title{font-size:12px;font-weight:600;padding:10px 14px;border-bottom:1px solid var(--line);color:var(--text-2);display:flex;justify-content:space-between;align-items:center}
+.demo-title .t-right{color:var(--faint);font-weight:500;font-size:11px}
+.demo-body{padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-height:220px}
+.demo-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-2);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:8px;padding:9px 10px}
+.demo-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.demo-tag{margin-left:auto;font-size:10px;font-weight:700}
+.demo-row.zapped{background:rgba(74,222,128,.06);border-color:rgba(74,222,128,.22)}
+.demo-row.active{box-shadow:inset 2px 0 0 var(--warn);background:rgba(251,191,36,.05)}
+.mini-caps{display:inline-flex;gap:4px;margin-left:10px}
+.mini-key{min-width:24px;height:20px;padding:0 6px;display:flex;align-items:center;justify-content:center;border-radius:5px;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.45);font-size:10px;font-weight:700;color:var(--accent)}
+.jk-hint{font-size:10px;color:var(--faint);border:1px solid var(--line);border-radius:5px;padding:2px 6px;background:rgba(255,255,255,.03);font-weight:600}
+.demo-cap{font-size:11px;color:var(--faint);text-align:center;margin-top:6px}
+
+/* hero choreography: rows enter top→bottom (play once, hold); zapped tags pop after; one subtle shimmer on the active row's keys */
+.hero-step{opacity:0}
+.lp-inner.visible .hero-step{animation:stepEnter .5s var(--ease) both}
+.lp-inner.visible .hs-1{animation-delay:.3s}
+.lp-inner.visible .hs-2{animation-delay:.6s}
+.lp-inner.visible .hs-3{animation-delay:.9s}
+.lp-inner.visible .hs-4{animation-delay:1.2s}
+.lp-inner.visible .hs-5{animation-delay:1.5s}
+.lp-inner.visible .hs-6{animation-delay:1.9s}
+@keyframes stepEnter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.tag-pop{opacity:0}
+.lp-inner.visible .tag-pop{animation:tagPop .4s var(--ease) both}
+.lp-inner.visible .tp-1{animation-delay:1.1s}
+.lp-inner.visible .tp-2{animation-delay:1.4s}
+@keyframes tagPop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+.lp-inner.visible .active .mini-key{animation:stepEnter .5s var(--ease) both 1.2s,keyShimmer 5s ease-in-out 3s infinite}
+@keyframes keyShimmer{0%,100%{box-shadow:none}50%{box-shadow:0 0 12px rgba(74,222,128,.22)}}
+
+/* sell visual: the sweep — amber rows flip green one by one; stopwatch counts */
+.sweep-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text-2);border-radius:8px;padding:9px 10px;background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.25)}
+.lp-inner.visible .sweep-row{animation:sweepFlip .6s var(--ease) both}
+.lp-inner.visible .sw-1{animation-delay:.8s}
+.lp-inner.visible .sw-2{animation-delay:1.4s}
+.lp-inner.visible .sw-3{animation-delay:2s}
+.lp-inner.visible .sw-4{animation-delay:2.6s}
+@keyframes sweepFlip{from{background:rgba(251,191,36,.05);border-color:rgba(251,191,36,.25)}to{background:rgba(74,222,128,.06);border-color:rgba(74,222,128,.22)}}
+.sweep-row .demo-dot{background:var(--warn)}
+.lp-inner.visible .sweep-row .demo-dot{animation:dotFlip .6s var(--ease) both}
+.lp-inner.visible .sw-1 .demo-dot{animation-delay:.8s}
+.lp-inner.visible .sw-2 .demo-dot{animation-delay:1.4s}
+.lp-inner.visible .sw-3 .demo-dot{animation-delay:2s}
+.lp-inner.visible .sw-4 .demo-dot{animation-delay:2.6s}
+@keyframes dotFlip{to{background:var(--accent)}}
+.sweep-tag{margin-left:auto;font-size:10px;font-weight:700;color:var(--accent);opacity:0}
+.lp-inner.visible .sweep-tag{animation:tagPop .35s var(--ease) both}
+.lp-inner.visible .sw-1 .sweep-tag{animation-delay:1.15s}
+.lp-inner.visible .sw-2 .sweep-tag{animation-delay:1.75s}
+.lp-inner.visible .sw-3 .sweep-tag{animation-delay:2.35s}
+.lp-inner.visible .sw-4 .sweep-tag{animation-delay:2.95s}
+.stopwatch{display:flex;justify-content:center;align-items:center;gap:6px;font-size:11px;color:var(--faint);margin-top:4px;font-variant-numeric:tabular-nums}
+.stopwatch b{color:var(--text-2);font-weight:700}
+
+/* educate visual: J/K move + Alt+Z micro-demo */
+.demo-row-enter{opacity:0}
+.lp-inner.visible .demo-row-enter{animation:stepEnter .5s var(--ease) both}
+
+/* ── Buttons ── */
+.lp-cta-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:var(--radius);background:var(--accent);color:var(--on-accent);font-weight:600;font-size:15px;text-decoration:none;border:none;cursor:pointer;transition:transform var(--t-hover),box-shadow var(--t-hover)}
+.lp-cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(74,222,128,.25)}
+.lp-cta-btn:focus-visible{outline:2px solid var(--info);outline-offset:3px}
+.lp-cta{flex-direction:column;text-align:center}
+.lp-cta .seg-p{margin:16px auto 40px}
+.lp-cta-sub{margin-top:16px;color:var(--body);font-size:14px}
+
+/* ── Scroll hint ── */
+.scroll-hint{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:200;color:var(--fine);font-size:11px;display:flex;flex-direction:column;align-items:center;gap:4px;transition:opacity .4s;pointer-events:none}
+.scroll-hint.hidden{opacity:0}
+.scroll-hint-arrow{width:20px;height:20px;border-right:2px solid rgba(255,255,255,.2);border-bottom:2px solid rgba(255,255,255,.2);transform:rotate(45deg);animation:scrollBounce 1.5s ease-in-out infinite}
+@keyframes scrollBounce{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(3px,3px)}}
+
+/* ── Mobile ── */
+@media(max-width:800px){
+  .lp-scroll{scroll-snap-type:y proximity}
+  .lp-section{height:auto;min-height:100vh;min-height:100svh;padding:48px 24px;overflow:visible}
+  .lp-inner{flex-direction:column;gap:40px;text-align:center}
+  .text-col{align-items:center}
+  .hero-line{font-size:clamp(1.65rem,7vw,2.1rem)}
+  .hero-desc{max-width:100%}
+  .lp-badge{margin-left:auto;margin-right:auto}
+  .hk-strip{justify-content:center}
+  .seg-list li{text-align:left}
+  .seg-aside{text-align:left}
+  .demo-row,.sweep-row{text-align:left}
+  .scroll-hint{display:none}
+}
+
+/* ── Reduced motion (design-language.md — keep exactly this approach) ── */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.1s!important}
+  .bg-orb,.scroll-hint-arrow,.hero-step,.tag-pop,.sweep-row,.sweep-row .demo-dot,.sweep-tag,.demo-row-enter,
+  .lp-inner.visible .hero-step,.lp-inner.visible .tag-pop,.lp-inner.visible .sweep-row,
+  .lp-inner.visible .sweep-row .demo-dot,.lp-inner.visible .sweep-tag,.lp-inner.visible .demo-row-enter,
+  .lp-inner.visible .active .mini-key{animation:none!important}
+  .lp-scroll{scroll-behavior:auto}
+  .lp-inner,.hero-line,.hero-desc,.hero-step,.tag-pop,.sweep-tag,.demo-row-enter{opacity:1;transform:none}
+  .sweep-row{background:rgba(74,222,128,.06);border-color:rgba(74,222,128,.22)}
+  .sweep-row .demo-dot{background:var(--accent)}
+}
+
+/* ── Persistent hotkey badge — fixed top-left, visible on EVERY segment (Dilan, 2026-07-10) ── */
+.hk-fixed{position:fixed;top:18px;left:18px;z-index:150;display:inline-flex;align-items:center;gap:9px;padding:6px 13px 6px 7px;border-radius:var(--radius-pill);background:rgba(3,7,18,.66);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);box-shadow:0 6px 22px rgba(0,0,0,.4)}
+.hkf-cap{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;border-radius:6px;background:linear-gradient(180deg,#1c1f2e,#12141f);border:1px solid rgba(255,255,255,.2);border-bottom-width:3px;color:#eef;font:800 .82rem/1 ui-monospace,Consolas,monospace}
+.hkf-join{color:var(--faint);font-size:11px;font-weight:700}
+.hkf-name{font-size:12.5px;font-weight:700;color:var(--text-2);letter-spacing:.01em;white-space:nowrap}
+.hkf-auto{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--accent)}
+.hkf-auto::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+@media(max-width:800px){.hk-fixed{top:10px;left:10px;padding:5px 11px 5px 6px;gap:7px}.hkf-cap{min-width:21px;height:21px;font-size:.75rem}.hkf-name{font-size:11.5px}}
+</style>
+</head>
+<body>
+
+<div class="bg-effects" aria-hidden="true">
+  <div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-2"></div><div class="bg-orb bg-orb-3"></div>
+  <div class="bg-grid"></div>
+</div>
+
+
+<!-- PERSISTENT HOTKEY BADGE — fixed top-left, visible on every segment (Dilan, 2026-07-10) -->
+<div class="hk-fixed" role="note" aria-label="Zap, press Alt plus Z"><span class="hkf-cap" aria-hidden="true">Alt</span><span class="hkf-join">+</span><span class="hkf-cap" aria-hidden="true">Z</span><span class="hkf-name">Zap</span></div>
+
+<main class="lp-scroll" id="scroll" tabindex="0">
+
+  <!-- ════ SEGMENT 1 — HOOK ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <div class="hk-strip">
+          <span class="hk-keys" aria-label="Alt plus Z"><kbd class="kbd">Alt</kbd><span class="kbd-join">+</span><kbd class="kbd">Z</kbd></span>
+          <span class="hk-label">Zap · the one-keystroke yes</span>
+        </div>
+        <h1>
+          <span class="hero-line">4 sessions stopped for a nod.</span>
+          <span class="hero-line accent">That&rsquo;s 4 keystrokes.</span>
+        </h1>
+        <p class="hero-desc">The inbox lines up every waiting agent. <b style="color:var(--text-2)">J/K to move, Alt+Z to send.</b> The nods clear in seconds.</p>
+      </div>
+      <div class="demo-col">
+        <div class="demo-panel" role="img" aria-label="The AMC inbox mid-sweep: two waiting sessions already zapped back to running, one amber row selected with Alt+Z ready, one queued behind a J/K hint, and one blue row flagged as needing a real answer.">
+          <div class="demo-title"><span>Inbox &middot; mid-sweep</span></div>
+          <div class="demo-body">
+            <div class="demo-row zapped hero-step hs-1"><span class="demo-dot" style="background:var(--accent)"></span>API refactor<span class="demo-tag tag-pop tp-1" style="color:var(--accent)">&#10003; zapped</span></div>
+            <div class="demo-row zapped hero-step hs-2"><span class="demo-dot" style="background:var(--accent)"></span>Docs build<span class="demo-tag tag-pop tp-2" style="color:var(--accent)">&#10003; zapped</span></div>
+            <div class="demo-row active hero-step hs-3"><span class="demo-dot" style="background:var(--warn)"></span>Checkout flow: &ldquo;continue?&rdquo;<span class="mini-caps" aria-hidden="true"><span class="mini-key">Alt</span><span class="mini-key">Z</span></span></div>
+            <div class="demo-row hero-step hs-4"><span class="demo-dot" style="background:var(--warn)"></span>Test harness: &ldquo;continue?&rdquo;<span class="demo-tag"><span class="jk-hint">J/K</span></span></div>
+            <div class="demo-row hero-step hs-5"><span class="demo-dot" style="background:var(--info)"></span>DB migration: schema question<span class="demo-tag" style="color:var(--info)">needs words</span></div>
+            <div class="demo-cap hero-step hs-6">The nods take seconds. The real questions get you.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ SEGMENT 2 — SELL ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <h2 class="seg-h">Parallel agents, serial interruptions</h2>
+        <p class="seg-p">Running several sessions means the pauses stack. Each one is trivial, a nod, but each nod used to cost a window switch, a scan for context, a retyped reply. Multiply by every session, every hour.</p>
+        <p class="seg-p"><b style="color:var(--text)">Zap makes the nod O(1).</b> One keystroke per session, straight from the inbox, however many you&rsquo;re running. The rows that need real answers still get you; the rest get <kbd class="kbd">Alt</kbd><span class="kbd-join">+</span><kbd class="kbd">Z</kbd>, sent in under a second.</p>
+      </div>
+      <div class="demo-col">
+        <div class="demo-panel" role="img" aria-label="Four waiting rows flip from amber to green one by one as Alt+Z clears them; a stopwatch reads 4 nods in 0:04.">
+          <div class="demo-title"><span>the sweep</span><span class="t-right">J &middot; K &middot; Alt+Z</span></div>
+          <div class="demo-body">
+            <div class="sweep-row sw-1"><span class="demo-dot"></span>API refactor<span class="sweep-tag">&#10003; keep going · sent</span></div>
+            <div class="sweep-row sw-2"><span class="demo-dot"></span>Docs build<span class="sweep-tag">&#10003; keep going · sent</span></div>
+            <div class="sweep-row sw-3"><span class="demo-dot"></span>Checkout flow<span class="sweep-tag">&#10003; keep going · sent</span></div>
+            <div class="sweep-row sw-4"><span class="demo-dot"></span>Test harness<span class="sweep-tag">&#10003; keep going · sent</span></div>
+            <div class="stopwatch demo-row-enter" style="animation-delay:3.2s">4 nods &middot; <b>0:04</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ SEGMENT 3 — EDUCATE ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <h2 class="seg-h">Run the sweep yourself</h2>
+        <ol class="seg-list">
+          <li><span><b>Waiting sessions stack in the inbox:</b> amber, flagged, one list.</span></li>
+          <li><span><b>J/K moves between rows.</b> The selected session opens right beside the list. No mouse, no window hunt.</span></li>
+          <li><span><b><kbd class="kbd">Alt</kbd><span class="kbd-join">+</span><kbd class="kbd">Z</kbd> sends &ldquo;keep going&rdquo;</b> to the open session. Its row clears, and the inbox drops you into the next one.</span></li>
+        </ol>
+        <p class="seg-aside">Attachments ride along; the same key works in your SMS and email threads; right-click the &#9889; button to set the exact phrase it sends (multiline is fine). The key itself is re-mappable in Settings &rarr; Keyboard.</p>
+      </div>
+      <div class="demo-col">
+        <div class="demo-panel" role="img" aria-label="Micro-demo of one sweep step: the selection moves down a row with J, Alt+Z fires, and the row's reply is sent.">
+          <div class="demo-title"><span>one step of the sweep</span></div>
+          <div class="demo-body">
+            <div class="demo-row demo-row-enter" style="animation-delay:.3s"><span class="jk-hint">J</span>move down a row</div>
+            <div class="demo-row demo-row-enter" style="animation-delay:.7s"><span class="mini-caps" style="margin-left:0" aria-hidden="true"><span class="mini-key">Alt</span><span class="mini-key">Z</span></span>send &ldquo;yes, keep going&rdquo;</div>
+            <div class="demo-row zapped demo-row-enter" style="animation-delay:1.1s"><span class="demo-dot" style="background:var(--accent)"></span>row flips back to running<span class="demo-tag" style="color:var(--accent)">&#10003;</span></div>
+            <div class="demo-cap demo-row-enter" style="animation-delay:1.5s">Repeat until quiet.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ SEGMENT 4 — CTA ════ -->
+  <section class="lp-section lp-cta">
+    <div class="lp-inner" style="flex-direction:column">
+      <h2 class="seg-h">Clear the nods in seconds</h2>
+      <p class="seg-p">Every &ldquo;go&rdquo; is still your call. Zap just makes each one cost a keystroke instead of a context switch.</p>
+      <!-- PLACEHOLDER: agentmc:// deep-link CTA goes here once direction is aligned
+           with Johnny (CLAUDE.md guardrail). Until then: worded action. -->
+      <a class="lp-cta-btn" href="#" onclick="return false">Press Alt+Z</a>
+      <p class="lp-cta-sub">Open your AMC inbox &rarr; J/K to a waiting session &rarr; <kbd class="kbd">Alt</kbd><span class="kbd-join">+</span><kbd class="kbd">Z</kbd>.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="scroll-hint" id="hint"><span>Scroll</span><div class="scroll-hint-arrow"></div></div>
+
+<script>
+/* Segment reveal + staged hero (design-language.md motion rules) */
+(function(){
+  var scroller=document.getElementById('scroll');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  console.log('[zap-d2f] init',{segments:document.querySelectorAll('.lp-section').length,reduce:reduce});
+
+  function staged(inner){
+    var steps=inner.querySelectorAll('.hero-line,.hero-desc');
+    steps.forEach(function(el,i){setTimeout(function(){el.classList.add('visible');},reduce?0:180*i+120);});
+  }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        staged(e.target);
+        io.unobserve(e.target);
+      }
+    });
+  },{root:scroller,threshold:.35});
+  document.querySelectorAll('.lp-inner').forEach(function(el){io.observe(el)});
+
+  var hint=document.getElementById('hint');
+  scroller.addEventListener('scroll',function(){hint.classList.add('hidden');},{once:true,passive:true});
+
+  scroller.focus({preventScroll:true});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,418 @@
+<!doctype html>
+<!--
+  AMC FEATURE LANDING PAGE — Auto-waiting · V4 "You are not the Continue button"
+  Identity: operator × not-the-continue-button × functional (O1F, Operator × Explain-it, PAS)
+  Run: auto-waiting round 2 (brief: briefs/auto-waiting.md §Concepts refresh) · r1 built 2026-07-08
+  Gate-2 panel edits applied: decision-path shown (S3) · permissions fence (S3) · cap-hit row (S3)
+  · de-jargoned units "5 minutes to 4 hours" · tap-or-hover · "on since May" promoted to S2
+  · CTA names destination · power aside = one line · "fold" wording (never "hide")
+  ANIMATION OPTION USED: [C — live DOM/CSS mock] (hero = JS-sequenced resume-journey story loop)
+  Segments: 1 Hook · 2 Sell (pain) · 3 Sell (trust/decision-path) · 4 Educate · 5 CTA
+  rev+1 · 2026-07-09 — global-standards pass: one-message h1, Automatic strip, hero loop compressed to ≤10s
+  rev · 2026-07-10 — persistent hotkey badge added (fixed top-left, visible on every segment; Dilan).
+  rev · 2026-07-10 — copy standards v2 sweep (em-dashes removed; educate=play; montage; defluff).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Auto-waiting · You are not the Continue button · Agent Mission Control</title>
+<style>
+/* ── Tokens (design-language.md — do not fork values) ── */
+:root{
+  --bg:#030712; --glass:rgba(3,7,18,.7); --glass-strong:rgba(3,7,18,.92);
+  --line:rgba(255,255,255,.08);
+  --text:#fff; --text-2:rgba(255,255,255,.85); --body:#9ca3af;
+  --faint:rgba(255,255,255,.45); --fine:rgba(255,255,255,.25);
+  --accent:#4ade80; --info:#60a5fa; --warn:#fbbf24; --error:#f87171;
+  --on-accent:#030712;
+  --radius:12px; --radius-pill:20px; --maxw:1100px;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1); --t-hover:.15s; --t-small:.25s; --t-reveal:.45s;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{overflow:hidden;height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hidden;height:100%;line-height:1.65}
+
+/* ── Segment scroll ── */
+.lp-scroll{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+.lp-section{position:relative;z-index:1;height:100vh;display:flex;align-items:center;justify-content:center;padding:0 24px;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden}
+.lp-inner{display:flex;align-items:center;gap:64px;max-width:var(--maxw);width:100%;opacity:0;transform:translateY(16px);transition:opacity var(--t-small) var(--ease),transform var(--t-small) var(--ease)}
+.lp-inner.visible{opacity:1;transform:translateY(0)}
+.text-col{flex:0 0 50%;display:flex;flex-direction:column;gap:24px;min-width:0}
+.demo-col{flex:1;display:flex;align-items:center;justify-content:center;min-width:0}
+
+/* ── Background ── */
+.bg-effects{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.12;animation:orbFloat 20s ease-in-out infinite}
+.bg-orb-1{width:600px;height:600px;background:var(--accent);top:-200px;left:-100px}
+.bg-orb-2{width:500px;height:500px;background:var(--info);top:40%;right:-150px;animation-delay:-7s}
+.bg-orb-3{width:550px;height:550px;background:var(--warn);bottom:-200px;left:30%;animation-delay:-14s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0)}33%{transform:translate(30px,-40px)}66%{transform:translate(-20px,30px)}}
+.bg-grid{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px);background-size:32px 32px}
+
+/* ── Badge ── */
+.lp-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;padding:5px 12px;border-radius:var(--radius-pill);background:rgba(255,255,255,.04);border:1px solid var(--line);width:fit-content;margin-bottom:8px}
+.lp-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+
+/* ── Hero hotkey strip — Automatic variant (standard kit, design-language.md) ── */
+.hk-strip{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.hk-strip .lp-badge{margin-bottom:0}
+.hk-strip .kbd{font-size:13px;padding:4px 9px}
+.hk-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--faint)}
+.kbd{display:inline-block;font-family:ui-monospace,Consolas,monospace;font-size:12px;font-weight:600;color:var(--text-2);background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:6px;padding:2px 7px;line-height:1.4;vertical-align:middle}
+.kbd-join{color:var(--faint);font-size:11px;margin:0 3px}
+
+/* ── Hero headline — one message + accent payoff (adopted 2026-07-09; staircase retired) ── */
+.hero-line{display:block;opacity:0;transform:translateY(12px);transition:opacity var(--t-reveal) var(--ease),transform var(--t-reveal) var(--ease);font-weight:700;font-size:clamp(2rem,5vw,3rem);line-height:1.14;letter-spacing:-.02em;padding-left:0}
+.hero-line.visible{opacity:1;transform:translateY(0)}
+.hero-line.accent{color:var(--accent)} /* payoff line — this page's auto-waiting accent is green (resumes) */
+.hero-desc{opacity:0;transition:opacity var(--t-reveal) var(--ease);font-size:1.05rem;color:var(--body);max-width:580px;margin-top:6px}
+.hero-desc.visible{opacity:1}
+
+/* ── Headings + copy ── */
+.seg-h{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700}
+.seg-p{color:var(--body);font-size:1.05rem;max-width:580px}
+.seg-p b{color:var(--text)}
+.seg-p em{color:var(--text-2);font-style:italic}
+.seg-list{list-style:none;display:flex;flex-direction:column;gap:16px;counter-reset:step}
+.seg-list li{display:flex;gap:14px;align-items:flex-start;color:var(--body)}
+.seg-list li::before{counter-increment:step;content:counter(step);flex:0 0 28px;height:28px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--text);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.seg-list b{color:var(--text)}
+.aside-line{font-size:13px;color:var(--body);border-left:2px solid var(--line);padding-left:12px}
+
+/* ── Demo panel ── */
+.demo-panel{width:100%;max-width:460px;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.demo-title{font-size:12px;font-weight:600;padding:10px 14px;border-bottom:1px solid var(--line);color:var(--text-2);display:flex;align-items:center;gap:8px}
+.demo-title .tdot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.demo-body{padding:14px;display:flex;flex-direction:column;gap:10px}
+
+/* hero story-loop pieces */
+.story .waitpill{display:inline-flex;align-items:center;font-size:10px;font-weight:600;border:1px solid rgba(251,191,36,.35);color:var(--warn);border-radius:10px;padding:1px 8px;width:fit-content}
+.story .msg{font-size:12.5px;color:var(--text-2);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:8px;padding:9px 11px}
+.story .gap{display:flex;align-items:center;gap:10px;color:var(--body);font-size:11px;padding:2px 0}
+.story .gap::before,.story .gap::after{content:"";flex:1;border-top:1px dashed rgba(255,255,255,.12)}
+.story .quietchip{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:600;border:1px solid rgba(74,222,128,.35);color:var(--accent);border-radius:10px;padding:2px 9px;width:fit-content}
+.story .jobtick{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:600;border:1px solid var(--line);color:var(--text-2);border-radius:10px;padding:2px 9px;width:fit-content}
+.story .composer{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;background:rgba(255,255,255,.02)}
+.story .composer .ph{font-size:12px;color:var(--fine)}
+.story .composer .send{margin-left:auto;color:var(--fine);font-size:13px}
+.story-caption{font-size:12px;color:var(--text-2);border-top:1px solid var(--line);padding:10px 14px;min-height:40px;display:flex;align-items:center;gap:8px}
+.story-caption .stepno{flex:0 0 auto;font-size:10px;font-weight:700;color:var(--faint);border:1px solid var(--line);border-radius:10px;padding:0 7px}
+.story .st{opacity:0;transform:translateY(6px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.story .st.on{opacity:1;transform:none}
+/* elements already shown never drop below full visibility (design-language: no vanishing beside copy) */
+
+/* S2 before/after split */
+.ba{display:flex;gap:12px;width:100%;max-width:460px}
+.ba .col{flex:1;background:var(--glass);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.ba .colhead{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--line)}
+.ba .colbody{padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.ba .you{font-size:11.5px;color:var(--text-2);background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:8px;padding:6px 9px;align-self:flex-end}
+.ba .bot{font-size:11.5px;color:var(--text-2);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:8px;padding:6px 9px;align-self:flex-start}
+.ba .tstamp{font-size:9.5px;color:var(--fine);align-self:flex-end}
+.ba .bot .mini{display:inline-flex;font-size:9px;font-weight:600;border:1px solid rgba(251,191,36,.35);color:var(--warn);border-radius:8px;padding:0 6px;margin-bottom:3px}
+.ba-note{font-size:11px;color:var(--body);text-align:center;padding-top:8px}
+
+/* S3 decision-path rows */
+.rule{display:flex;flex-direction:column;gap:6px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:8px;padding:9px 11px}
+.rule .q{font-size:12px;color:var(--text-2)}
+.rule .out{display:flex;align-items:center;gap:8px;font-size:10.5px;font-weight:600}
+.rule .arrow{color:var(--fine)}
+.pill{display:inline-flex;align-items:center;font-size:10px;font-weight:600;border-radius:10px;padding:1px 8px;border:1px solid}
+.pill.q{border-color:rgba(96,165,250,.4);color:var(--info)}
+.pill.w{border-color:rgba(251,191,36,.35);color:var(--warn)}
+.pill.g{border-color:rgba(74,222,128,.35);color:var(--accent)}
+.pill.t{border-color:rgba(251,191,36,.65);color:var(--warn)}
+
+/* S4 tooltip mock */
+.tipwrap{display:flex;flex-direction:column;gap:10px}
+.tipbox{background:var(--glass-strong);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:11.5px;color:var(--text-2);max-width:300px}
+.tipbox .tiph{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);margin-bottom:4px}
+.btnrow{display:flex;gap:8px}
+.mockbtn{font-size:11px;font-weight:600;border:1px solid var(--line);border-radius:8px;padding:6px 12px;color:var(--text-2);background:rgba(255,255,255,.04)}
+.mockbtn.primary{border-color:rgba(74,222,128,.4);color:var(--accent)}
+
+/* ── Buttons ── */
+.lp-cta-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:var(--radius);background:var(--accent);color:var(--on-accent);font-weight:600;font-size:15px;text-decoration:none;border:none;cursor:pointer;transition:transform var(--t-hover),box-shadow var(--t-hover)}
+.lp-cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(74,222,128,.25)}
+.lp-cta-btn:focus-visible{outline:2px solid var(--info);outline-offset:3px}
+.lp-cta{flex-direction:column;text-align:center}
+.lp-cta .seg-p{margin:16px auto 40px}
+.lp-cta-sub{margin-top:16px;color:var(--body);font-size:14px}
+
+/* ── Scroll hint ── */
+.scroll-hint{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:200;color:var(--fine);font-size:11px;display:flex;flex-direction:column;align-items:center;gap:4px;transition:opacity .4s;pointer-events:none}
+.scroll-hint.hidden{opacity:0}
+.scroll-hint-arrow{width:20px;height:20px;border-right:2px solid rgba(255,255,255,.2);border-bottom:2px solid rgba(255,255,255,.2);transform:rotate(45deg);animation:scrollBounce 1.5s ease-in-out infinite}
+@keyframes scrollBounce{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(3px,3px)}}
+
+/* ── Mobile ── */
+@media(max-width:800px){
+  .lp-scroll{scroll-snap-type:y proximity}
+  .lp-section{height:auto;min-height:100vh;min-height:100svh;padding:48px 24px;overflow:visible}
+  .lp-inner{flex-direction:column;gap:40px;text-align:center}
+  .text-col{align-items:center}
+  .hero-line{font-size:clamp(1.65rem,7vw,2.1rem)}
+  .hero-desc{max-width:100%}
+  .lp-badge{margin-left:auto;margin-right:auto}
+  .hk-strip{justify-content:center}
+  .seg-list li{text-align:left}
+  .aside-line{text-align:left}
+  .ba{flex-direction:column}
+  .scroll-hint{display:none}
+}
+
+/* ── Reduced motion ── */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.1s!important}
+  .bg-orb,.scroll-hint-arrow{animation:none!important}
+  .lp-scroll{scroll-behavior:auto}
+  .lp-inner,.hero-line,.hero-desc{opacity:1;transform:none}
+  .story .st{opacity:1!important;transform:none!important}
+}
+
+/* ── Persistent hotkey badge — fixed top-left, visible on EVERY segment (Dilan, 2026-07-10) ── */
+.hk-fixed{position:fixed;top:18px;left:18px;z-index:150;display:inline-flex;align-items:center;gap:9px;padding:6px 13px 6px 7px;border-radius:var(--radius-pill);background:rgba(3,7,18,.66);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);box-shadow:0 6px 22px rgba(0,0,0,.4)}
+.hkf-cap{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;border-radius:6px;background:linear-gradient(180deg,#1c1f2e,#12141f);border:1px solid rgba(255,255,255,.2);border-bottom-width:3px;color:#eef;font:800 .82rem/1 ui-monospace,Consolas,monospace}
+.hkf-join{color:var(--faint);font-size:11px;font-weight:700}
+.hkf-name{font-size:12.5px;font-weight:700;color:var(--text-2);letter-spacing:.01em;white-space:nowrap}
+.hkf-auto{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--accent)}
+.hkf-auto::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+@media(max-width:800px){.hk-fixed{top:10px;left:10px;padding:5px 11px 5px 6px;gap:7px}.hkf-cap{min-width:21px;height:21px;font-size:.75rem}.hkf-name{font-size:11.5px}}
+</style>
+</head>
+<body>
+
+<div class="bg-effects" aria-hidden="true">
+  <div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-2"></div><div class="bg-orb bg-orb-3"></div>
+  <div class="bg-grid"></div>
+</div>
+
+
+<!-- PERSISTENT HOTKEY BADGE — fixed top-left, visible on every segment (Dilan, 2026-07-10) -->
+<div class="hk-fixed" role="note" aria-label="Waiting Detector, automatic"><span class="hkf-name">Waiting Detector</span><span class="hkf-auto">Automatic</span></div>
+
+<main class="lp-scroll" id="scroll" tabindex="0">
+
+  <!-- ════ SEGMENT 1 — HOOK ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <div class="hk-strip">
+          <span class="lp-badge"><span class="lp-badge-dot"></span>Automatic, on by default</span>
+          <span class="hk-label">Auto-waiting</span>
+        </div>
+        <h1>
+          <span class="hero-line">You are not the Continue button.</span>
+          <span class="hero-line accent">Waiting agents resume themselves.</span>
+        </h1>
+        <p class="hero-desc">AMC spots an agent that&rsquo;s only waiting on its own work (tests or a build actually running), keeps it quietly running, and the moment that work finishes it picks itself back up.</p>
+      </div>
+      <div class="demo-col">
+        <div class="demo-panel story" role="img" aria-label="A session where the agent declares it is waiting on its test suite, is tagged Auto-waited, and eighteen minutes later resumes by itself. The message box is never touched.">
+          <div class="demo-title"><span class="tdot"></span>API refactor &middot; Running</div>
+          <div class="demo-body">
+            <div class="msg st" id="s1">Kicking off the full test suite, 214 tests. Waiting on the run to finish.</div>
+            <span class="waitpill st" id="s2">&#9201; Auto-waited</span>
+            <span class="quietchip st" id="s3"><span>&#10003;</span> Inbox quiet &middot; Needs you: 0</span>
+            <div class="gap st" id="s4">18 minutes pass. Nobody types continue</div>
+            <span class="jobtick st" id="s5">tests finish, that wakes the agent</span>
+            <div class="msg st" id="s6">Tests green, 214 passed. Finishing the job now.</div>
+            <div class="composer st" id="s7"><span class="ph">Message the agent&hellip;</span><span class="send">&#8594;</span></div>
+          </div>
+          <div class="story-caption"><span class="stepno" id="capno">1/7</span><span id="cap">The agent kicks off its own tests, and says it&rsquo;s waiting.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ SEGMENT 2 — SELL: the pain ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <h2 class="seg-h">Come back to nothing. Again.</h2>
+        <p class="seg-p">You know the ritual. Kick something off, go do your actual job, come back. It&rsquo;s been sitting there, waiting for you to type <em>continue</em>. The work it was waiting on finished twenty minutes ago. Nobody told the agent.</p>
+        <p class="seg-p"><b>Auto-waiting reads how each reply ends.</b> &ldquo;Waiting on the build&rdquo; stays quietly running under an orange &#9201; tag. When the build lands, pass or fail, the agent wakes up and keeps working. By itself. You come back to progress, not a prompt.</p>
+        <p class="seg-p">This isn&rsquo;t a promise. <b>It&rsquo;s been on by default since May</b> and you never even noticed it. That&rsquo;s the point. The continues you still type? Those waits really did need you. More on that next.</p>
+      </div>
+      <div class="demo-col">
+        <div class="ba" role="img" aria-label="Before and after: an evening of typing continue at an agent, versus the same evening where the agent resumes itself and the human types nothing.">
+          <div class="col">
+            <div class="colhead" style="color:var(--warn)">Your evening, before</div>
+            <div class="colbody">
+              <span class="you">continue</span><span class="tstamp">7:12 PM</span>
+              <span class="you">continue</span><span class="tstamp">8:03 PM</span>
+              <span class="you">keep going</span><span class="tstamp">9:41 PM</span>
+            </div>
+          </div>
+          <div class="col">
+            <div class="colhead" style="color:var(--accent)">With auto-waiting</div>
+            <div class="colbody">
+              <span class="bot"><span class="mini">&#9201; Auto-waited</span><br />Waiting on the build&hellip;</span>
+              <span class="bot">Build done. Carrying on.</span>
+              <div class="ba-note">You typed: nothing</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ SEGMENT 3 — SELL: trust / the decision path ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <h2 class="seg-h">But what if it&rsquo;s waiting on <em>me</em>?</h2>
+        <p class="seg-p">One rule decides: <b>who is it waiting on?</b> A question, an approval, anything meant for you pings you instantly, always. Only waits on the agent&rsquo;s own work get held.</p>
+        <p class="seg-p">And a held wait doesn&rsquo;t sit forever. <b>Anything still silent after 30 minutes pings you anyway</b>, with the reason attached. Your number, anywhere from 5 minutes to 4 hours.</p>
+        <p class="seg-p">Auto-waiting never changes what the agent is <em>allowed</em> to do, only when you get pinged. Your approval and permission settings are untouched. Nothing is hidden: every held ping stays visible, tagged, on the record.</p>
+      </div>
+      <div class="demo-col">
+        <div class="demo-panel" role="img" aria-label="Three turn endings and where each goes: a question pings you now; a wait on the agent's own build is held and resumes; a wait with nothing behind it pings you at the thirty-minute mark with the reason.">
+          <div class="demo-title">One rule: who is it waiting on?</div>
+          <div class="demo-body">
+            <div class="rule">
+              <span class="q">&ldquo;Which pricing table should checkout use?&rdquo;</span>
+              <span class="out"><span class="pill q">waiting on you</span><span class="arrow">&#8594;</span><span style="color:var(--info)">pings you now</span></span>
+            </div>
+            <div class="rule">
+              <span class="q">&ldquo;Waiting on the build to finish.&rdquo;</span>
+              <span class="out"><span class="pill w">&#9201; its own work: a job is running</span><span class="arrow">&#8594;</span><span class="pill g">resumes when the build lands</span></span>
+            </div>
+            <div class="rule">
+              <span class="q">&ldquo;Standing by for the deploy.&rdquo; <span style="color:var(--body)">(nothing running behind it)</span></span>
+              <span class="out"><span class="pill w">&#9201; its own work: nothing running</span><span class="arrow">&#8594;</span><span class="pill t">30 min &middot; pings you anyway, reason attached</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ SEGMENT 4 — EDUCATE ════ -->
+  <section class="lp-section">
+    <div class="lp-inner">
+      <div class="text-col">
+        <h2 class="seg-h">Go watch it catch one</h2>
+        <ol class="seg-list">
+          <li><span><b>Nothing to set up.</b> It&rsquo;s been on since May. Waiting replies wear the orange &#9201; Auto-waited tag.</span></li>
+          <li><span><b>Tap or hover the tag</b> to see exactly why that reply was held.</span></li>
+          <li><span><b>Impatient? Check in</b> pokes the agent now. Generous? <b>Keep waiting</b> buys another hour.</span></li>
+          <li><span><b>Set your window</b> at Settings &#8594; Sessions &#8594; &ldquo;Waiting period.&rdquo; 30 minutes unless you change it.</span></li>
+        </ol>
+        <p class="aside-line">Power extras live in the same Settings page: bounded auto check-ins (off until you switch them on), and folding repeat waits into one-line markers you can click open. Nothing is ever deleted.</p>
+      </div>
+      <div class="demo-col">
+        <div class="demo-panel" role="img" aria-label="The Auto-waited tag with its explanation open, showing the matched phrase, above the Check in and Keep waiting buttons.">
+          <div class="demo-title">Why was this held?</div>
+          <div class="demo-body tipwrap">
+            <span class="pill w" style="width:fit-content">&#9201; Auto-waited</span>
+            <div class="tipbox">
+              <div class="tiph">Auto-kept running</div>
+              Agent appears to be waiting<br />
+              <span style="color:var(--faint)">Matched: &ldquo;waiting on the run to finish&rdquo;</span>
+            </div>
+            <div class="btnrow">
+              <span class="mockbtn primary">Check in</span>
+              <span class="mockbtn">Keep waiting &middot; 60 min</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ SEGMENT 5 — CTA ════ -->
+  <section class="lp-section lp-cta">
+    <div class="lp-inner" style="flex-direction:column">
+      <h2 class="seg-h">Go catch one in the act</h2>
+      <p class="seg-p">One of your longer-running sessions may already wear a &#9201; tag. You&rsquo;ve been covered for months. Go see the pings you didn&rsquo;t get.</p>
+      <!-- PLACEHOLDER: agentmc:// deep-link CTA goes here once direction is aligned
+           with Johnny (CLAUDE.md guardrail). Until then: worded action. -->
+      <a class="lp-cta-btn" href="#" onclick="return false">Open AMC and catch one in the act</a>
+      <p class="lp-cta-sub">Any running session &#8594; look for &#9201; Auto-waited above the latest reply.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="scroll-hint" id="hint"><span>Scroll</span><div class="scroll-hint-arrow"></div></div>
+
+<script>
+/* Segment reveal + staged hero + resume-journey story loop */
+(function(){
+  var scroller=document.getElementById('scroll');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  console.log('[auto-waiting-v4] init',{segments:document.querySelectorAll('.lp-section').length,reduce:reduce});
+
+  function staged(inner){
+    var steps=inner.querySelectorAll('.hero-line,.hero-desc');
+    steps.forEach(function(el,i){setTimeout(function(){el.classList.add('visible');},reduce?0:180*i+120);});
+  }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');staged(e.target);io.unobserve(e.target);}
+    });
+  },{root:scroller,threshold:.35});
+  document.querySelectorAll('.lp-inner').forEach(function(el){io.observe(el)});
+
+  var hint=document.getElementById('hint');
+  scroller.addEventListener('scroll',function(){hint.classList.add('hidden');},{once:true,passive:true});
+  scroller.focus({preventScroll:true});
+
+  /* ── Hero story loop: 7 captioned steps; pauses off-screen; elements only accumulate
+        (never re-hidden mid-cycle) until the loop resets after a long hold. ── */
+  var steps=[
+    {show:['s1'],cap:'The agent kicks off its own tests, and says it’s waiting.'},
+    {show:['s2'],cap:'AMC spots the wait and holds the ping. No “Needs you.”'},
+    {show:['s3'],cap:'You’re in a meeting. Your inbox stays quiet.'},
+    {show:['s4'],cap:'The tests run. Nobody types continue.'},
+    {show:['s5'],cap:'The tests finish. Pass or fail, the finish wakes the agent.'},
+    {show:['s6'],cap:'It picks itself back up. You typed nothing.'},
+    {show:['s7'],cap:'Come back to progress, not a prompt.'}
+  ];
+  var capEl=document.getElementById('cap'),capNo=document.getElementById('capno');
+  var idx=-1,timer=null,heroVisible=false;
+  var STEP_MS=1150,HOLD_MS=1400;
+  function setStep(i){
+    idx=i;
+    var st=steps[i];
+    st.show.forEach(function(id){document.getElementById(id).classList.add('on');});
+    capEl.textContent=st.cap;capNo.textContent=(i+1)+'/'+steps.length;
+  }
+  function clearAll(){
+    for(var k=1;k<=7;k++){document.getElementById('s'+k).classList.remove('on');}
+  }
+  function tick(){
+    if(!heroVisible){timer=null;return;}
+    var next=idx+1;
+    if(next>=steps.length){
+      timer=setTimeout(function(){if(!heroVisible){timer=null;return;}clearAll();setStep(0);timer=setTimeout(tick,STEP_MS);},HOLD_MS);
+      return;
+    }
+    setStep(next);
+    timer=setTimeout(tick,next===steps.length-1?HOLD_MS:STEP_MS);
+  }
+  var heroPanel=document.querySelector('.story');
+  if(reduce){
+    /* static most-informative frame: everything visible, closing caption */
+    for(var k=1;k<=7;k++){document.getElementById('s'+k).classList.add('on');}
+    capEl.textContent='Resumed on its own. You typed nothing.';capNo.textContent=steps.length+'/'+steps.length;
+    console.log('[auto-waiting-v4] story loop disabled (reduced motion) — static final frame');
+  }else{
+    var storyIo=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        heroVisible=e.isIntersecting;
+        if(heroVisible){
+          if(idx<0){setStep(0);timer=setTimeout(tick,STEP_MS);}
+          else if(!timer){timer=setTimeout(tick,STEP_MS);}
+        }else if(timer){clearTimeout(timer);timer=null;}
+      });
+    },{root:scroller,threshold:.4});
+    storyIo.observe(heroPanel);
+  }
+})();
+</script>
+</body>
+</html>
