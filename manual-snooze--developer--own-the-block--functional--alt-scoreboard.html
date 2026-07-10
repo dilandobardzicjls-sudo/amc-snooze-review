@@ -30,6 +30,7 @@
   mini-world under it: working-dots that visibly HALT amber on every interruption on the
   left while the counter climbs; on the right H schedules the return, the dots never stop,
   and at 4:14 the ask returns and the counter flips to 1. Copy = canonical rev+5.
+  rev+6 · 2026-07-10 — copy-standards v2 audit (2026-07-09 call rules): educate reframed as play ('Try it. Two clicks'), trainer CTA copy tightened; films select the target before H where a session row exists.
 -->
 <html lang="en">
 <head>
@@ -116,6 +117,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
 .ha-vs.in{opacity:1;transform:translate(-50%,0) scale(1)}
 .ha-row{position:relative;display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:9px;background:rgba(255,255,255,.03);border:1px solid transparent;font-size:11px;font-weight:600;color:var(--text-2);max-height:32px;transition:transform .3s cubic-bezier(.5,0,.15,1),opacity .28s,max-height .3s cubic-bezier(.5,0,.15,1),padding .3s cubic-bezier(.5,0,.15,1),margin .3s cubic-bezier(.5,0,.15,1),border-color .25s,box-shadow .25s}
 .ha-row.pre{opacity:0}
+.ha-row.active{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.22)}
 .ha-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .ha-dot.amber{background:var(--warn)}
 .ha-when{margin-left:auto;font-size:9.5px;font-weight:600;color:var(--faint)}
@@ -372,7 +374,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
   <section class="lp-section" id="try">
     <div class="lp-inner">
       <div class="text-col">
-        <h2 class="seg-h">How it works</h2>
+        <h2 class="seg-h">Try it. Two clicks</h2>
         <ol class="seg-list" id="edSteps">
           <li id="edLi1"><span><b>Right-click the session and pick Snooze.</b> Or press <kbd class="kbd">H</kbd> with the session active. Two clicks either way.</span></li>
           <li id="edLi2"><span><b>Pick a return time, or type one in your words.</b> The palette offers 2 Hours From Now plus the three natural times coming up next. Typing works too: "in 2 hours", "530p", even "tomorow 5pm" with the typo. AMC shows what it understood before you press Enter.</span></li>
@@ -419,7 +421,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow:hid
   <section class="lp-section lp-cta">
     <div class="lp-inner" style="flex-direction:column">
       <h2 class="seg-h">Take the next two hours back</h2>
-      <p class="seg-p">The Snooze trainer walks you through a 2-hour snooze on a practice session. Nothing to install, nothing to set up.</p>
+      <p class="seg-p">The trainer opens a practice session and starts the clock. One 2-hour snooze, two clicks.</p>
       <!-- PLACEHOLDER: agentmc:// deep link to the Education Hub Snooze trainer (Dilan 2026-07-10). Hub not built yet; scrolls to #try until wired. -->
       <a class="lp-cta-btn" href="#try" id="finale-cta">Teach me snooze</a>
       <p class="lp-cta-sub" id="finale-sub">Or right now: right-click a session, pick Snooze, choose 2 Hours From Now.</p>
@@ -499,13 +501,13 @@ function mfCap(root,n){root.querySelectorAll('.mf-cap span').forEach(function(c)
   var cues=[
     {at:.2,do:function(){rowL.classList.add('back','shout');rowR.classList.add('back','shout');haCap(stage,0)}},
     {at:.7,do:function(){rowL.classList.remove('shout','back');rowR.classList.remove('shout','back')}},
-    {at:1.2,do:function(){keys.classList.add('in')}},
+    {at:1.2,do:function(){rowR.classList.add('active');keys.classList.add('in')}},
     {at:1.45,do:function(){keys.classList.add('pressed')}},
     {at:1.6,do:function(){modal.classList.add('in');keys.classList.remove('pressed');cur.classList.add('in');haCur(cur,'62%','148px')}},
     {at:1.85,do:function(){haCur(cur,'62%','202px')}},
     {at:2.15,do:function(){haCurClick(cur);p0.classList.add('sel')}},
     {at:2.35,do:function(){modal.classList.add('commit')}},
-    {at:2.55,do:function(){modal.classList.remove('in');cur.classList.remove('in');keys.classList.add('out');rowR.classList.add('gone');status.classList.add('show');haCap(stage,2)}},
+    {at:2.55,do:function(){modal.classList.remove('in');cur.classList.remove('in');keys.classList.add('out');rowR.classList.remove('active');rowR.classList.add('gone');status.classList.add('show');haCap(stage,2)}},
     {at:2.9,do:function(){haClock(clock,clockTxt,'2:41 PM')}},
     {at:4.1,do:function(){haClock(clock,clockTxt,'3:12 PM')}},
     {at:5.3,do:function(){haClock(clock,clockTxt,'3:40 PM')}},
@@ -526,7 +528,7 @@ function mfCap(root,n){root.querySelectorAll('.mf-cap span').forEach(function(c)
       grid.style.opacity='';race.style.opacity='';clock.style.opacity='';
       numL.textContent='0';numR.textContent='0';
       paneL.classList.remove('halt');paneR.classList.remove('win');
-      rowL.classList.remove('shout','back');rowR.classList.remove('shout','gone','back','ontime');
+      rowL.classList.remove('shout','back');rowR.classList.remove('shout','gone','back','ontime','active');
       status.classList.remove('show','go');status.textContent='Snoozed · back at 4:14';
       keys.classList.remove('in','pressed','out');modal.classList.remove('in','commit');
       p0.classList.remove('sel');cur.classList.remove('in','click');haCur(cur,'62%','120px');
